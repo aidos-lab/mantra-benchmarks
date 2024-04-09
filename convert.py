@@ -51,17 +51,30 @@ def parse_topological_type(s):
     The type field of an entry consists of a flag indicating whether the
     manifold is orientable, followed by its genus. Optionally, there may
     be a canonical name, such as "Klein bottle."
+
+    Parameters
+    ----------
+    s: string
+        Input string containing topological type information.
+
+    Returns
+    -------
+    dict
+        A dictionary containing information about the topological type,
+        using the keys "name" (for an optional canonical name, which is
+        allowed to be the empty string), "orientable" (a boolean flag),
+        and "genus" (an integer).
     """
     parts = s.split("=")
     assert len(parts) == 1 or len(parts) == 2
 
     result = {
-        "canonical_name": "",
+        "name": "",
         "orientable": None
     }
 
     if len(parts) == 2:
-        result["canonical_name"] = parts[1].strip()
+        result["name"] = parts[1].strip()
 
     # Parse the "topological type" field, consisting of a bracketed
     # expression indicating whether the manifold is orientable, and
