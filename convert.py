@@ -26,23 +26,34 @@ def process_triangulation(triangulation):
 
     A triangulation is represented (following the original data format)
     as a newline-separated string of vertex indices. These indices will
-    be parsed into a (nested) array of integers and returned.
+    be parsed into a (nested) array of integers and returned in a dict,
+    which contains additional information about the triangulation.
 
     Returns
     -------
-    list of list of int
-        A nested list of vertex indices, representing the top-level
-        simplices of the triangulation. To simplify JSON conversion
-        everything is returned as a list instead of `np.array`.
+    dict
+        A dictionary containing information about the triangulation. The
+        keys of dict are "triangulation", "dimension", and "n_vertices".
+        The triangulation itself is stored as a nested list of vertices,
+        representing the top-level simplices of the triangulation.
     """
-    vertices = np.asarray(
+    simplices = np.asarray(
         [
             np.fromstring(line, sep=",", dtype=int)
             for line in triangulation.split("\n")
         ]
     )
 
-    return vertices.tolist()
+    dimensions = [len(simplex) - 1 for simplex in simplices]
+    assert dimensions[1:] == dimensions[:-1]
+
+    vertices = set(simplices.flatten())
+
+    return {
+        "triangulation": simplices.tolist(),
+        "dimension": dimensions[0],
+        "n_vertices": len(vertices),
+    }
 
 
 def parse_topological_type(s):
@@ -207,7 +218,7 @@ def process_triangulations(filename):
 
     triangulations = lines
     triangulations = {
-        name: {"triangulation": process_triangulation(triangulation)}
+        name: process_triangulation(triangulation)
         for name, triangulation in zip(names, triangulations)
     }
 
