@@ -148,7 +148,7 @@ def parse_homology_groups(s):
 
         # More than one entry. Store the torsion coefficient as-is.
         else:
-            result["betti_numbers"].append(rank[1].strip())
+            result["torsion_coefficients"].append(rank[1].strip())
 
     return result
 
