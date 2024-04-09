@@ -99,7 +99,58 @@ def parse_topological_type(s):
 
 
 def parse_homology_groups(s):
-    return {"homology": s}
+    """Parse information about the homology groups of a manifold.
+
+    Homology group information is represented as a tuple of ranks, with
+    each entry either a number or a number with torsion information. An
+    example would be "(1, 0 + Z_2, 0)".
+
+    This information will be represented in two tuples:
+
+    1. A "betti_numbers" list, consisting of a list of ranks of the
+       homology groups, ignoring any torsion.
+    2. A "torsion_coefficients" list, providing torsion coefficient
+       information. Each torsion coefficient is stored as-is, i.e.,
+       as a string. An empty torsion coefficient is indicated using
+       an empty string.
+
+    Parameters
+    ----------
+    s : string
+        String containing information about the homology groups of the
+        triangulation.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the homology information of the
+        triangulation (see above).
+    """
+    s = s.replace("(", "")
+    s = s.replace(")", "")
+
+    ranks = s.split(",")
+
+    result = {
+        "betti_numbers": [],
+        "torsion_coefficients": [],
+    }
+
+    for rank in ranks:
+        rank = rank.split("+")
+        assert len(rank) == 1 or len(rank) == 2
+
+        result["betti_numbers"].append(int(rank[0]))
+
+        # Single entry only, so no torsion to consider.
+        if len(rank) == 1:
+            result["torsion_coefficients"].append("")
+
+        # More than one entry. Store the torsion coefficient as-is.
+        else:
+            result["betti_numbers"].append(rank[1].strip())
+
+    return result
 
 
 def process_homology_groups_or_types(filename, parse_fn):
