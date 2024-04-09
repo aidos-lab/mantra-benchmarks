@@ -244,6 +244,14 @@ if __name__ == "__main__":
         triangulations[manifold].update(types[manifold])
         triangulations[manifold].update(homology_groups[manifold])
 
+    # Turn ID into a separate attribute. This enables us to turn the
+    # whole data set into a list of triangulations, making it easier
+    # to add new triangulations later on.
+    triangulations = [
+        {"id": manifold, **triangulations[manifold]}
+        for manifold in triangulations
+    ]
+
     with open(args.output, "w") if args.output is not None else nullcontext(
         sys.stdout
     ) as f:
