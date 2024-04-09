@@ -45,7 +45,51 @@ def process_triangulation(triangulation):
     return vertices.tolist()
 
 
-def process_homology_groups_or_types(filename):
+def parse_topological_type(s):
+    """Parse the type field of a manifold.
+
+    The type field of an entry consists of a flag indicating whether the
+    manifold is orientable, followed by its genus. Optionally, there may
+    be a canonical name, such as "Klein bottle."
+    """
+    parts = s.split("=")
+    assert len(parts) == 1 or len(parts) == 2
+
+    result = {
+        "canonical_name": "",
+        "orientable": None
+    }
+
+    if len(parts) == 2:
+        result["canonical_name"] = parts[1].strip()
+
+    # Parse the "topological type" field, consisting of a bracketed
+    # expression indicating whether the manifold is orientable, and
+    # the genus.
+    topological_type = parts[0]
+    topological_type = topological_type.replace("(", "")
+    topological_type = topological_type.replace(")", "")
+
+    orientable, genus = topological_type.split(";")
+    orientable = orientable.strip()
+
+    result["genus"] = int(genus)
+
+    assert orientable in ["+", "-"]
+
+    if orientable == "+":
+        result["orientable"] = True
+    else:
+        result["orientable"] = False
+
+    return result
+
+
+def parse_homology_groups(s):
+    return {"homology": s}
+
+
+def process_homology_groups_or_types(filename, parse_fn):
     """Process information about homology groups or topological types.
 
     The data format for the homology groups or the topological type of
@@ -53,6 +97,11 @@ def process_homology_groups_or_types(filename):
     only uses a single string, which provides the Betti numbers (and a
     summand for torsion), or a description of the type of the manifold
     that is triangulated.
+
+    Parameters
+    ----------
+    parse_fn : callable
+        Function to use for further processing each entry.
 
     Returns
     -------
@@ -66,7 +115,8 @@ def process_homology_groups_or_types(filename):
         lines = f.readlines()
 
     matches = [re.match(r"(manifold_.*):\s+(.*)$", line) for line in lines]
-    return {match.group(1): match.group(2) for match in matches}
+
+    return {match.group(1): parse_fn(match.group(2)) for match in matches}
 
 
 def process_triangulations(filename):
@@ -115,12 +165,20 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     triangulations = process_triangulations(args.INPUT)
-    homology_groups = process_homology_groups_or_types(args.HOMOLOGY)
-    types = process_homology_groups_or_types(args.TYPE)
+
+    homology_groups = process_homology_groups_or_types(
+        args.HOMOLOGY,
+        parse_homology_groups
+    )
+
+    types = process_homology_groups_or_types(
+        args.TYPE,
+        parse_topological_type
+    )
 
     for manifold in triangulations:
-        triangulations[manifold]["type"] = types[manifold]
-        triangulations[manifold]["homology"] = homology_groups[manifold]
+        triangulations[manifold].update(types[manifold])
+        triangulations[manifold].update(homology_groups[manifold])
 
     with open(args.output, "w") if args.output is not None else nullcontext(
         sys.stdout
