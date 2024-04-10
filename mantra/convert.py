@@ -79,10 +79,7 @@ def parse_topological_type(s):
     parts = s.split("=")
     assert len(parts) == 1 or len(parts) == 2
 
-    result = {
-        "name": "",
-        "orientable": None
-    }
+    result = {"name": "", "orientable": None}
 
     if len(parts) == 2:
         result["name"] = parts[1].strip()
@@ -242,14 +239,10 @@ if __name__ == "__main__":
     triangulations = process_triangulations(args.INPUT)
 
     homology_groups = process_homology_groups_or_types(
-        args.HOMOLOGY,
-        parse_homology_groups
+        args.HOMOLOGY, parse_homology_groups
     )
 
-    types = process_homology_groups_or_types(
-        args.TYPE,
-        parse_topological_type
-    )
+    types = process_homology_groups_or_types(args.TYPE, parse_topological_type)
 
     for manifold in triangulations:
         triangulations[manifold].update(types[manifold])
