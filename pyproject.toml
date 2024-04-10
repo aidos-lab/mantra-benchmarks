@@ -24,3 +24,6 @@ classifiers = [
 [project.urls]
 Repository = "https://github.com/aidos-lab/MANTRA.git"
 "Bug Tracker" = "https://github.com/aidos-lab/MANTRA.git/issues"
+
+[tool.black]
+line-length = 79
