@@ -18,7 +18,7 @@ license = {file = "LICENSE.md"}
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: BSD-3-Clause",
 ]
 
 [project.urls]
