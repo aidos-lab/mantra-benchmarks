@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mantra"
+version = "0.0.1"
+dependencies = [
+  "httpx",
+]
+requires-python = ">=3.8"
+authors = [
+  {name = "Bastian Rieck", email = "bastian.rieck@helmholtz-munich.de"},
+]
+description = "Manifold Triangulations"
+readme = "README.md"
+license = {file = "LICENSE.md"}
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Repository = "https://github.com/aidos-lab/MANTRA.git"
+"Bug Tracker" = "https://github.com/aidos-lab/MANTRA.git/issues"
