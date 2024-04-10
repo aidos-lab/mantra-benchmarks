@@ -226,10 +226,16 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("INPUT", type=str, help="Input file")
     parser.add_argument(
-        "HOMOLOGY", type=str, help="Homology information for triangulations"
+        "-H",
+        "--homology",
+        type=str,
+        help="Homology information for triangulations",
     )
     parser.add_argument(
-        "TYPE", type=str, help="Type information for triangulations"
+        "-t",
+        "--type",
+        type=str,
+        help="Type information for triangulations (optional)",
     )
     parser.add_argument(
         "-o", "--output", type=str, help="Output file (optional)"
@@ -238,15 +244,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     triangulations = process_triangulations(args.INPUT)
 
-    homology_groups = process_homology_groups_or_types(
-        args.HOMOLOGY, parse_homology_groups
-    )
+    if args.homology is not None:
+        homology_groups = process_homology_groups_or_types(
+            args.homology, parse_homology_groups
+        )
 
-    types = process_homology_groups_or_types(args.TYPE, parse_topological_type)
+        for manifold in triangulations:
+            triangulations[manifold].update(homology_groups[manifold])
 
-    for manifold in triangulations:
-        triangulations[manifold].update(types[manifold])
-        triangulations[manifold].update(homology_groups[manifold])
+    if args.type is not None:
+        types = process_homology_groups_or_types(
+            args.type, parse_topological_type
+        )
+
+        for manifold in triangulations:
+            triangulations[manifold].update(types[manifold])
 
     # Turn ID into a separate attribute. This enables us to turn the
     # whole data set into a list of triangulations, making it easier
