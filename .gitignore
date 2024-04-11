@@ -1,0 +1,5 @@
+.ignore
+raw_data
+data
+test*.*
+**/__pycache__
