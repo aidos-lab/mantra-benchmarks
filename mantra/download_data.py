@@ -1,3 +1,7 @@
+"""
+A download script for development purposes, can be removed later.
+"""
+
 import requests
 
 
