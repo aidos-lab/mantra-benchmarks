@@ -268,8 +268,10 @@ if __name__ == "__main__":
         for manifold in triangulations
     ]
 
-    with open(args.output, "w") if args.output is not None else nullcontext(
-        sys.stdout
+    with (
+        open(args.output, "w")
+        if args.output is not None
+        else nullcontext(sys.stdout)
     ) as f:
         result = json.dumps(triangulations, indent=2)
 
