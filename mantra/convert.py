@@ -222,6 +222,38 @@ def process_triangulations(filename):
     return triangulations
 
 
+def process_manifolds(
+    filename_triangulation, filename_homology=None, filename_type=None
+):
+    triangulations = process_triangulations(filename_triangulation)
+
+    if filename_homology:
+        homology_groups = process_homology_groups_or_types(
+            filename_homology, parse_homology_groups
+        )
+
+        for manifold in triangulations:
+            triangulations[manifold].update(homology_groups[manifold])
+
+    if filename_type:
+        types = process_homology_groups_or_types(
+            filename_type, parse_topological_type
+        )
+
+        for manifold in triangulations:
+            triangulations[manifold].update(types[manifold])
+
+    # Turn ID into a separate attribute. This enables us to turn the
+    # whole data set into a list of triangulations, making it easier
+    # to add new triangulations later on.
+    triangulations = [
+        {"id": manifold, **triangulations[manifold]}
+        for manifold in triangulations
+    ]
+
+    return triangulations
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("INPUT", type=str, help="Input file")
@@ -242,31 +274,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    triangulations = process_triangulations(args.INPUT)
 
-    if args.homology is not None:
-        homology_groups = process_homology_groups_or_types(
-            args.homology, parse_homology_groups
-        )
-
-        for manifold in triangulations:
-            triangulations[manifold].update(homology_groups[manifold])
-
-    if args.type is not None:
-        types = process_homology_groups_or_types(
-            args.type, parse_topological_type
-        )
-
-        for manifold in triangulations:
-            triangulations[manifold].update(types[manifold])
-
-    # Turn ID into a separate attribute. This enables us to turn the
-    # whole data set into a list of triangulations, making it easier
-    # to add new triangulations later on.
-    triangulations = [
-        {"id": manifold, **triangulations[manifold]}
-        for manifold in triangulations
-    ]
+    triangulations = process_manifolds(args.INPUT, args.homology, args.type)
 
     result = json.dumps(triangulations, indent=2)
     if args.output:
