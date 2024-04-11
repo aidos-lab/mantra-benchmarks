@@ -14,11 +14,8 @@ as well as *processing* the data types.
 import argparse
 import json
 import re
-import sys
 
 import numpy as np
-
-from contextlib import nullcontext
 
 
 def process_triangulation(triangulation):
@@ -256,12 +253,14 @@ def process_manifolds(
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("INPUT", type=str, help="Input file")
+    parser.add_argument(
+        "triangulation", type=str, help="Input triangulation file"
+    )
     parser.add_argument(
         "-H",
         "--homology",
         type=str,
-        help="Homology information for triangulations",
+        help="Homology information for triangulations (optional)",
     )
     parser.add_argument(
         "-t",
@@ -275,7 +274,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    triangulations = process_manifolds(args.INPUT, args.homology, args.type)
+    triangulations = process_manifolds(
+        args.triangulation, args.homology, args.type
+    )
 
     result = json.dumps(triangulations, indent=2)
     if args.output:
