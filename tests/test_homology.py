@@ -1,10 +1,14 @@
-"""Test correctness of homology information in an input file."""
+"""Test correctness of homology information in an input file.
+
+This test takes a JSON file containing a set of triangulations and
+checks their Betti numbers. To this end, a simplex tree is created
+from the triangulation and its homology is calculated.
+"""
 
 import gudhi as gd
 
 import argparse
 import itertools
-import operator
 import json
 
 
