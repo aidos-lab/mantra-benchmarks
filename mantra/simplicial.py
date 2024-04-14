@@ -50,6 +50,7 @@ class SimplicialDataset(InMemoryDataset):
             f"{self.raw_dir}/2_manifolds_all_hom.txt",
             f"{self.raw_dir}/2_manifolds_all_type.txt",
         )
+
         data_list = [Data(**el) for el in triangulations]
 
         if self.pre_filter is not None:

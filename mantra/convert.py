@@ -1,15 +1,39 @@
+"""Convert from lexicographical format to line-based format.
+
+The purpose of this script is to convert triangulations from
+a lexicographical format to a line-based format. In the old,
+i.e. lexicographical, format, triangulations can span *more*
+than one line, and every line contains a different number of
+vertices. This makes parsing the format cumbersome.
+
+As an alternative, this script parses the triangulations and
+represents them as JSON objects. This facilitates *storing*,
+as well as *processing* the data types.
+"""
+
 import argparse
 import json
 import re
+import pydantic
 
 
-def process_triangulation_line(line):
-    """'
-    Parses a single line of the triangluation and returns the fields in a
-    dictionary. The input string has to have the format
+def process_triangulation_line(line: str) -> dict:
+    """Parses a single line of the triangluation.
+
+    A triangulation is represented (following the original data format)
+    as a newline-separated string of vertex indices. These indices will
+    be parsed into a (nested) array of integers and returned.
+
+    Example:
     'manifold_{dim}_{n_vert}_{non-unique-id}=[[1,2,3],...,[1,4,3]]'
-    Returns dictionary with triangulation as list of lists, dimension and number
-    of vertices.
+
+    Returns
+    -------
+    dict
+        Dictionary, with keys indicating the respective triangulation
+        and values being strings corresponding to homology groups, or
+        type information, respectively. No further processing of each
+        string is attempted.
     """
     line = re.split("=", line)
 
@@ -37,8 +61,9 @@ def process_triangulation(content: str):
 
 
 def process_type_line(line: str) -> dict:
-    """
-    Parses a single line with the homology type. The line has to have the format
+    """Parses a single line with the homology type.
+
+    The line has to have the format
     'manifold_{dim}_{n_vert}_{non-unique-id}:  ( {orientable} ; {genus} ) =
     {name}'. The name field is optional and may be omitted. The function returns
     a dictionary with all fields parsed.
@@ -48,10 +73,14 @@ def process_type_line(line: str) -> dict:
     - 'manifold_2_9_646:  ( - ; 2 ) = Klein bottle'
     - 'manifold_2_9_587:  ( - ; 3 )'
 
-    Input:
-        String
-    Output:
-        Dict
+    Parameters
+    ----------
+    line : string
+        A single line to parse in the format above.
+
+    Returns:
+        Dictionary containing the manifold id, the corresponding homology groups,
+        orientation and if present the name.
     """
     match = re.match(
         r"(manifold_.*):\s+\( ([+-])\s;\s(\d)\s\)(\s=\s)?(.*)?", line
@@ -66,13 +95,13 @@ def process_type_line(line: str) -> dict:
     }
 
 
-def process_type(content):
+def process_type(content: str):
     lines = content.removesuffix("\n").split("\n")
     dicts = [process_type_line(line) for line in lines]
     return {k: v for d in dicts for k, v in d.items()}
 
 
-def process_homology_line(line):
+def process_homology_line(line: str) -> dict:
     match = re.match(r"(manifold_.*):\s+\((.*)\)", line)
     tc, bn = [], []
     for rank in match.group(2).split(", "):
@@ -90,7 +119,7 @@ def process_homology(lines):
 
 def process_manifolds(
     filename_triangulation, filename_homology=None, filename_type=None
-):
+) -> list:
     # Parse triangulations
     with open(filename_triangulation) as f:
         lines = f.read()
@@ -114,7 +143,7 @@ def process_manifolds(
             homology_groups[manifold] | types[manifold]
         )
 
-    return triangulations
+    return [el for el in triangulations.values()]
 
 
 if __name__ == "__main__":
