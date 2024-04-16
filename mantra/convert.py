@@ -15,9 +15,31 @@ import argparse
 import json
 import re
 import pydantic
+from typing import List, Optional, Dict
+import pandas as pd
 
 
-def process_triangulation_line(line: str) -> dict:
+class Triangulation(pydantic.BaseModel):
+    id: str
+    triangulation: List[List[int]]
+    dimension: int
+    n_vertices: int
+
+
+class TopologicalType(pydantic.BaseModel):
+    id: str
+    orientable: bool
+    genus: int
+    name: Optional[str]
+
+
+class Homology(pydantic.BaseModel):
+    id: str
+    torsion_coefficients: List[str]
+    betti_numbers: List[int]
+
+
+def process_triangulation_line(line: str) -> Triangulation:
     """Parses a single line of the triangluation.
 
     A triangulation is represented (following the original data format)
@@ -41,26 +63,23 @@ def process_triangulation_line(line: str) -> dict:
     match = re.match("manifold_(\d+)_(\d+)", line[0])
 
     # json.loads loads string into List[List[int]].
-    return {
-        line[0]: {
-            "id": line[0],
-            "dimension": match.group(1),
-            "n_vertices": match.group(2),
-            "triangulation": json.loads(line[1]),
-        }
-    }
+    return Triangulation(
+        id=line[0],
+        dimension=match.group(1),
+        n_vertices=match.group(2),
+        triangulation=json.loads(line[1]),
+    )
 
 
-def process_triangulation(content: str):
+def process_triangulation(content: str) -> List[Triangulation]:
     lines = content.removesuffix("\n\n")
     lines = re.split("\n\n", lines)
     lines = [re.sub("\n\s+", "", line) for line in lines]
 
-    dicts = [process_triangulation_line(line) for line in lines]
-    return {k: v for d in dicts for k, v in d.items()}
+    return [process_triangulation_line(line) for line in lines]
 
 
-def process_type_line(line: str) -> dict:
+def process_type_line(line: str) -> TopologicalType:
     """Parses a single line with the homology type.
 
     The line has to have the format
@@ -85,41 +104,70 @@ def process_type_line(line: str) -> dict:
     match = re.match(
         r"(manifold_.*):\s+\( ([+-])\s;\s(\d)\s\)(\s=\s)?(.*)?", line
     )
-    return {
-        match.group(1): {
-            "id": match.group(1),
-            "orientable": True if match.group(2) == "+" else False,
-            "genus": match.group(3),
-            "name": match.group(5),
-        }
-    }
+    return TopologicalType(
+        id=match.group(1),
+        orientable=True if match.group(2) == "+" else False,
+        genus=int(match.group(3)),
+        name=match.group(5),
+    )
 
 
-def process_type(content: str):
+def process_type(content: str) -> List[TopologicalType]:
     lines = content.removesuffix("\n").split("\n")
-    dicts = [process_type_line(line) for line in lines]
-    return {k: v for d in dicts for k, v in d.items()}
+    return [process_type_line(line) for line in lines]
 
 
-def process_homology_line(line: str) -> dict:
+def process_homology_line(line: str) -> Homology:
     match = re.match(r"(manifold_.*):\s+\((.*)\)", line)
     tc, bn = [], []
     for rank in match.group(2).split(", "):
         rank_match = re.match("(\d+)(\s\+\s)?(.*)?", rank)
         bn.append(int(rank_match.group(1)))
         tc.append(rank_match.group(3))
-    return {match.group(1): {"torsion_coefficients": tc, "betti_numbers": bn}}
+
+    return Homology(
+        id=match.group(1), torsion_coefficients=tc, betti_numbers=bn
+    )
 
 
-def process_homology(lines):
+def process_homology(lines: str) -> List[Homology]:
     lines = lines.removesuffix("\n").split("\n")
-    dicts = [process_homology_line(line) for line in lines]
-    return {k: v for d in dicts for k, v in d.items()}
+    return [process_homology_line(line) for line in lines]
+
+
+def merge_triangulation(
+    triangulation: List[Triangulation],
+    homology_groups: List[Homology],
+    types: List[TopologicalType],
+) -> List[Triangulation]:
+    df_triangulation = pd.DataFrame.from_records(
+        [tr.__dict__ for tr in triangulation]
+    ).set_index("id")
+    print(df_triangulation)
+
+    if homology_groups:
+        df_homology = pd.DataFrame.from_records(
+            [h.__dict__ for h in homology_groups]
+        ).set_index("id")
+        print(df_homology)
+        df_triangulation = df_triangulation.join(df_homology, "id")
+
+    if types:
+        df_types = pd.DataFrame.from_records(
+            [t.__dict__ for t in types]
+        ).set_index("id")
+        df_triangulation = df_triangulation.join(df_types, "id")
+    return df_triangulation.to_dict(orient="records")
 
 
 def process_manifolds(
-    filename_triangulation, filename_homology=None, filename_type=None
+    filename_triangulation: str,
+    filename_homology: str | None = None,
+    filename_type: str | None = None,
 ) -> list:
+
+    homology_groups, types = {}, {}
+
     # Parse triangulations
     with open(filename_triangulation) as f:
         lines = f.read()
@@ -137,13 +185,12 @@ def process_manifolds(
             lines = f.read()
         types = process_type(lines)
 
-    # Merge all together
-    for manifold in triangulations:
-        triangulations[manifold].update(
-            homology_groups[manifold] | types[manifold]
+    if filename_homology or filename_type:
+        triangulations = merge_triangulation(
+            triangulations, homology_groups, types
         )
 
-    return [el for el in triangulations.values()]
+    return triangulations
 
 
 if __name__ == "__main__":
