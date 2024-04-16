@@ -17,6 +17,7 @@ import re
 import pydantic
 from typing import List, Optional, Dict
 import pandas as pd
+import numpy as np
 
 
 class Triangulation(pydantic.BaseModel):
@@ -24,6 +25,17 @@ class Triangulation(pydantic.BaseModel):
     triangulation: List[List[int]]
     dimension: int
     n_vertices: int
+
+    @pydantic.model_validator(mode="after")
+    def check_model(self):
+        # Check if triangulations have the same length of 3.
+        assert all([len(item) == 3 for item in self.triangulation])
+
+        # Triangulation has 1 based indexing, so max is number of vertices.
+        assert np.array(self.triangulation).max() == self.n_vertices
+
+        # Check if dimension is correct.
+        assert self.dimension == len(self.triangulation[0]) - 1
 
 
 class TopologicalType(pydantic.BaseModel):
@@ -143,13 +155,11 @@ def merge_triangulation(
     df_triangulation = pd.DataFrame.from_records(
         [tr.__dict__ for tr in triangulation]
     ).set_index("id")
-    print(df_triangulation)
 
     if homology_groups:
         df_homology = pd.DataFrame.from_records(
             [h.__dict__ for h in homology_groups]
         ).set_index("id")
-        print(df_homology)
         df_triangulation = df_triangulation.join(df_homology, "id")
 
     if types:
@@ -221,8 +231,8 @@ if __name__ == "__main__":
     )
 
     result = json.dumps(triangulations, indent=2)
-    if args.output:
-        with open(args.output, "w") as f:
-            f.write(result)
-    else:
-        print(result)
+    # if args.output:
+    #     with open(args.output, "w") as f:
+    #         f.write(result)
+    # else:
+    #     print(result)
