@@ -164,7 +164,7 @@ def process_manifolds(
     filename_triangulation: str,
     filename_homology: str | None = None,
     filename_type: str | None = None,
-) -> list:
+) -> List[Dict]:
 
     homology_groups, types = {}, {}
 
