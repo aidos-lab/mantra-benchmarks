@@ -10,8 +10,13 @@ from mantra.convert import process_manifolds
 
 class SimplicialDataset(InMemoryDataset):
     def __init__(
-        self, root, transform=None, pre_transform=None, pre_filter=None
+        self,
+        root,
+        transform=None,
+        pre_transform=None,
+        pre_filter=None,
     ):
+        self.manifold = "2"
         root += "/simplicial"
         super().__init__(root, transform, pre_transform, pre_filter)
         self.load(self.processed_paths[0])
@@ -19,9 +24,9 @@ class SimplicialDataset(InMemoryDataset):
     @property
     def raw_file_names(self):
         return [
-            "2_manifolds_all.txt",
-            "2_manifolds_all_type.txt",
-            "2_manifolds_all_hom.txt",
+            f"{self.manifold}_manifolds_all.txt",
+            f"{self.manifold}_manifolds_all_type.txt",
+            f"{self.manifold}_manifolds_all_hom.txt",
         ]
 
     @property
@@ -30,25 +35,25 @@ class SimplicialDataset(InMemoryDataset):
 
     def download(self):
         download_url(
-            "https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/2_manifolds_all.txt",
+            f"https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/{self.manifold}_manifolds_all.txt",
             self.root + "/raw",
         )
 
         download_url(
-            "https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/2_manifolds_all_type.txt",
+            f"https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/{self.manifold}_manifolds_all_type.txt",
             self.root + "/raw",
         )
 
         download_url(
-            "https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/2_manifolds_all_hom.txt",
+            f"https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/{self.manifold}_manifolds_all_hom.txt",
             self.root + "/raw",
         )
 
     def process(self):
         triangulations = process_manifolds(
-            f"{self.raw_dir}/2_manifolds_all.txt",
-            f"{self.raw_dir}/2_manifolds_all_hom.txt",
-            f"{self.raw_dir}/2_manifolds_all_type.txt",
+            f"{self.raw_dir}/{self.manifold}_manifolds_all.txt",
+            f"{self.raw_dir}/{self.manifold}_manifolds_all_hom.txt",
+            f"{self.raw_dir}/{self.manifold}_manifolds_all_type.txt",
         )
 
         data_list = [Data(**el) for el in triangulations]
