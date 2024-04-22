@@ -34,12 +34,6 @@ def build_simplex_tree(top_level_simplices):
 
 
 def validate_betti_numbers(data: dict):
-    if not hasattr(data, "betti_numbers"):
-        raise AttributeError(
-            "Expected to find betti numbers, but none were found. Make sure to \
-            pass the homology type when processsing."
-        )
-
     simplex_tree = build_simplex_tree(data["triangulation"])
     persistence_pairs = simplex_tree.persistence(persistence_dim_max=True)
 
