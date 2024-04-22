@@ -29,10 +29,16 @@ class Triangulation(pydantic.BaseModel):
     @pydantic.model_validator(mode="after")
     def check_model(self):
         # Check if triangulations have the same length of 3.
-        assert all([len(item) == 3 for item in self.triangulation])
+        if not all([len(item) == 3 for item in self.triangulation]):
+            raise pydantic.ValidationError(
+                "Every element in the list should have length 3."
+            )
 
         # Triangulation has 1 based indexing, so max is number of vertices.
-        assert np.array(self.triangulation).max() == self.n_vertices
+        if not np.array(self.triangulation).max() == self.n_vertices:
+            raise ValueError(
+                f"Number of vertices in the triangulation ({np.array(self.triangulation).max()}) does not coincide with n_vertices ({self.n_vertices})"
+            )
 
         # Check if dimension is correct.
         assert self.dimension == len(self.triangulation[0]) - 1
@@ -49,6 +55,11 @@ class Homology(pydantic.BaseModel):
     id: str
     torsion_coefficients: List[str]
     betti_numbers: List[int]
+
+    @pydantic.model_validator(mode="after")
+    def check_model(self):
+        assert len(self.betti_numbers) == 3
+        assert len(self.torsion_coefficients) == 3
 
 
 def process_triangulation_line(line: str) -> Triangulation:
