@@ -96,10 +96,17 @@ def assemble(cplx, k, scheme="uniform", laziness=None):
             s_down = [(1, t) for (foo, t) in s_down]
 
             if scheme == "uniform-multicount":
-                s_neigh_idxs = [(a, hacky_get_idx(t, cplx)) for (a, t) in s_down + s_up]
+                s_neigh_idxs = [
+                    (a, hacky_get_idx(t, cplx)) for (a, t) in s_down + s_up
+                ]
             else:
                 s_neigh_idxs = list(
-                    set([(a, hacky_get_idx(t, cplx)) for (a, t) in s_down + s_up])
+                    set(
+                        [
+                            (a, hacky_get_idx(t, cplx))
+                            for (a, t) in s_down + s_up
+                        ]
+                    )
                 )
 
             if scheme == "uniform-lazy":
@@ -110,7 +117,9 @@ def assemble(cplx, k, scheme="uniform", laziness=None):
                     for sgn, j in s_neigh_idxs:
                         if j == i:
                             num_self_neigh += 1
-                    probs = (1.0 - laziness) / (len(s_neigh_idxs) - num_self_neigh)
+                    probs = (1.0 - laziness) / (
+                        len(s_neigh_idxs) - num_self_neigh
+                    )
             else:
                 probs = 1.0 / len(s_neigh_idxs)
 
@@ -178,7 +187,9 @@ def load_walks(filename):
     return walks
 
 
-def Embedding(Walks, emb_dim, epochs=5, filename="k-simplex2vec_embedding.model"):
+def Embedding(
+    Walks, emb_dim, epochs=5, filename="k-simplex2vec_embedding.model"
+):
     ## Performs the embedding of the $k$-simplices using the gensim word2vec package
     walks_str = []
     for i in range(len(Walks)):
