@@ -9,7 +9,7 @@ from mantra.convert import process_manifolds
 
 
 class SimplicialDataset(InMemoryDataset):
-    available_versions = ['1.0.0']
+    available_versions = ["1.0.0"]
 
     @staticmethod
     def _get_raw_dataset_root_link(version: str):
@@ -20,12 +20,12 @@ class SimplicialDataset(InMemoryDataset):
                 raise ValueError(f"Version {version} not available")
 
     def __init__(
-            self,
-            root,
-            transform=None,
-            pre_transform=None,
-            pre_filter=None,
-            version='1.0.0'
+        self,
+        root,
+        transform=None,
+        pre_transform=None,
+        pre_filter=None,
+        version="1.0.0",
     ):
         assert version in self.available_versions
         self.version = version
