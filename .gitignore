@@ -3,3 +3,4 @@ raw_data
 data
 test*.*
 **/__pycache__
+/lightning_logs/
