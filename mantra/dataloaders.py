@@ -22,7 +22,6 @@ class BatchedSimplicialComplex:
 
 
 def batch_signals(signals):
-    print(signals)
     return torch.cat(signals, dim=0)
 
 
