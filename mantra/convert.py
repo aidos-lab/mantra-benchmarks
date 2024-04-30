@@ -186,7 +186,6 @@ def process_manifolds(
     filename_homology: str | None = None,
     filename_type: str | None = None,
 ) -> List[Dict]:
-
     homology_groups, types = {}, {}
 
     # Parse triangulations
@@ -247,3 +246,19 @@ if __name__ == "__main__":
     #         f.write(result)
     # else:
     #     print(result)
+
+
+def process_train_test_split_orientability(
+    filename_train_test_split_orientability: str,
+):
+    with open(filename_train_test_split_orientability, "r") as f:
+        indices_raw = f.readlines()
+    for indices_line in indices_raw:
+        type_indices, indices = indices_line.split(":")
+        if type_indices == "Train indices":
+            train_indices = [int(idx) for idx in indices.strip().split(" ")]
+        elif type_indices == "Test indices":
+            test_indices = [int(idx) for idx in indices.strip().split(" ")]
+        else:
+            raise NotImplementedError("Unknown type of indices")
+    return np.array(train_indices), np.array(test_indices)

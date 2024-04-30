@@ -50,6 +50,18 @@ class SimplicialComplexDegreeTransform(object):
         return data
 
 
+class SimplicialComplexOnesTransform(object):
+    def __init__(self, ones_length=10):
+        self.ones_length = ones_length
+
+    def __call__(self, data):
+        data = create_signals_on_data_if_needed(data)
+        for dim in range(len(data.sc.shape)):
+            ones_signals = torch.ones(data.sc.shape[dim], self.ones_length)
+            data = append_signals(data, dim, ones_signals)
+        return data
+
+
 class SimplicialComplexEdgeCoadjacencyDegreeTransform(object):
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
