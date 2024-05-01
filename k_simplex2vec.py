@@ -1,10 +1,7 @@
-import gudhi
 import numpy as np
-from numpy import matlib
-import random
-import gensim
-from gensim.models import Word2Vec
 import scipy.sparse
+from gensim.models import Word2Vec
+
 
 # Some function that will be useful for the rest of the code
 

@@ -1,7 +1,7 @@
+import numpy as np
 from sklearn.model_selection import train_test_split
 
 from mantra.convert import process_manifolds
-import numpy as np
 
 
 def generate_random_split(

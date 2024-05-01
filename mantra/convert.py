@@ -14,10 +14,11 @@ as well as *processing* the data types.
 import argparse
 import json
 import re
-import pydantic
 from typing import List, Optional, Dict
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import pydantic
 
 
 class Triangulation(pydantic.BaseModel):

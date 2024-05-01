@@ -6,20 +6,20 @@ build-backend = "hatchling.build"
 name = "mantra"
 version = "0.0.1"
 dependencies = [
-  "gudhi",
-  "lightning"
+    "gudhi",
+    "lightning"
 ]
 requires-python = ">=3.8"
 authors = [
-  {name = "Bastian Rieck", email = "bastian.rieck@helmholtz-munich.de"},
+    { name = "Bastian Rieck", email = "bastian.rieck@helmholtz-munich.de" },
 ]
 description = "Manifold Triangulations"
 readme = "README.md"
-license = {file = "LICENSE.md"}
+license = { file = "LICENSE.md" }
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "License :: OSI Approved :: BSD-3-Clause",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "License :: OSI Approved :: BSD-3-Clause",
 ]
 
 [project.urls]

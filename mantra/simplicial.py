@@ -6,6 +6,7 @@ conjunction to dataloaders.
 
 import torch
 from torch_geometric.data import InMemoryDataset, download_url, Data
+
 from mantra.convert import (
     process_manifolds,
     process_train_test_split_orientability,

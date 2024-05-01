@@ -4,8 +4,6 @@ import lightning as L
 import torch
 import torchmetrics
 
-from mantra.utils import transfer_simplicial_complex_batch_to_device
-
 
 class BaseOrientabilityModule(L.LightningModule):
     def __init__(self):
@@ -14,11 +12,6 @@ class BaseOrientabilityModule(L.LightningModule):
         self.training_accuracy = torchmetrics.classification.BinaryAccuracy()
         self.validation_accuracy = torchmetrics.classification.BinaryAccuracy()
         self.test_accuracy = torchmetrics.classification.BinaryAccuracy()
-
-    def transfer_batch_to_device(self, batch, device, dataloader_idx):
-        return transfer_simplicial_complex_batch_to_device(
-            batch, device, dataloader_idx
-        )
 
     def log_accuracies(
         self, x_hat, y, batch_len, step: Literal["train", "test", "validation"]
