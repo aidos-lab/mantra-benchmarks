@@ -4,3 +4,5 @@ data
 test*.*
 **/__pycache__
 /lightning_logs/
+k-simplex*
+RandomWalks*
