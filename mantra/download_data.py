@@ -6,7 +6,6 @@ import requests
 
 
 def download_data():
-
     response = requests.get(
         "https://www3.math.tu-berlin.de/IfM/Nachrufe/Frank_Lutz/stellar/2_manifolds_all.txt"
     )

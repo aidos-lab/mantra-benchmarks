@@ -5,11 +5,11 @@ numbers. To this end, a simplex tree is created from the triangulation and its
 homology is calculated.
 """
 
-import gudhi as gd
-
 import argparse
 import itertools
 import json
+
+import gudhi as gd
 
 
 def build_simplex_tree(top_level_simplices):
