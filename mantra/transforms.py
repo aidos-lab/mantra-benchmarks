@@ -67,7 +67,7 @@ class Simplex2VecTransform(object):
 
 class OrientableToClassTransform(object):
     def __call__(self, data):
-        data.y = data.orientable.long()
+        data.y = data.orientable
         return data
 
 
