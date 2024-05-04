@@ -1,11 +1,12 @@
 import lightning as L
 import torch
 import torchvision.transforms as transforms
-from lightning.pytorch.loggers import CSVLogger
+import wandb
 from torch.utils.data import Subset
 from torch_geometric.data import DataLoader
 from torch_geometric.transforms import FaceToEdge
 
+from experiments.experiment_utils import get_wandb_logger
 from experiments.lightning_modules.GraphCommonModuleOrientability import (
     GraphCommonModuleOrientability,
 )
@@ -89,8 +90,11 @@ def single_experiment_orientability_gat_simplex2vec():
     test_dl = DataLoader(
         test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
     )
-    logger = CSVLogger(name="GATSimplex2Vec", save_dir="./lightning_logs")
+    logger = get_wandb_logger(
+        task_name="orientability", model_name="GATSimplex2Vec"
+    )
     trainer = L.Trainer(
         max_epochs=max_epochs, log_every_n_steps=1, logger=logger
     )
     trainer.fit(model, train_dl, test_dl)
+    wandb.finish()

@@ -3,10 +3,11 @@ from typing import Literal
 import lightning as L
 import torch
 import torchvision.transforms as transforms
-from lightning.pytorch.loggers import CSVLogger
+import wandb
 from torch import nn
 from torch.utils.data import Subset
 
+from experiments.experiment_utils import get_wandb_logger
 from experiments.lightning_modules.BaseModuleOrientability import (
     BaseOrientabilityModule,
 )
@@ -163,7 +164,7 @@ def single_experiment_orientability_scnn():
     test_dl = SimplicialDataLoader(
         test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
     )
-    logger = CSVLogger(name="SCNN_rank_1", save_dir="./lightning_logs")
+    logger = get_wandb_logger(task_name="orientability", model_name="SCNN")
     # Use CPU acceleration: SCCNN does not support GPU acceleration because it creates matrices not placed in the
     # device of the network.
     trainer = L.Trainer(
@@ -173,3 +174,4 @@ def single_experiment_orientability_scnn():
         logger=logger,
     )
     trainer.fit(model, train_dl, test_dl)
+    wandb.finish()

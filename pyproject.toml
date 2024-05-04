@@ -7,7 +7,8 @@ name = "mantra"
 version = "0.0.1"
 dependencies = [
     "gudhi",
-    "lightning"
+    "lightning",
+    "wandb",
 ]
 requires-python = ">=3.8"
 authors = [
