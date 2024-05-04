@@ -14,13 +14,13 @@ from mantra.utils import (
 )
 
 
-class SetNumNodesTransform(object):
+class SetNumNodesTransform:
     def __call__(self, data):
         data.num_nodes = data.n_vertices
         return data
 
 
-class Simplex2VecTransform(object):
+class Simplex2VecTransform:
     def __call__(self, data):
         st = gudhi.SimplexTree()
 
@@ -65,27 +65,27 @@ class Simplex2VecTransform(object):
         return data
 
 
-class OrientableToClassTransform(object):
+class OrientableToClassTransform:
     def __call__(self, data):
         data.y = data.orientable.long()
         return data
 
 
-class DegreeTransform(object):
+class DegreeTransform:
     def __call__(self, data):
         deg = degree(data.edge_index[0], dtype=torch.float)
         data.x = deg.view(-1, 1)
         return data
 
 
-class TriangulationToFaceTransform(object):
+class TriangulationToFaceTransform:
     def __call__(self, data):
         data.face = torch.tensor(data.triangulation).T - 1
         data.triangulation = None
         return data
 
 
-class SimplicialComplexTransform(object):
+class SimplicialComplexTransform:
     def __call__(self, data):
         data.sc = SimplicialComplex(data.triangulation)
         create_signals_on_data_if_needed(data)
@@ -94,7 +94,7 @@ class SimplicialComplexTransform(object):
         return data
 
 
-class SimplicialComplexDegreeTransform(object):
+class SimplicialComplexDegreeTransform:
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
         degree_signals = torch.from_numpy(
@@ -104,7 +104,7 @@ class SimplicialComplexDegreeTransform(object):
         return data
 
 
-class SimplicialComplexOnesTransform(object):
+class SimplicialComplexOnesTransform:
     def __init__(self, ones_length=10):
         self.ones_length = ones_length
 
@@ -116,7 +116,7 @@ class SimplicialComplexOnesTransform(object):
         return data
 
 
-class SimplicialComplexEdgeCoadjacencyDegreeTransform(object):
+class SimplicialComplexEdgeCoadjacencyDegreeTransform:
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
         degree_signals = torch.from_numpy(
@@ -126,7 +126,7 @@ class SimplicialComplexEdgeCoadjacencyDegreeTransform(object):
         return data
 
 
-class SimplicialComplexEdgeAdjacencyDegreeTransform(object):
+class SimplicialComplexEdgeAdjacencyDegreeTransform:
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
         degree_signals = torch.from_numpy(
@@ -136,7 +136,7 @@ class SimplicialComplexEdgeAdjacencyDegreeTransform(object):
         return data
 
 
-class SimplicialComplexTriangleCoadjacencyDegreeTransform(object):
+class SimplicialComplexTriangleCoadjacencyDegreeTransform:
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
         degree_signals = torch.from_numpy(
@@ -146,28 +146,28 @@ class SimplicialComplexTriangleCoadjacencyDegreeTransform(object):
         return data
 
 
-class OrientableToClassSimplicialComplexTransform(object):
+class OrientableToClassSimplicialComplexTransform:
     def __call__(self, data):
         data = create_other_features_on_data_if_needed(data)
         data.other_features["y"] = data.orientable.long()
         return data
 
 
-class DimOneBoundarySimplicialComplexTransform(object):
+class DimOneBoundarySimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_boundary"] = data.sc.incidence_matrix(1)
         return data
 
 
-class DimTwoBoundarySimplicialComplexTransform(object):
+class DimTwoBoundarySimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["2_boundary"] = data.sc.incidence_matrix(2)
         return data
 
 
-class DimZeroHodgeLaplacianSimplicialComplexTransform(object):
+class DimZeroHodgeLaplacianSimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["0_laplacian"] = (
@@ -176,7 +176,7 @@ class DimZeroHodgeLaplacianSimplicialComplexTransform(object):
         return data
 
 
-class DimOneHodgeLaplacianUpSimplicialComplexTransform(object):
+class DimOneHodgeLaplacianUpSimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_laplacian_up"] = (
@@ -185,7 +185,7 @@ class DimOneHodgeLaplacianUpSimplicialComplexTransform(object):
         return data
 
 
-class DimOneHodgeLaplacianDownSimplicialComplexTransform(object):
+class DimOneHodgeLaplacianDownSimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_laplacian_down"] = (
@@ -194,7 +194,7 @@ class DimOneHodgeLaplacianDownSimplicialComplexTransform(object):
         return data
 
 
-class DimOneHodgeLaplacianSimplicialComplexTransform(object):
+class DimOneHodgeLaplacianSimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_laplacian"] = (
@@ -203,10 +203,26 @@ class DimOneHodgeLaplacianSimplicialComplexTransform(object):
         return data
 
 
-class DimTwoHodgeLaplacianSimplicialComplexTransform(object):
+class DimTwoHodgeLaplacianSimplicialComplexTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["2_laplacian"] = (
             data.sc.hodge_laplacian_matrix(rank=2)
         )
+        return data
+
+
+class NameToClassTransform:
+    def __init__(self):
+        self.class_dict = {
+            "Klein bottle": 0,
+            "": 1,
+            "RP^2": 2,
+            "T^2": 3,
+            "S^2": 4,
+        }
+
+    def __call__(self, data):
+        # data.y = F.one_hot(torch.tensor(self.class_dict[data.name]),num_classes=5)
+        data.y = torch.tensor(self.class_dict[data.name])
         return data

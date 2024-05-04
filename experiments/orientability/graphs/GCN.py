@@ -1,6 +1,7 @@
 import lightning as L
 import torch
 import torchvision.transforms as transforms
+from lightning.pytorch.loggers import CSVLogger
 from torch.utils.data import Subset
 from torch_geometric.loader import DataLoader
 from torch_geometric.transforms import FaceToEdge
@@ -64,6 +65,7 @@ def single_experiment_orientability_gnn():
     batch_size = 32
     max_epochs = 100
     learning_rate = 0.1
+    num_workers = 0
     # ===============================
     dataset = load_dataset_with_transformations()
     model = GCNModule(
@@ -75,7 +77,19 @@ def single_experiment_orientability_gnn():
     )
     train_ds = Subset(dataset, dataset.train_orientability_indices)
     test_ds = Subset(dataset, dataset.test_orientability_indices)
-    train_dl = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
-    test_dl = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
-    trainer = L.Trainer(max_epochs=max_epochs, log_every_n_steps=1)
-    trainer.fit(model, train_dl, test_dl)
+    train_dl = DataLoader(
+        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
+    test_dl = DataLoader(
+        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
+    )
+    logger = CSVLogger(name="GCN", save_dir="./lightning_logs")
+    trainer = L.Trainer(
+        max_epochs=max_epochs, log_every_n_steps=1, logger=logger
+    )
+
+    trainer.fit(
+        model,
+        train_dl,
+        test_dl,
+    )

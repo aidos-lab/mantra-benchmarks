@@ -7,10 +7,8 @@ conjunction to dataloaders.
 import torch
 from torch_geometric.data import InMemoryDataset, download_url, Data
 
-from mantra.convert import (
-    process_manifolds,
-    process_train_test_split_orientability,
-)
+from mantra.convert import process_manifolds
+from mantra.generation import generate_random_split
 
 
 class SimplicialDataset(InMemoryDataset):
@@ -32,6 +30,10 @@ class SimplicialDataset(InMemoryDataset):
         self.load(self.processed_paths[0])
         self.train_orientability_indices = torch.load(self.processed_paths[1])
         self.test_orientability_indices = torch.load(self.processed_paths[2])
+        self.train_betti_numbers_indices = torch.load(self.processed_paths[3])
+        self.test_betti_numbers_indices = torch.load(self.processed_paths[4])
+        self.train_name_indices = torch.load(self.processed_paths[5])
+        self.test_name_indices = torch.load(self.processed_paths[6])
 
     @property
     def raw_file_names(self):
@@ -39,7 +41,6 @@ class SimplicialDataset(InMemoryDataset):
             f"{self.manifold}_manifolds_all.txt",
             f"{self.manifold}_manifolds_all_type.txt",
             f"{self.manifold}_manifolds_all_hom.txt",
-            f"{self.manifold}_manifolds_all_train_test_split_orientability.txt",
         ]
 
     @property
@@ -48,6 +49,10 @@ class SimplicialDataset(InMemoryDataset):
             "data.pt",
             "train_orientability_indices.pt",
             "test_orientability_indices.pt",
+            "train_betti_numbers_indices.pt",
+            "test_betti_numbers_indices.pt",
+            "train_name_indices.pt",
+            "test_name_indices.pt",
         ]
 
     def _get_download_links(self, version: str):
@@ -60,10 +65,7 @@ class SimplicialDataset(InMemoryDataset):
                     if name
                     != f"{self.manifold}_manifolds_all_train_test_split_orientability.txt"
                 ]
-                orientability_indices_file = [
-                    "https://rubenbb.com/assets/MANTRA/v1.0.0/2_manifolds_all_train_test_split_orientability.txt"
-                ]
-                return manifolds_files + orientability_indices_file
+                return manifolds_files
             case _:
                 raise ValueError(f"Version {version} not available")
 
@@ -87,11 +89,24 @@ class SimplicialDataset(InMemoryDataset):
         if self.pre_transform is not None:
             data_list = [self.pre_transform(data) for data in data_list]
 
-        orien_train_indices, orien_test_indices = (
-            process_train_test_split_orientability(
-                f"{self.raw_dir}/{self.manifold}_manifolds_all_train_test_split_orientability.txt"
+        orien_train_indices, orien_test_indices = generate_random_split(
+            triangulations,
+            task_type="orientability",
+        )
+        betti_numbers_train_indices, betti_numbers_test_indices = (
+            generate_random_split(
+                triangulations,
+                task_type="betti_numbers",
             )
+        )
+        name_train_indices, name_test_indices = generate_random_split(
+            triangulations,
+            task_type="name",
         )
         self.save(data_list, self.processed_paths[0])
         torch.save(orien_train_indices, self.processed_paths[1])
         torch.save(orien_test_indices, self.processed_paths[2])
+        torch.save(betti_numbers_train_indices, self.processed_paths[3])
+        torch.save(betti_numbers_test_indices, self.processed_paths[4])
+        torch.save(name_train_indices, self.processed_paths[5])
+        torch.save(name_test_indices, self.processed_paths[6])

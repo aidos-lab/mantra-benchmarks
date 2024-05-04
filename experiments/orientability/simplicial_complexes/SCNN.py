@@ -3,6 +3,7 @@ from typing import Literal
 import lightning as L
 import torch
 import torchvision.transforms as transforms
+from lightning.pytorch.loggers import CSVLogger
 from torch import nn
 from torch.utils.data import Subset
 
@@ -130,6 +131,7 @@ def single_experiment_orientability_scnn():
     batch_size = 128
     max_epochs = 100
     learning_rate = 0.01
+    num_workers = 0
     # ===============================
     # Checks and dependent parameters
     # ===============================
@@ -156,14 +158,18 @@ def single_experiment_orientability_scnn():
     train_ds = Subset(dataset, dataset.train_orientability_indices)
     test_ds = Subset(dataset, dataset.test_orientability_indices)
     train_dl = SimplicialDataLoader(
-        train_ds, batch_size=batch_size, shuffle=True
+        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
     )
     test_dl = SimplicialDataLoader(
-        test_ds, batch_size=batch_size, shuffle=False
+        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
     )
+    logger = CSVLogger(name="SCNN_rank_1", save_dir="./lightning_logs")
     # Use CPU acceleration: SCCNN does not support GPU acceleration because it creates matrices not placed in the
     # device of the network.
     trainer = L.Trainer(
-        max_epochs=max_epochs, accelerator="cpu", log_every_n_steps=1
+        max_epochs=max_epochs,
+        accelerator="cpu",
+        log_every_n_steps=1,
+        logger=logger,
     )
     trainer.fit(model, train_dl, test_dl)
