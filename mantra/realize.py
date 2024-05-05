@@ -96,8 +96,57 @@ def realize_triangulation(data):
                 break
 
         if not invalid:
-            print("Required", i, "tries:", X)
+            print("Required", i, "tries:", X / k)
+            plot(data["id"], top_level_simplices, X)
             break
+
+
+def plot(id, top_level_simplices, coordinates):
+    coordinates = coordinates.astype(float)
+    coordinates /= k
+
+    with open(f"/tmp/{id}.tex", "w") as f:
+        print(
+            r"""
+\documentclass[crop, tikz]{standalone}
+
+\usepackage{pgfplots}
+\pgfplotsset{
+    compat = 1.17,
+}
+
+\begin{document}
+\begin{tikzpicture}
+  \begin{axis}
+    \addplot3[
+      patch,
+      patch type  = triangle,
+      patch table = {%""", file=f, end="")
+
+        for triangle in top_level_simplices:
+            a, b, c = triangle
+            print("\n", int(a - 1), int(b - 1), int(c - 1), r"\\", file=f,
+                  end="")
+
+        print(r"""
+      },
+      draw   = black,
+      fill   = gray!50,
+      shader = flat,
+    ]
+      table[row sep=\\] {
+    """, file=f, end="")
+
+        for coordinate in coordinates:
+            x, y, z = coordinate
+            print(f"{x:.4f} {y:.4f} {z:.4f}", r"\\", file=f, end="")
+
+        print(r"""
+        };
+        \end{axis}
+    \end{tikzpicture}
+    \end{document}
+            """, file=f)
 
 
 if __name__ == "__main__":
