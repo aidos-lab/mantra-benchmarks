@@ -226,3 +226,19 @@ class NameToClassTransform:
         # data.y = F.one_hot(torch.tensor(self.class_dict[data.name]),num_classes=5)
         data.y = torch.tensor(self.class_dict[data.name])
         return data
+
+
+class NameToClassSimplicialComplexTransform:
+    def __init__(self):
+        self.class_dict = {
+            "Klein bottle": 0,
+            "": 1,
+            "RP^2": 2,
+            "T^2": 3,
+            "S^2": 4,
+        }
+
+    def __call__(self, data):
+        data = create_other_features_on_data_if_needed(data)
+        data.other_features["y"] = torch.tensor([self.class_dict[data.name]])
+        return data

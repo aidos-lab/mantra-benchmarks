@@ -11,12 +11,12 @@ from experiments.lightning_modules.BaseModelClassification import (
 from mantra.dataloaders import SimplicialDataLoader
 from mantra.simplicial import SimplicialDataset
 from mantra.transforms import (
-    OrientableToClassSimplicialComplexTransform,
     DimTwoHodgeLaplacianSimplicialComplexTransform,
     DimOneHodgeLaplacianDownSimplicialComplexTransform,
     DimOneHodgeLaplacianUpSimplicialComplexTransform,
     DimZeroHodgeLaplacianSimplicialComplexTransform,
     SimplicialComplexOnesTransform,
+    NameToClassSimplicialComplexTransform,
 )
 from mantra.transforms import SimplicialComplexTransform
 from mantra.utils import transfer_simplicial_complex_batch_to_device
@@ -35,7 +35,7 @@ class SCNNNModule(BaseClassificationModule):
         n_layers=3,
         learning_rate=0.01,
     ):
-        super().__init__(task="orientability")
+        super().__init__(task="name")
         self.rank = rank
         self.learning_rate = learning_rate
         self.base_model = SCNNNetwork(
@@ -70,12 +70,10 @@ class SCNNNModule(BaseClassificationModule):
             laplacian_up = None
         else:
             raise ValueError("rank must be 0, 1 or 2.")
-        y = s_complexes.other_features["y"].float()
+        y = s_complexes.other_features["y"]
         signal_belongings = signal_belongings[self.rank]
         x_hat = self(x, laplacian_down, laplacian_up, signal_belongings)
-        # Squeeze x_hat to match the shape of y
-        x_hat = x_hat.squeeze()
-        loss = nn.functional.binary_cross_entropy_with_logits(x_hat, y)
+        loss = nn.functional.cross_entropy(x_hat, y)
         self.log(
             f"{step}_loss",
             loss,
@@ -108,14 +106,14 @@ def load_dataset_with_transformations():
             DimOneHodgeLaplacianUpSimplicialComplexTransform(),
             DimOneHodgeLaplacianDownSimplicialComplexTransform(),
             DimTwoHodgeLaplacianSimplicialComplexTransform(),
-            OrientableToClassSimplicialComplexTransform(),
+            NameToClassSimplicialComplexTransform(),
         ]
     )
     dataset = SimplicialDataset(root="./data", transform=tr)
     return dataset
 
 
-def single_experiment_orientability_scnn():
+def single_experiment_name_scnn():
     dataset = load_dataset_with_transformations()
     # ===============================
     # Training parameters
@@ -124,7 +122,6 @@ def single_experiment_orientability_scnn():
     conv_order_down = 2  # TODO: No idea of what this parameter does
     conv_order_up = 2  # TODO: No idea of what this parameter does
     hidden_channels = 20
-    out_channels = 1  # num classes
     num_layers = 5
     batch_size = 128
     max_epochs = 100
@@ -147,14 +144,14 @@ def single_experiment_orientability_scnn():
         rank=rank,
         in_channels=in_channels,
         hidden_channels=hidden_channels,
-        out_channels=out_channels,
+        out_channels=5,  # Five different name classes
         conv_order_down=conv_order_down,
         conv_order_up=conv_order_up,
         n_layers=num_layers,
         learning_rate=learning_rate,
     )
     perform_experiment(
-        task="orientability",
+        task="name",
         model=model,
         model_name="SCNN",
         dataset=dataset,

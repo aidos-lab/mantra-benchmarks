@@ -53,7 +53,10 @@ def perform_experiment(
         test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
     )
     trainer = L.Trainer(
-        max_epochs=max_epochs, log_every_n_steps=1, logger=logger
+        max_epochs=max_epochs,
+        log_every_n_steps=1,
+        logger=logger,
+        accelerator=accelerator,
     )
     trainer.fit(
         model,
