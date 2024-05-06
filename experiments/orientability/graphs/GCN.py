@@ -1,12 +1,9 @@
-import lightning as L
+import torch
 import torch
 import torchvision.transforms as transforms
-import wandb
-from torch.utils.data import Subset
-from torch_geometric.loader import DataLoader
 from torch_geometric.transforms import FaceToEdge
 
-from experiments.experiment_utils import get_wandb_logger
+from experiments.experiment_utils import perform_experiment
 from experiments.lightning_modules.GraphCommonModuleOrientability import (
     GraphCommonModuleOrientability,
 )
@@ -76,22 +73,12 @@ def single_experiment_orientability_gnn():
         num_hidden_layers=num_hidden_layers,
         learning_rate=learning_rate,
     )
-    train_ds = Subset(dataset, dataset.train_orientability_indices)
-    test_ds = Subset(dataset, dataset.test_orientability_indices)
-    train_dl = DataLoader(
-        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    perform_experiment(
+        task="orientability",
+        model=model,
+        model_name="GCN",
+        dataset=dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        max_epochs=max_epochs,
     )
-    test_dl = DataLoader(
-        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
-    )
-    logger = get_wandb_logger(task_name="orientability", model_name="GCN")
-    trainer = L.Trainer(
-        max_epochs=max_epochs, log_every_n_steps=1, logger=logger
-    )
-
-    trainer.fit(
-        model,
-        train_dl,
-        test_dl,
-    )
-    wandb.finish()

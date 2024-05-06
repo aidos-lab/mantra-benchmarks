@@ -1,13 +1,10 @@
 from typing import Literal
 
-import lightning as L
 import torch
 import torchvision.transforms as transforms
-import wandb
 from torch import nn
-from torch.utils.data import Subset
 
-from experiments.experiment_utils import get_wandb_logger
+from experiments.experiment_utils import perform_experiment
 from experiments.lightning_modules.BaseModelClassification import (
     BaseClassificationModule,
 )
@@ -156,22 +153,14 @@ def single_experiment_orientability_scnn():
         n_layers=num_layers,
         learning_rate=learning_rate,
     )
-    train_ds = Subset(dataset, dataset.train_orientability_indices)
-    test_ds = Subset(dataset, dataset.test_orientability_indices)
-    train_dl = SimplicialDataLoader(
-        train_ds, batch_size=batch_size, shuffle=True, num_workers=num_workers
-    )
-    test_dl = SimplicialDataLoader(
-        test_ds, batch_size=batch_size, shuffle=False, num_workers=num_workers
-    )
-    logger = get_wandb_logger(task_name="orientability", model_name="SCNN")
-    # Use CPU acceleration: SCCNN does not support GPU acceleration because it creates matrices not placed in the
-    # device of the network.
-    trainer = L.Trainer(
+    perform_experiment(
+        task="orientability",
+        model=model,
+        model_name="SCNN",
+        dataset=dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
         max_epochs=max_epochs,
+        data_loader_class=SimplicialDataLoader,
         accelerator="cpu",
-        log_every_n_steps=1,
-        logger=logger,
     )
-    trainer.fit(model, train_dl, test_dl)
-    wandb.finish()

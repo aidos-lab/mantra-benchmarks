@@ -1,4 +1,3 @@
-import torch
 from torch import nn
 
 from experiments.lightning_modules.BaseModelClassification import (
