@@ -117,7 +117,17 @@ def plot(id, top_level_simplices, coordinates):
 
 \begin{document}
 \begin{tikzpicture}
-  \begin{axis}
+  \begin{axis}[
+    ticks              = none,
+    unit vector ratio  = 1 1 1,
+    xmin               = 0,
+    xmax               = 1,
+    ymin               = 0,
+    ymax               = 1,
+    zmin               = 0,
+    zmax               = 1,
+    grid               = both,
+  ]
     \addplot3[
       patch,
       patch type  = triangle,
@@ -130,9 +140,11 @@ def plot(id, top_level_simplices, coordinates):
 
         print(r"""
       },
-      draw   = black,
-      fill   = gray!50,
-      shader = flat,
+      draw         = black,
+      fill         = gray!50,
+      fill opacity = 0.5,
+      shader       = flat,
+      z buffer     = sort,
     ]
       table[row sep=\\] {
     """, file=f, end="")
