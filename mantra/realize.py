@@ -131,14 +131,19 @@ def plot(id, top_level_simplices, coordinates):
     \addplot3[
       patch,
       patch type  = triangle,
-      patch table = {%""", file=f, end="")
+      patch table = {%""",
+            file=f,
+            end="",
+        )
 
         for triangle in top_level_simplices:
             a, b, c = triangle
-            print("\n", int(a - 1), int(b - 1), int(c - 1), r"\\", file=f,
-                  end="")
+            print(
+                "\n", int(a - 1), int(b - 1), int(c - 1), r"\\", file=f, end=""
+            )
 
-        print(r"""
+        print(
+            r"""
       },
       draw         = black,
       fill         = gray!50,
@@ -147,18 +152,24 @@ def plot(id, top_level_simplices, coordinates):
       z buffer     = sort,
     ]
       table[row sep=\\] {
-    """, file=f, end="")
+    """,
+            file=f,
+            end="",
+        )
 
         for coordinate in coordinates:
             x, y, z = coordinate
             print(f"{x:.4f} {y:.4f} {z:.4f}", r"\\", file=f, end="")
 
-        print(r"""
+        print(
+            r"""
         };
         \end{axis}
     \end{tikzpicture}
     \end{document}
-            """, file=f)
+            """,
+            file=f,
+        )
 
 
 if __name__ == "__main__":
