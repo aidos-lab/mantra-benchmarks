@@ -242,3 +242,10 @@ class NameToClassSimplicialComplexTransform:
         data = create_other_features_on_data_if_needed(data)
         data.other_features["y"] = torch.tensor([self.class_dict[data.name]])
         return data
+
+
+class BettiNumbersToTargetSimplicialComplexTransform:
+    def __call__(self, data):
+        data = create_other_features_on_data_if_needed(data)
+        data.other_features["y"] = torch.tensor([data.betti_numbers])
+        return data

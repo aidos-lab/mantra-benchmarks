@@ -1,3 +1,6 @@
+from experiments.betti_numbers.simplicial_complexes.SCNN import (
+    single_experiment_betti_numbers_scnn,
+)
 from experiments.name.simplicial_complexes.SCNN import (
     single_experiment_name_scnn,
 )
@@ -17,4 +20,5 @@ if __name__ == "__main__":
     # single_experiment_orientability_tag()
     # single_experiment_orientability_transformer_conv()
     # single_experiment_orientability_mlp_constant_shape()
-    single_experiment_name_scnn()
+    # single_experiment_name_scnn()
+    single_experiment_betti_numbers_scnn()
