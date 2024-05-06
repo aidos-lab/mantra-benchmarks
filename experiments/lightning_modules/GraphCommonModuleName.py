@@ -1,3 +1,4 @@
+import torch
 from torch import nn
 
 from experiments.lightning_modules.BaseModelClassification import (
@@ -5,9 +6,9 @@ from experiments.lightning_modules.BaseModelClassification import (
 )
 
 
-class GraphCommonModuleOrientability(BaseClassificationModule):
+class GraphCommonModuleName(BaseClassificationModule):
     def __init__(self, base_model):
-        super().__init__(task="orientability")
+        super().__init__(task="name")
         self.base_model = base_model
 
     def forward(self, x, edge_index, batch):
@@ -15,12 +16,10 @@ class GraphCommonModuleOrientability(BaseClassificationModule):
         return x
 
     def general_step(self, batch, batch_idx, step: str):
-        batch_len = len(batch.y)
         x_hat = self(batch.x, batch.edge_index, batch.batch)
-        # Squeeze x_hat to match the shape of y
-        x_hat = x_hat.squeeze()
-        y = batch.y.float()
-        loss = nn.functional.binary_cross_entropy_with_logits(x_hat, y)
+        y = batch.y
+        batch_len = len(y)
+        loss = nn.functional.cross_entropy(x_hat, y)
         self.log(
             f"{step}_loss",
             loss,

@@ -8,8 +8,8 @@ from torch import nn
 from torch.utils.data import Subset
 
 from experiments.experiment_utils import get_wandb_logger
-from experiments.lightning_modules.BaseModuleOrientability import (
-    BaseOrientabilityModule,
+from experiments.lightning_modules.BaseModelClassification import (
+    BaseClassificationModule,
 )
 from mantra.dataloaders import SimplicialDataLoader
 from mantra.simplicial import SimplicialDataset
@@ -26,7 +26,7 @@ from mantra.utils import transfer_simplicial_complex_batch_to_device
 from models.simplicial_complexes.SCNN import SCNNNetwork
 
 
-class SCNNNModule(BaseOrientabilityModule):
+class SCNNNModule(BaseClassificationModule):
     def __init__(
         self,
         rank,

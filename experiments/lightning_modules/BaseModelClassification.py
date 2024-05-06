@@ -5,13 +5,39 @@ import torch
 import torchmetrics
 
 
-class BaseOrientabilityModule(L.LightningModule):
-    def __init__(self):
+class BaseClassificationModule(L.LightningModule):
+    def __init__(self, task: Literal["orientability", "name"]):
         super().__init__()
         # Accuracy metrics
-        self.training_accuracy = torchmetrics.classification.BinaryAccuracy()
-        self.validation_accuracy = torchmetrics.classification.BinaryAccuracy()
-        self.test_accuracy = torchmetrics.classification.BinaryAccuracy()
+        if task == "orientability":
+            self.training_accuracy = (
+                torchmetrics.classification.BinaryAccuracy()
+            )
+            self.validation_accuracy = (
+                torchmetrics.classification.BinaryAccuracy()
+            )
+            self.test_accuracy = torchmetrics.classification.BinaryAccuracy()
+        elif task == "name":
+            num_classes = (
+                5  # "Klein bottle": 0, "": 1, "RP^2": 2, "T^2": 3, "S^2": 4,
+            )
+            self.training_accuracy = (
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=num_classes, average="micro"
+                )
+            )
+            self.validation_accuracy = (
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=num_classes, average="micro"
+                )
+            )
+            self.test_accuracy = (
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=num_classes, average="micro"
+                )
+            )
+        else:
+            raise ValueError(f"Task {task} not supported")
 
     def log_accuracies(
         self, x_hat, y, batch_len, step: Literal["train", "test", "validation"]
