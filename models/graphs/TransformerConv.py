@@ -1,9 +1,9 @@
 import torch.nn.functional as F
 from torch import nn
-from torch_geometric.nn import GCNConv, global_mean_pool
+from torch_geometric.nn import global_mean_pool, TransformerConv
 
 
-class GCNetwork(nn.Module):
+class TransformerConvNetwork(nn.Module):
     def __init__(
         self,
         hidden_channels,
@@ -12,10 +12,10 @@ class GCNetwork(nn.Module):
         num_hidden_layers,
     ):
         super().__init__()
-        self.conv_input = GCNConv(num_node_features, hidden_channels)
+        self.conv_input = TransformerConv(num_node_features, hidden_channels)
         self.hidden_layers = nn.ModuleList(
             [
-                GCNConv(hidden_channels, hidden_channels)
+                TransformerConv(hidden_channels, hidden_channels)
                 for _ in range(num_hidden_layers)
             ]
         )
