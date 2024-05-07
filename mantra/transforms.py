@@ -2,6 +2,10 @@ import gudhi
 import numpy as np
 import torch
 from toponetx.classes import SimplicialComplex
+from toponetx.utils import (
+    compute_bunch_normalized_matrices,
+    compute_x_laplacian_normalized_matrix,
+)
 from torch_geometric.transforms import ToUndirected
 from torch_geometric.utils import degree
 
@@ -153,61 +157,59 @@ class OrientableToClassSimplicialComplexTransform:
         return data
 
 
-class DimOneBoundarySimplicialComplexTransform:
+class SCNNNeighborhoodMatricesTransform:
     def __call__(self, data):
         data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_boundary"] = data.sc.incidence_matrix(1)
-        return data
-
-
-class DimTwoBoundarySimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["2_boundary"] = data.sc.incidence_matrix(2)
-        return data
-
-
-class DimZeroHodgeLaplacianSimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
-        data.neighborhood_matrices["0_laplacian"] = (
-            data.sc.hodge_laplacian_matrix(rank=0)
-        )
-        return data
-
-
-class DimOneHodgeLaplacianUpSimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
+        data.neighborhood_matrices["0_laplacian"] = data.sc.laplacian_matrix(0)
         data.neighborhood_matrices["1_laplacian_up"] = (
             data.sc.up_laplacian_matrix(rank=1)
         )
-        return data
-
-
-class DimOneHodgeLaplacianDownSimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_laplacian_down"] = (
             data.sc.down_laplacian_matrix(rank=1)
         )
-        return data
-
-
-class DimOneHodgeLaplacianSimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
         data.neighborhood_matrices["1_laplacian"] = (
             data.sc.hodge_laplacian_matrix(rank=1)
+        )
+        data.neighborhood_matrices["2_laplacian"] = (
+            data.sc.hodge_laplacian_matrix(rank=2)
         )
         return data
 
 
-class DimTwoHodgeLaplacianSimplicialComplexTransform:
+class SCConvNeighborhoodMatricesTransform:
     def __call__(self, data):
+        B1 = data.sc.incidence_matrix(1)
+        B2 = data.sc.incidence_matrix(2)
+        B1N, B1TN, B2N, B2TN = compute_bunch_normalized_matrices(B1, B2)
         data = create_neighborhood_matrices_on_data_if_needed(data)
-        data.neighborhood_matrices["2_laplacian"] = (
-            data.sc.hodge_laplacian_matrix(rank=2)
+        data.neighborhood_matrices["1_boundary"] = B1
+        data.neighborhood_matrices["2_boundary"] = B2
+        data.neighborhood_matrices["1_boundary_norm"] = B1N
+        data.neighborhood_matrices["2_boundary_norm"] = B2N
+        data.neighborhood_matrices["1_boundary_transpose_norm"] = B1TN
+        data.neighborhood_matrices["2_boundary_transpose_norm"] = B2TN
+        # Matrices normalized using the normalization given by TopoNetX. For incidence matrices,
+        # it coincides with the normalization of the paper. For the Laplacian matrices, however, it does not coincide.
+        L0_up = data.sc.up_laplacian_matrix(0)
+        L1_down = data.sc.down_laplacian_matrix(1)
+        L1_up = data.sc.up_laplacian_matrix(1)
+        L2_down = data.sc.down_laplacian_matrix(2)
+        L0 = L0_up
+        L1 = L1_down + L1_up
+        L2 = L2_down
+        data.neighborhood_matrices["0_laplacian_up_norm"] = (
+            compute_x_laplacian_normalized_matrix(L0, L0_up)
+        )
+        data.neighborhood_matrices["1_laplacian_up_norm"] = (
+            compute_x_laplacian_normalized_matrix(L1, L1_up)
+        )
+        data.neighborhood_matrices["1_laplacian_down_norm"] = (
+            compute_x_laplacian_normalized_matrix(L1, L1_down)
+        )
+        data.neighborhood_matrices["2_laplacian_down_norm"] = (
+            compute_x_laplacian_normalized_matrix(L2, L2_down)
         )
         return data
 

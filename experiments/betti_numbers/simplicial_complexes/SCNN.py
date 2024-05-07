@@ -17,6 +17,7 @@ from mantra.transforms import (
     DimZeroHodgeLaplacianSimplicialComplexTransform,
     SimplicialComplexOnesTransform,
     BettiNumbersToTargetSimplicialComplexTransform,
+    SCNNNeighborhoodMatricesTransform,
 )
 from mantra.transforms import SimplicialComplexTransform
 from mantra.utils import transfer_simplicial_complex_batch_to_device
@@ -102,10 +103,7 @@ def load_dataset_with_transformations():
         [
             SimplicialComplexTransform(),
             SimplicialComplexOnesTransform(ones_length=10),
-            DimZeroHodgeLaplacianSimplicialComplexTransform(),
-            DimOneHodgeLaplacianUpSimplicialComplexTransform(),
-            DimOneHodgeLaplacianDownSimplicialComplexTransform(),
-            DimTwoHodgeLaplacianSimplicialComplexTransform(),
+            SCNNNeighborhoodMatricesTransform(),
             BettiNumbersToTargetSimplicialComplexTransform(),
         ]
     )

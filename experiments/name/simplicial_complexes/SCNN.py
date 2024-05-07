@@ -11,12 +11,9 @@ from experiments.lightning_modules.BaseModelClassification import (
 from mantra.dataloaders import SimplicialDataLoader
 from mantra.simplicial import SimplicialDataset
 from mantra.transforms import (
-    DimTwoHodgeLaplacianSimplicialComplexTransform,
-    DimOneHodgeLaplacianDownSimplicialComplexTransform,
-    DimOneHodgeLaplacianUpSimplicialComplexTransform,
-    DimZeroHodgeLaplacianSimplicialComplexTransform,
     SimplicialComplexOnesTransform,
     NameToClassSimplicialComplexTransform,
+    SCNNNeighborhoodMatricesTransform,
 )
 from mantra.transforms import SimplicialComplexTransform
 from mantra.utils import transfer_simplicial_complex_batch_to_device
@@ -102,10 +99,7 @@ def load_dataset_with_transformations():
         [
             SimplicialComplexTransform(),
             SimplicialComplexOnesTransform(ones_length=10),
-            DimZeroHodgeLaplacianSimplicialComplexTransform(),
-            DimOneHodgeLaplacianUpSimplicialComplexTransform(),
-            DimOneHodgeLaplacianDownSimplicialComplexTransform(),
-            DimTwoHodgeLaplacianSimplicialComplexTransform(),
+            SCNNNeighborhoodMatricesTransform(),
             NameToClassSimplicialComplexTransform(),
         ]
     )

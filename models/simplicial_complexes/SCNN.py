@@ -1,3 +1,5 @@
+# Base model https://github.com/pyt-team/TopoModelX/blob/main/tutorials/simplicial/scnn_train.ipynb
+
 import torch
 from topomodelx.nn.simplicial.scnn import SCNN
 from torch import nn
@@ -24,11 +26,11 @@ class SCNNNetwork(nn.Module):
             conv_order_up=conv_order_up,
             n_layers=n_layers,
         )
-        self.liner_readout = torch.nn.Linear(hidden_channels, out_channels)
+        self.linear_readout = torch.nn.Linear(hidden_channels, out_channels)
 
     def forward(self, x, laplacian_down, laplacian_up, signal_belongings):
         x = self.base_model(x, laplacian_down, laplacian_up)
-        x = self.liner_readout(x)
+        x = self.linear_readout(x)
         x_mean = pool.global_mean_pool(x, signal_belongings)
         x_mean[torch.isnan(x_mean)] = 0
         return x_mean
