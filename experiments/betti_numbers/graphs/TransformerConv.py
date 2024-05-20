@@ -8,7 +8,7 @@ from experiments.lightning_modules.GraphCommonModuleBettiNumbers import (
 )
 from mantra.simplicial import SimplicialDataset
 from mantra.transforms import TriangulationToFaceTransform, DegreeTransform
-from models.graphs.TransformerConv import TransformerConvNetwork
+from models.TransformerConv import TransformerConvNetwork
 
 
 class TransformerConvModule(GraphCommonModuleBettiNumbers):

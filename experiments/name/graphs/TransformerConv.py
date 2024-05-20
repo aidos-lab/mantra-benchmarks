@@ -12,7 +12,7 @@ from mantra.transforms import (
     DegreeTransform,
     NameToClassTransform,
 )
-from models.graphs.TransformerConv import TransformerConvNetwork
+from models.TransformerConv import TransformerConvNetwork
 
 
 class TransformerConvModule(GraphCommonModuleName):

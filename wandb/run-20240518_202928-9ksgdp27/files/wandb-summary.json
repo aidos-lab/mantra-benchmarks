@@ -1,0 +1,1 @@
+{"id": "f8c491e2-ebf5-477a-8565-44d74b9b1509", "task": "name", "model": "Transformer", "features": "onehotdegree", "test_acc": 0.911694404941013, "val_acc": 0.592079842496451, "_timestamp": 1716056969.7076972, "_runtime": 1.5569031238555908, "_step": 9, "_wandb": {"runtime": 0}}

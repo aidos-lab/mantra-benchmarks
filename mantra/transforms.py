@@ -8,7 +8,8 @@ from toponetx.utils import (
 )
 from torch_geometric.transforms import ToUndirected
 from torch_geometric.utils import degree
-
+import torchvision.transforms as transforms
+from torch_geometric.transforms import FaceToEdge, OneHotDegree
 import k_simplex2vec as ks2v
 from mantra.utils import (
     create_signals_on_data_if_needed,
@@ -75,6 +76,12 @@ class OrientableToClassTransform:
         return data
 
 
+class BettiToY:
+    def __call__(self, data):
+        data.y = torch.tensor(data.betti_numbers, dtype=torch.float).view(1, 3)
+        return data
+
+
 class DegreeTransform:
     def __call__(self, data):
         deg = degree(data.edge_index[0], dtype=torch.float)
@@ -85,6 +92,7 @@ class DegreeTransform:
 class TriangulationToFaceTransform:
     def __call__(self, data):
         data.face = torch.tensor(data.triangulation).T - 1
+        data.num_nodes = data.face.max() + 1
         data.triangulation = None
         return data
 
@@ -251,3 +259,42 @@ class BettiNumbersToTargetSimplicialComplexTransform:
         data = create_other_features_on_data_if_needed(data)
         data.other_features["y"] = torch.tensor([data.betti_numbers])
         return data
+
+
+class RandomNodeFeatures:
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, data):
+        data.x = torch.normal(0, 1, size=(data.num_nodes, self.size))
+        return data
+
+
+random_node_features = [
+    TriangulationToFaceTransform(),
+    FaceToEdge(remove_faces=False),
+    RandomNodeFeatures(size=8),
+]
+
+degree_transform_onehot = [
+    TriangulationToFaceTransform(),
+    FaceToEdge(remove_faces=False),
+    OneHotDegree(max_degree=8),
+]
+
+
+degree_transform = [
+    TriangulationToFaceTransform(),
+    FaceToEdge(remove_faces=False),
+    DegreeTransform(),
+]
+
+orientability_transforms = [
+    OrientableToClassTransform(),
+]
+name_transforms = [
+    NameToClassTransform(),
+]
+betti_numbers_transforms = [
+    BettiToY(),
+]

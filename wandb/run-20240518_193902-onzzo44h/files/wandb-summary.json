@@ -1,0 +1,1 @@
+{"id": "2c6255b6-25eb-4571-9813-b5870974d78f", "task": "name", "model": "GCN", "features": "features", "test_acc": 0.8068942109517989, "_timestamp": 1716053943.7306056, "_runtime": 0.7348957061767578, "_step": 29, "_wandb": {"runtime": 0}}

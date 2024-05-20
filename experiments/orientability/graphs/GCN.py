@@ -12,7 +12,7 @@ from mantra.transforms import (
     DegreeTransform,
     OrientableToClassTransform,
 )
-from models.graphs.GCN import GCNetwork
+from models.GCN import GCNetwork
 
 
 class GCNModule(GraphCommonModuleOrientability):

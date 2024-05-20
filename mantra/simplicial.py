@@ -8,7 +8,6 @@ import torch
 from torch_geometric.data import InMemoryDataset, download_url, Data
 
 from mantra.convert import process_manifolds
-from mantra.generation import generate_random_split
 
 
 class SimplicialDataset(InMemoryDataset):

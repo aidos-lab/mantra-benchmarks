@@ -1,0 +1,1 @@
+{"id": "cf595b48-4562-4578-adcc-085698da71b2", "task": "betti_numbers", "model": "Transformer", "features": "onehotdegree", "test_acc": 0.9519650702974206, "val_acc": 0.36832229505381864, "_timestamp": 1716056964.1976047, "_runtime": 1.5601997375488281, "_step": 9, "_wandb": {"runtime": 0}}

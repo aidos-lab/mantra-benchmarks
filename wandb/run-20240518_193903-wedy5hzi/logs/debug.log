@@ -1,0 +1,339 @@
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,591 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,592 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-wedy5hzi\logs\debug.log
+2024-05-18 19:39:03,592 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-wedy5hzi\logs\debug-internal.log
+2024-05-18 19:39:03,592 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,592 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,592 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,595 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-zkhcolwx\logs\debug.log
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-zkhcolwx\logs\debug-internal.log
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,596 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,597 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,600 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-9xdv8aa5\logs\debug.log
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-9xdv8aa5\logs\debug-internal.log
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,601 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,605 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-j4o75hxg\logs\debug.log
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-j4o75hxg\logs\debug-internal.log
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,606 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,610 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-tcy5o1oz\logs\debug.log
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-tcy5o1oz\logs\debug-internal.log
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,611 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,614 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,614 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-v9y9hrue\logs\debug.log
+2024-05-18 19:39:03,615 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-v9y9hrue\logs\debug-internal.log
+2024-05-18 19:39:03,616 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,616 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,616 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,619 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,619 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,619 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,619 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,619 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-1rbbmbcx\logs\debug.log
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-1rbbmbcx\logs\debug-internal.log
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,620 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,624 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,625 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-e4dwa8ol\logs\debug.log
+2024-05-18 19:39:03,625 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-e4dwa8ol\logs\debug-internal.log
+2024-05-18 19:39:03,625 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,625 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,625 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,628 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-x86i8a62\logs\debug.log
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-x86i8a62\logs\debug-internal.log
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,629 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,633 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,634 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-dvsy5aki\logs\debug.log
+2024-05-18 19:39:03,634 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-dvsy5aki\logs\debug-internal.log
+2024-05-18 19:39:03,634 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,634 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,634 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,638 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,639 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,639 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-wbhm2k44\logs\debug.log
+2024-05-18 19:39:03,639 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-wbhm2k44\logs\debug-internal.log
+2024-05-18 19:39:03,639 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,639 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,640 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,643 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,643 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,643 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,643 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,643 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,644 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-8f2ty8rq\logs\debug.log
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-8f2ty8rq\logs\debug-internal.log
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,645 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,649 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,649 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,649 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-q1dzkucs\logs\debug.log
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-q1dzkucs\logs\debug-internal.log
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,650 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,651 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,654 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,654 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,654 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,654 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,655 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,655 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,656 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,656 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-im8qjjkh\logs\debug.log
+2024-05-18 19:39:03,656 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-im8qjjkh\logs\debug-internal.log
+2024-05-18 19:39:03,656 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,656 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,657 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,660 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,660 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,660 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,660 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,661 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,661 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,661 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,661 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-csqufejf\logs\debug.log
+2024-05-18 19:39:03,661 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-csqufejf\logs\debug-internal.log
+2024-05-18 19:39:03,662 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,662 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,662 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,665 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,666 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,666 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,666 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,666 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,666 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,667 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,667 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-hzr7w02i\logs\debug.log
+2024-05-18 19:39:03,667 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-hzr7w02i\logs\debug-internal.log
+2024-05-18 19:39:03,667 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,667 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,668 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,671 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,671 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,671 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,671 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-qu7eaeli\logs\debug.log
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-qu7eaeli\logs\debug-internal.log
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,672 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,673 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,676 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,676 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,676 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,677 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,677 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,677 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,678 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,678 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-0je5b715\logs\debug.log
+2024-05-18 19:39:03,678 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-0je5b715\logs\debug-internal.log
+2024-05-18 19:39:03,678 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,678 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,679 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,682 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,682 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,682 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,683 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,683 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,683 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,683 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,684 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-7swid8tf\logs\debug.log
+2024-05-18 19:39:03,684 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-7swid8tf\logs\debug-internal.log
+2024-05-18 19:39:03,684 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,684 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,685 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,688 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,688 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,688 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,688 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,689 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,689 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,689 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,689 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-7i8bxcqo\logs\debug.log
+2024-05-18 19:39:03,690 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-7i8bxcqo\logs\debug-internal.log
+2024-05-18 19:39:03,690 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,690 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,690 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,694 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,694 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,694 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,694 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,695 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,695 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,696 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,696 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-96lpd5sm\logs\debug.log
+2024-05-18 19:39:03,696 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-96lpd5sm\logs\debug-internal.log
+2024-05-18 19:39:03,696 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,697 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,697 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,701 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,701 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,701 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,701 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,702 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,702 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,702 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,703 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-c62mtj4j\logs\debug.log
+2024-05-18 19:39:03,703 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-c62mtj4j\logs\debug-internal.log
+2024-05-18 19:39:03,703 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,704 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,704 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,707 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,707 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,708 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,708 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,708 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,708 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,709 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,709 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-h1gzei08\logs\debug.log
+2024-05-18 19:39:03,709 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-h1gzei08\logs\debug-internal.log
+2024-05-18 19:39:03,710 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,710 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,710 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,714 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,714 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,714 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,714 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,715 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,715 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,716 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,716 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-nyi55osg\logs\debug.log
+2024-05-18 19:39:03,716 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-nyi55osg\logs\debug-internal.log
+2024-05-18 19:39:03,717 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,717 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,717 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,720 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,721 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,721 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,721 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,721 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,722 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,722 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,722 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-xkarj7ff\logs\debug.log
+2024-05-18 19:39:03,722 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-xkarj7ff\logs\debug-internal.log
+2024-05-18 19:39:03,722 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,723 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,723 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:03,726 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Current SDK version is 0.16.0
+2024-05-18 19:39:03,727 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Configure stats pid to 10532
+2024-05-18 19:39:03,727 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\.config\wandb\settings
+2024-05-18 19:39:03,727 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\settings
+2024-05-18 19:39:03,728 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-05-18 19:39:03,728 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-05-18 19:39:03,728 INFO    MainThread:10532 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'test.py', 'program_abspath': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py', 'program': 'c:\\Users\\ernst\\Documents\\02-Work\\01-Projects\\MANTRA\\test.py'}
+2024-05-18 19:39:03,729 INFO    MainThread:10532 [wandb_init.py:_log_setup():524] Logging user logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-bg7z93g6\logs\debug.log
+2024-05-18 19:39:03,729 INFO    MainThread:10532 [wandb_init.py:_log_setup():525] Logging internal logs to C:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\wandb\run-20240518_193903-bg7z93g6\logs\debug-internal.log
+2024-05-18 19:39:03,729 INFO    MainThread:10532 [wandb_init.py:init():564] calling init triggers
+2024-05-18 19:39:03,730 INFO    MainThread:10532 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2024-05-18 19:39:03,730 INFO    MainThread:10532 [wandb_init.py:init():609] wandb.init() called when a run is still active
+2024-05-18 19:39:07,525 WARNING MsgRouterThr:10532 [router.py:message_loop():77] message_loop has been closed

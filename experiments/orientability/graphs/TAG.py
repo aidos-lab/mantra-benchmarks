@@ -12,7 +12,7 @@ from mantra.transforms import (
     DegreeTransform,
     OrientableToClassTransform,
 )
-from models.graphs.TAG import TAGNetwork
+from models.TAG import TAGNetwork
 
 
 class TAGModule(GraphCommonModuleOrientability):

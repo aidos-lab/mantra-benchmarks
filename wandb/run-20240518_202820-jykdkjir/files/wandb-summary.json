@@ -1,0 +1,1 @@
+{"id": "007d5ee0-38e3-4700-9c7c-24bfa9b965a0", "task": "name", "model": "GAT", "features": "degree", "test_acc": 0.01065688623889316, "val_acc": 0.999839181024969, "_timestamp": 1716056903.305385, "_runtime": 2.7135322093963623, "_step": 9, "_wandb": {"runtime": 0}}

@@ -1,0 +1,18 @@
+task: orientability
+model:
+  model_name: GCN
+  hidden_channels: 64
+  num_hidden_layers: 3
+  num_node_features: 1
+  out_channels: 1
+
+trainer: 
+  accelerator: auto
+  max_epochs: 100
+  log_every_n_steps: 1
+
+litmodel:
+  learning_rate: .01
+
+data: 
+  use_stratified: True
