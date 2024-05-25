@@ -33,8 +33,6 @@ class GCN(nn.Module):
         )
 
     def forward(self, x, edge_index, batch):
-        print("===================")
-        print(x.shape)
         # 1. Obtain node embeddings
         x = self.conv_input(x, edge_index)
         for layer in self.hidden_layers:

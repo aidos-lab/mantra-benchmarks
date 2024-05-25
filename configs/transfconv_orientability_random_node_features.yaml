@@ -1,20 +1,17 @@
 task: orientability
 model:
-  model_name: GCN
+  model_name: TransfConv
   hidden_channels: 64
   num_hidden_layers: 3
   num_node_features: 8
   out_channels: 1
-
-trainer: 
-  accelerator: cpu
-  max_epochs: 100
+trainer:
+  accelerator: auto
+  max_epochs: 50
   log_every_n_steps: 1
-
 litmodel:
-  learning_rate: .01
-
-data: 
+  learning_rate: 0.01
+data:
   transforms: random_node_features
-  use_stratified: False
+  use_stratified: true
   seed: 1234

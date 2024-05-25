@@ -1,10 +1,10 @@
 from omegaconf import OmegaConf
 
-from models.GAT import GAT, GATConfig
-from models.TAG import TAG, TAGConfig
 from models.GCN import GCN, GCNConfig
-from models.TransformerConv import TransformerConv, TransformerConvConfig
-
+from models.GAT import GAT, GATConfig
+from models.MLP import MLP, MLPConfig 
+from models.TransfConv import TransfConv, TransfConvConfig
+from models.TAG import TAG, TAGConfig
 
 tasks = ["orientability", "name", "betti_numbers"]
 
@@ -14,9 +14,10 @@ features = [
     "random_node_features",
 ]
 
-models = ["GCN"]
+models = ["GCN", "GAT", "MLP", "TAG", "TransfConv"]
+# models = ["TransfConv"]
 
-models_dict = {"GCN": GCNConfig, "GAT": GATConfig}
+models_dict = {"GCN": GCNConfig, "GAT": GATConfig, "MLP": MLPConfig,"TAG":TAGConfig, "TransfConv":TransfConvConfig}
 
 
 node_feature_dict = {
@@ -41,8 +42,8 @@ for model in models:
                 num_node_features=num_node_features, out_channels=out_channels
             ).__dict__
             trainer = {
-                "accelerator": "cpu",
-                "max_epochs": 100,
+                "accelerator": "auto",
+                "max_epochs": 50,
                 "log_every_n_steps": 1,
             }
             litmodel = {"learning_rate": 0.01}
@@ -63,5 +64,5 @@ for model in models:
 
             conf = OmegaConf.create(config)
             OmegaConf.save(
-                conf, f"./test_configs/{model.lower()}_{task}_{feature}.yaml"
+                conf, f"./configs/{model.lower()}_{task}_{feature}.yaml"
             )

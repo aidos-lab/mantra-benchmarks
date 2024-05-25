@@ -1,9 +1,13 @@
 import os
+import uuid
 from sympy import deg
 import wandb
 from mantra.dataset import SimplicialDataModule
 from models.GCN import GCN
 from models.GAT import GAT
+from models.MLP import MLP 
+from models.TransfConv import TransfConv
+from models.TAG import TAG
 from torch_geometric.transforms import Compose
 from lightning.pytorch.loggers import WandbLogger
 
@@ -36,14 +40,17 @@ from loggers import get_wandb_logger
 import lightning as L
 from omegaconf import OmegaConf
 
-config = OmegaConf.load("./configs/gcn_orientability_random_config.yaml")
 
 # ===============================================
 # Compile all the dictionaries for the
 # tasks for hot swaps.
 # ===============================================
 
-model_dict = {"GCN": GCN, "GAT": GAT}
+model_dict = {"GCN": GCN, 
+              "GAT": GAT,
+              "MLP": MLP, 
+              "TAG": TAG, 
+              "TransfConv": TransfConv}
 
 transforms_dict = {
     "degree_transform": degree_transform,
@@ -52,7 +59,13 @@ transforms_dict = {
 }
 
 
-def run_experiment(config, path):
+def run_experiment(config, path,run_id):
+
+    '''
+    Note: This nested dict structure is not very readable. 
+    So it might be a good idea to refactor this into multiple 
+    smaller dictionaries and on a per subject basis.  
+    '''
     task_dict = {
         "name": {
             "transforms": Compose(
@@ -104,14 +117,14 @@ def run_experiment(config, path):
     )
 
     logger = get_wandb_logger(
-        task_name=config.task, model_name=config.model.model_name
+        task_name=config.task, model_name=config.model.model_name,node_features=config.data.transforms,run_id=run_id
     )
     trainer = L.Trainer(
         logger=logger,
         accelerator=config.trainer.accelerator,
         max_epochs=config.trainer.max_epochs,
         log_every_n_steps=config.trainer.log_every_n_steps,
-        fast_dev_run=True,
+        fast_dev_run=False,
     )
 
     trainer.fit(litmodel, dm)
@@ -119,14 +132,20 @@ def run_experiment(config, path):
 
 
 def run_test_configs():
-    config_dir = "./test_configs"
+    config_dir = "./configs"
     files = os.listdir(config_dir)
     for file in files:
-        config_file = os.path.join(config_dir, file)
-        conf = OmegaConf.load(config_file)
-        run_experiment(conf, config_file)
-
+        run_id = str(uuid.uuid4())
+        for _ in range(5):
+            config_file = os.path.join(config_dir, file)
+            conf = OmegaConf.load(config_file)
+            run_experiment(conf, config_file, run_id)
 
 run_test_configs()
+
+
+
+
+# run_id = str(uuid.uuid4())
 # conf = OmegaConf.load("./configs/config.yaml")
-# run_experiment(conf, path="")
+# run_experiment(conf, path="",run_id=run_id)

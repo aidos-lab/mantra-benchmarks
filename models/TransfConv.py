@@ -6,18 +6,18 @@ from dataclasses import dataclass
 
 
 @dataclass
-class TransformerConvConfig:
-    model_name: str = "TransformerConv"
+class TransfConvConfig:
+    model_name: str = "TransfConv"
     hidden_channels: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1
     out_channels: int = 5
 
 
-class TransformerConv(nn.Module):
+class TransfConv(nn.Module):
     def __init__(
         self,
-        config: TransformerConvConfig,
+        config: TransfConvConfig,
     ):
         super().__init__()
         self.conv_input = TransformerConv(

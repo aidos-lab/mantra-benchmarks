@@ -6,3 +6,4 @@ test*.*
 /lightning_logs/
 k-simplex*
 RandomWalks*
+results

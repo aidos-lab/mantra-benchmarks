@@ -9,7 +9,7 @@ class MLPConfig:
     num_hidden_neurons: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1
-    num_out_neurons: int = 5
+    out_channels: int = 5
 
 
 class MLP(nn.Module):
@@ -28,10 +28,10 @@ class MLP(nn.Module):
             ]
         )
         self.output_layer = nn.Linear(
-            config.num_hidden_neurons, config.num_out_neurons
+            config.num_hidden_neurons, config.out_channels
         )
 
-    def forward(self, x, signal_belongings):
+    def forward(self, x, edge_index, signal_belongings):
         x = self.input_layer(x)
         x = nn.functional.relu(x)
         for hidden_layer in self.hidden_layers:
