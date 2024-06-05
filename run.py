@@ -1,15 +1,6 @@
-from experiments.configs import ConfigExperimentRun
+from experiments.configs import load_config
 from experiments.run_experiment import run_configuration
 import os
-import yaml
-
-
-def load_config(config_fpath: str) -> ConfigExperimentRun:
-    with open(config_fpath, "r") as file:
-        data = yaml.safe_load(file)
-    config = ConfigExperimentRun(**data)
-    return config
-
 
 def run_configs_folder():
     config_dir = "./configs"
