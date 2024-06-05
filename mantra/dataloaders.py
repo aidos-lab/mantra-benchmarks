@@ -144,20 +144,20 @@ def collate_neighborhood_matrices(batch):
     )
     neighborhood_matrices = dict()
     for key in all_neighborhood_matrices_keys:
-        neighborhood_matrices[key] = (
-            convert_sparse_matrices_to_sparse_block_matrix(
-                key,
-                [
-                    #  Get the neighborhood matrix if it exists, otherwise None
-                    (
-                        example.neighborhood_matrices[key]
-                        if key in example.neighborhood_matrices
-                        else None
-                    )
-                    for example in batch
-                ],
-                batch,
-            )
+        neighborhood_matrices[
+            key
+        ] = convert_sparse_matrices_to_sparse_block_matrix(
+            key,
+            [
+                #  Get the neighborhood matrix if it exists, otherwise None
+                (
+                    example.neighborhood_matrices[key]
+                    if key in example.neighborhood_matrices
+                    else None
+                )
+                for example in batch
+            ],
+            batch,
         )
     return neighborhood_matrices
 
