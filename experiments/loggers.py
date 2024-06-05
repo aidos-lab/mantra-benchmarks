@@ -1,6 +1,4 @@
-import wandb
 from typing import Literal
-
 from lightning.pytorch.loggers import WandbLogger
 
 

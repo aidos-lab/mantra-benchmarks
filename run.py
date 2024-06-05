@@ -8,7 +8,7 @@ from models import model_lookup
 from typing import Dict
 from mantra.dataset import SimplicialDataModule
 from models.base import BaseModel
-from loggers import get_wandb_logger
+from experiments.loggers import get_wandb_logger
 import lightning as L
 import os
 import uuid

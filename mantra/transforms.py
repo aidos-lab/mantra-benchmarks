@@ -10,7 +10,7 @@ from torch_geometric.transforms import ToUndirected
 from torch_geometric.utils import degree
 import torchvision.transforms as transforms
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
-import k_simplex2vec as ks2v
+import mantra.k_simplex2vec as ks2v
 from mantra.utils import (
     create_signals_on_data_if_needed,
     append_signals,
