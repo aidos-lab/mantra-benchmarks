@@ -1,6 +1,7 @@
 from lightning.pytorch.loggers import WandbLogger
 from metrics.tasks import TaskType
 
+
 def get_wandb_logger(
     task_name: TaskType,
     save_dir="./lightning_logs",

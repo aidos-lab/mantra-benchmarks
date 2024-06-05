@@ -2,6 +2,7 @@ from typing import Literal
 import lightning as L
 import torch
 
+
 class BaseModel(L.LightningModule):
     def __init__(
         self,

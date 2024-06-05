@@ -23,6 +23,7 @@ class GeneralAccuracy(Metric):
     def compute(self) -> Tensor:
         return self.correct.float() / self.total
 
+
 def get_orientability_metrics():
     return (
         torchmetrics.classification.BinaryAccuracy(),
