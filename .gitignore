@@ -1,4 +1,4 @@
-.ignore
+.ignore*
 raw_data
 data
 test*.*
@@ -8,6 +8,7 @@ k-simplex*
 RandomWalks*
 results
 wandb
+configs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
