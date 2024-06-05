@@ -303,7 +303,7 @@ betti_numbers_transforms = [
 
 class TransformType(Enum):
     degree_transform = "degree_transform"
-    degree_transform_onehot = "degree_transform"
+    degree_transform_onehot = "degree_transform_onehot"
     random_node_features = "random_node_features"
 
 
