@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "c:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\test.py", line 38, in <module>
+    run.log({k: v for k, v in zip(columns, data)})
+  File "c:\Users\ernst\Documents\02-Work\01-Projects\MANTRA\test.py", line 38, in <dictcomp>
+    run.log({k: v for k, v in zip(columns, data)})
+TypeError: unhashable type: 'list'

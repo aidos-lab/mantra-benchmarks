@@ -1,0 +1,264 @@
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type       | Params
+---------------------------------------------------
+0 | training_accuracy   | ModuleList | 0
+1 | validation_accuracy | ModuleList | 0
+2 | test_accuracy       | ModuleList | 0
+3 | model               | GCN        | 12.8 K
+---------------------------------------------------
+12.8 K    Trainable params
+0         Non-trainable params
+12.8 K    Total params
+0.051     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type       | Params
+---------------------------------------------------
+0 | training_accuracy   | ModuleList | 0
+1 | validation_accuracy | ModuleList | 0
+2 | test_accuracy       | ModuleList | 0
+3 | model               | GCN        | 13.3 K
+---------------------------------------------------
+13.3 K    Trainable params
+0         Non-trainable params
+13.3 K    Total params
+0.053     Total estimated model params size (MB)
+`Trainer.fit` stopped: `max_steps=1` reached.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type       | Params
+---------------------------------------------------
+0 | training_accuracy   | ModuleList | 0
+1 | validation_accuracy | ModuleList | 0
+2 | test_accuracy       | ModuleList | 0
+3 | model               | GCN        | 13.3 K
+---------------------------------------------------
+13.3 K    Trainable params
+0         Non-trainable params
+13.3 K    Total params
+0.053     Total estimated model params size (MB)
+`Trainer.fit` stopped: `max_steps=1` reached.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type               | Params
+-----------------------------------------------------------
+0 | training_accuracy   | MulticlassAccuracy | 0
+1 | validation_accuracy | MulticlassAccuracy | 0
+2 | test_accuracy       | MulticlassAccuracy | 0
+3 | model               | GCN                | 12.9 K
+-----------------------------------------------------------
+12.9 K    Trainable params
+0         Non-trainable params
+12.9 K    Total params
+0.052     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type               | Params
+-----------------------------------------------------------
+0 | training_accuracy   | MulticlassAccuracy | 0
+1 | validation_accuracy | MulticlassAccuracy | 0
+2 | test_accuracy       | MulticlassAccuracy | 0
+3 | model               | GCN                | 13.4 K
+-----------------------------------------------------------
+13.4 K    Trainable params
+0         Non-trainable params
+13.4 K    Total params
+0.054     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1135, 1])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 15.35it/s]===================
+torch.Size([1140, 1]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|██| 1/1 [00:00<00:00,  8.38it/s, validation_loss=5.140, validation_accuracy_betti_0=0.000, validation_accuracy_betti_1=0.398, validation_accuracy_betti_2=0.797, train_loss=1.870, train_accuracy_betti_0=0.0234, train_accuracy_betti_1=0.297, train_accuracy_betti_2=0.461]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 9, 'out_channels': 3}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1132, 9])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 17.04it/s]===================
+torch.Size([1139, 9]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|███| 1/1 [00:00<00:00,  8.90it/s, validation_loss=0.637, validation_accuracy_betti_0=0.422, validation_accuracy_betti_1=0.320, validation_accuracy_betti_2=0.734, train_loss=1.080, train_accuracy_betti_0=0.000, train_accuracy_betti_1=0.344, train_accuracy_betti_2=0.781]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 8, 'out_channels': 3}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1143, 8])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 18.15it/s]===================
+torch.Size([1136, 8]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█| 1/1 [00:00<00:00,  9.31it/s, validation_loss=0.958, validation_accuracy_betti_0=0.0391, validation_accuracy_betti_1=0.320, validation_accuracy_betti_2=0.758, train_loss=1.070, train_accuracy_betti_0=0.00781, train_accuracy_betti_1=0.273, train_accuracy_betti_2=0.703
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 1, 'out_channels': 5}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1133, 1])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 20.69it/s]===================
+torch.Size([1137, 1]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10.87it/s, validation_loss=2.050, validation_accuracy=0.242, train_loss=1.710, train_accuracy=0.266]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 9, 'out_channels': 5}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1130, 9])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 20.41it/s]===================
+torch.Size([1131, 9]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10.69it/s, validation_loss=1.500, validation_accuracy=0.328, train_loss=1.620, train_accuracy=0.148]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 8, 'out_channels': 5}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1142, 8])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 22.36it/s]===================
+torch.Size([1132, 8]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 11.53it/s, validation_loss=1.620, validation_accuracy=0.227, train_loss=1.610, train_accuracy=0.195]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 1, 'out_channels': 1}
+  | Name                | Type               | Params
+-----------------------------------------------------------
+0 | training_accuracy   | MulticlassAccuracy | 0
+1 | validation_accuracy | MulticlassAccuracy | 0
+2 | test_accuracy       | MulticlassAccuracy | 0
+3 | model               | GCN                | 13.4 K
+-----------------------------------------------------------
+13.4 K    Trainable params
+0         Non-trainable params
+13.4 K    Total params
+0.054     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type           | Params
+-------------------------------------------------------
+0 | training_accuracy   | BinaryAccuracy | 0
+1 | validation_accuracy | BinaryAccuracy | 0
+2 | test_accuracy       | BinaryAccuracy | 0
+3 | model               | GCN            | 12.7 K
+-------------------------------------------------------
+12.7 K    Trainable params
+0         Non-trainable params
+12.7 K    Total params
+0.051     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type           | Params
+-------------------------------------------------------
+0 | training_accuracy   | BinaryAccuracy | 0
+1 | validation_accuracy | BinaryAccuracy | 0
+2 | test_accuracy       | BinaryAccuracy | 0
+3 | model               | GCN            | 13.2 K
+-------------------------------------------------------
+13.2 K    Trainable params
+0         Non-trainable params
+13.2 K    Total params
+0.053     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\loggers\wandb.py:396: There is a wandb run already in progress and newly created instances of `WandbLogger` will reuse this run. If this is not desired, call `wandb.finish()` before instantiating `WandbLogger`.
+GPU available: True (cuda), used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+HPU available: False, using: 0 HPUs
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\setup.py:187: GPU available but not used. You can set it by doing `Trainer(accelerator='gpu')`.
+Running in `fast_dev_run` mode: will run the requested loop using 1 batch(es). Logging and checkpointing is suppressed.
+  | Name                | Type           | Params
+-------------------------------------------------------
+0 | training_accuracy   | BinaryAccuracy | 0
+1 | validation_accuracy | BinaryAccuracy | 0
+2 | test_accuracy       | BinaryAccuracy | 0
+3 | model               | GCN            | 13.1 K
+-------------------------------------------------------
+13.1 K    Trainable params
+0         Non-trainable params
+13.1 K    Total params
+0.052     Total estimated model params size (MB)
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+C:\Users\ernst\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\lightning\pytorch\trainer\connectors\data_connector.py:441: The 'val_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=23` in the `DataLoader` to improve performance.
+`Trainer.fit` stopped: `max_steps=1` reached.
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1144, 1])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 20.86it/s]===================
+torch.Size([1133, 1]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10.76it/s, validation_loss=1.650, validation_accuracy=0.727, train_loss=0.605, train_accuracy=0.711]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 9, 'out_channels': 1}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1141, 9])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 20.69it/s]===================
+torch.Size([1141, 9]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 10.64it/s, validation_loss=0.600, validation_accuracy=0.703, train_loss=0.698, train_accuracy=0.359]
+=====================================
+============CONFIG===================
+=====================================
+===================
+{'model_name': 'GCN', 'hidden_channels': 64, 'num_hidden_layers': 3, 'num_node_features': 8, 'out_channels': 1}
+Epoch 0:   0%|                                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]===================
+torch.Size([1138, 8])
+Epoch 0: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 22.24it/s]===================
+torch.Size([1131, 8]) 0:   0%|                                                                                                                                                                                                                                       | 0/1 [00:00<?, ?it/s]
+Epoch 0: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 11.27it/s, validation_loss=0.656, validation_accuracy=0.703, train_loss=0.672, train_accuracy=0.664]

@@ -1,0 +1,1 @@
+{"id": "fe1f6db8-7b45-46b3-999b-d59f8c20e337", "task": "betti_numbers", "model": "GCN", "features": "degree", "test_acc": 0.320305278721021, "val_acc": 0.029902210363057402, "_timestamp": 1716056879.4714756, "_runtime": 1.6080055236816406, "_step": 9, "_wandb": {"runtime": 0}}

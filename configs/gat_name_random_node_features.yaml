@@ -1,0 +1,16 @@
+conf_model:
+  hidden_channels: 64
+  num_heads: 4
+  num_hidden_layers: 3
+  num_node_features: 8
+  out_channels: 5
+learning_rate: 0.01
+seed: 1234
+task_type: name
+trainer_config:
+  accelerator: auto
+  log_every_n_steps: 1
+  max_epochs: 50
+transforms: random_node_features
+type_model: gat
+use_stratified: true

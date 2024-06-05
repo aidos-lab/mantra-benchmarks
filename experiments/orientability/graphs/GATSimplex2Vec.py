@@ -14,7 +14,7 @@ from mantra.transforms import (
     OrientableToClassTransform,
     Simplex2VecTransform,
 )
-from models.graphs.GAT import GATNetwork
+from models.GAT import GATNetwork
 
 
 class GATSimplexToVecModule(GraphCommonModuleOrientability):

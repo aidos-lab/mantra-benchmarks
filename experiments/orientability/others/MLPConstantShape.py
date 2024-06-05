@@ -13,7 +13,7 @@ from mantra.transforms import (
     TriangulationToFaceTransform,
     OrientableToClassTransform,
 )
-from models.others.MLPConstantShape import MLPConstantShape
+from models.MLPConstantShape import MLPConstantShape
 
 
 class MLPModule(BaseClassificationModule):

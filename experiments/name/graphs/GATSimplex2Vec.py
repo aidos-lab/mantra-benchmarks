@@ -14,7 +14,7 @@ from mantra.transforms import (
     Simplex2VecTransform,
     NameToClassTransform,
 )
-from models.graphs.GAT import GATNetwork
+from models.GAT import GATNetwork
 
 
 class GATSimplexToVecModule(GraphCommonModuleName):

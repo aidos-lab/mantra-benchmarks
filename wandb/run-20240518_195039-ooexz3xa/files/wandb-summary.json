@@ -1,0 +1,1 @@
+{"id": "f9f45505-b4fc-477b-b137-3e718c2b31bd", "task": "orientability", "model": "GCN", "features": "features", "test_acc": 0.6653593550147953, "val_acc": 0.834909957854015, "_timestamp": 1716054639.7565303, "_runtime": 0.6592433452606201, "_step": 9, "_wandb": {"runtime": 0}}

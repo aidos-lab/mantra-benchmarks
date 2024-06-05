@@ -13,7 +13,7 @@ from mantra.transforms import (
     DegreeTransform,
     Simplex2VecTransform,
 )
-from models.graphs.GAT import GATNetwork
+from models.GAT import GATNetwork
 
 
 class GATSimplexToVecModule(GraphCommonModuleBettiNumbers):

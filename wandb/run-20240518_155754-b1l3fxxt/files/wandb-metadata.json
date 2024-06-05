@@ -1,0 +1,52 @@
+{
+    "os": "Windows-10-10.0.22631-SP0",
+    "python": "3.10.11",
+    "heartbeatAt": "2024-05-18T13:57:58.935217",
+    "startedAt": "2024-05-18T13:57:54.435060",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/aidos-lab/MANTRA.git",
+        "commit": "b952d5d7ac2bf01ce1d8d6a60aefa9ac6fdd936d"
+    },
+    "email": "ernstroell@gmail.com",
+    "root": "C:/Users/ernst/Documents/02-Work/01-Projects/MANTRA",
+    "host": "MININT-TDMRJO1",
+    "username": "ernst",
+    "executable": "C:\\Users\\ernst\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\\python.exe",
+    "cpu_count": 16,
+    "cpu_count_logical": 24,
+    "cpu_freq": {
+        "current": 3400.0,
+        "min": 0.0,
+        "max": 3400.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 3400.0,
+            "min": 0.0,
+            "max": 3400.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 929.9218711853027,
+            "used": 827.0737457275391
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 4070",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 4070",
+            "memory_total": 12878610432
+        }
+    ],
+    "memory": {
+        "total": 31.77265167236328
+    }
+}

@@ -1,0 +1,15 @@
+conf_model:
+  hidden_channels: 64
+  num_hidden_layers: 3
+  num_node_features: 9
+  out_channels: 3
+learning_rate: 0.01
+seed: 1234
+task_type: betti_numbers
+trainer_config:
+  accelerator: auto
+  log_every_n_steps: 1
+  max_epochs: 50
+transforms: degree_transform
+type_model: tag
+use_stratified: false

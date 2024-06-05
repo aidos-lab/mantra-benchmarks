@@ -1,0 +1,1 @@
+{"id": "5cb99c00-e8d1-49eb-9dc7-befc414dbc07", "task": "betti_numbers", "model": "Transformer", "features": "random", "test_acc": 0.3497240262779171, "val_acc": 0.81303366656975, "_timestamp": 1716056862.8444903, "_runtime": 1.4931302070617676, "_step": 9, "_wandb": {"runtime": 0}}

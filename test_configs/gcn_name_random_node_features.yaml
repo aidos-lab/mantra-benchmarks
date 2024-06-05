@@ -1,0 +1,17 @@
+task: name
+model:
+  model_name: GCN
+  hidden_channels: 64
+  num_hidden_layers: 3
+  num_node_features: 8
+  out_channels: 5
+trainer:
+  accelerator: auto
+  max_epochs: 50
+  log_every_n_steps: 1
+litmodel:
+  learning_rate: 0.01
+data:
+  transforms: random_node_features
+  use_stratified: true
+  seed: 1234

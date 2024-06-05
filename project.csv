@@ -1,0 +1,4 @@
+,summary,config,name
+0,"{'task': 'name', '_step': 9, '_wandb': {'runtime': 0}, 'features': 'features', 'test_acc': 0.19983744936055692, 'id': '20f8e513-5372-47c9-8be9-6896fab4b6a9', 'model': 'GCN', 'val_acc': 0.5029409669849124, '_runtime': 1.77962327003479, '_timestamp': 1716054652.9088843}",{},resilient-wave-38
+1,"{'test_acc': 0.6570077389212916, '_timestamp': 1716054647.1503184, 'id': '1a4f8b7b-323b-4dd8-89a6-f5cf355f7ded', 'task': 'betti_numbers', '_step': 9, 'model': 'GCN', 'features': 'features', '_wandb': {'runtime': 0}, 'val_acc': 0.7849940810320778, '_runtime': 1.531184434890747}",{},fearless-snow-37
+2,"{'task': 'orientability', '_wandb': {'runtime': 0}, '_runtime': 0.6592433452606201, 'features': 'features', 'test_acc': 0.6653593550147953, '_timestamp': 1716054639.7565303, 'id': 'f9f45505-b4fc-477b-b137-3e718c2b31bd', '_step': 9, 'model': 'GCN', 'val_acc': 0.834909957854015}",{},upbeat-snowball-36

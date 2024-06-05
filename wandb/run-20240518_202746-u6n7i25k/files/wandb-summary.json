@@ -1,0 +1,1 @@
+{"id": "a47aa0e3-e856-4189-86cb-21b5a8605035", "task": "name", "model": "Transformer", "features": "random", "test_acc": 0.9554488883159551, "val_acc": 0.0718007573276801, "_timestamp": 1716056868.396092, "_runtime": 1.56368088722229, "_step": 9, "_wandb": {"runtime": 0}}

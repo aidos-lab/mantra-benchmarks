@@ -1,0 +1,1 @@
+{"id": "6894374e-e8fb-4a4e-b900-78385b28188b", "task": "name", "model": "GAT", "features": "random", "test_acc": 0.0875742206460619, "val_acc": 0.24960145239333587, "_timestamp": 1716056851.8122597, "_runtime": 1.625565767288208, "_step": 9, "_wandb": {"runtime": 0}}

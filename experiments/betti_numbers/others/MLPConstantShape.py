@@ -9,7 +9,7 @@ from experiments.lightning_modules.BaseModuleBettiNumbers import (
 )
 from mantra.simplicial import SimplicialDataset
 from mantra.transforms import DegreeTransform, TriangulationToFaceTransform
-from models.others.MLPConstantShape import MLPConstantShape
+from models.MLPConstantShape import MLPConstantShape
 
 
 class MLPModule(BaseBettiNumbersModule):

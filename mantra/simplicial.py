@@ -93,11 +93,12 @@ class SimplicialDataset(InMemoryDataset):
             triangulations,
             task_type="orientability",
         )
-        betti_numbers_train_indices, betti_numbers_test_indices = (
-            generate_random_split(
-                triangulations,
-                task_type="betti_numbers",
-            )
+        (
+            betti_numbers_train_indices,
+            betti_numbers_test_indices,
+        ) = generate_random_split(
+            triangulations,
+            task_type="betti_numbers",
         )
         name_train_indices, name_test_indices = generate_random_split(
             triangulations,

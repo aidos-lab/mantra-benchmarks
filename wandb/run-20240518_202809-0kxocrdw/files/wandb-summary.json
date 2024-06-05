@@ -1,0 +1,1 @@
+{"id": "f217a0c1-f168-43ba-b5ee-028ecc545ea3", "task": "orientability", "model": "GAT", "features": "degree", "test_acc": 0.21463523739445256, "val_acc": 0.6489711426648109, "_timestamp": 1716056891.069212, "_runtime": 1.5678269863128662, "_step": 9, "_wandb": {"runtime": 0}}
