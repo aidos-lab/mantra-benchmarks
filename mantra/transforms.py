@@ -172,18 +172,18 @@ class SCNNNeighborhoodMatricesTransform:
         data.neighborhood_matrices["1_boundary"] = data.sc.incidence_matrix(1)
         data.neighborhood_matrices["2_boundary"] = data.sc.incidence_matrix(2)
         data.neighborhood_matrices["0_laplacian"] = data.sc.laplacian_matrix(0)
-        data.neighborhood_matrices[
-            "1_laplacian_up"
-        ] = data.sc.up_laplacian_matrix(rank=1)
-        data.neighborhood_matrices[
-            "1_laplacian_down"
-        ] = data.sc.down_laplacian_matrix(rank=1)
-        data.neighborhood_matrices[
-            "1_laplacian"
-        ] = data.sc.hodge_laplacian_matrix(rank=1)
-        data.neighborhood_matrices[
-            "2_laplacian"
-        ] = data.sc.hodge_laplacian_matrix(rank=2)
+        data.neighborhood_matrices["1_laplacian_up"] = (
+            data.sc.up_laplacian_matrix(rank=1)
+        )
+        data.neighborhood_matrices["1_laplacian_down"] = (
+            data.sc.down_laplacian_matrix(rank=1)
+        )
+        data.neighborhood_matrices["1_laplacian"] = (
+            data.sc.hodge_laplacian_matrix(rank=1)
+        )
+        data.neighborhood_matrices["2_laplacian"] = (
+            data.sc.hodge_laplacian_matrix(rank=2)
+        )
         return data
 
 
@@ -208,18 +208,18 @@ class SCConvNeighborhoodMatricesTransform:
         L0 = L0_up
         L1 = L1_down + L1_up
         L2 = L2_down
-        data.neighborhood_matrices[
-            "0_laplacian_up_norm"
-        ] = compute_x_laplacian_normalized_matrix(L0, L0_up)
-        data.neighborhood_matrices[
-            "1_laplacian_up_norm"
-        ] = compute_x_laplacian_normalized_matrix(L1, L1_up)
-        data.neighborhood_matrices[
-            "1_laplacian_down_norm"
-        ] = compute_x_laplacian_normalized_matrix(L1, L1_down)
-        data.neighborhood_matrices[
-            "2_laplacian_down_norm"
-        ] = compute_x_laplacian_normalized_matrix(L2, L2_down)
+        data.neighborhood_matrices["0_laplacian_up_norm"] = (
+            compute_x_laplacian_normalized_matrix(L0, L0_up)
+        )
+        data.neighborhood_matrices["1_laplacian_up_norm"] = (
+            compute_x_laplacian_normalized_matrix(L1, L1_up)
+        )
+        data.neighborhood_matrices["1_laplacian_down_norm"] = (
+            compute_x_laplacian_normalized_matrix(L1, L1_down)
+        )
+        data.neighborhood_matrices["2_laplacian_down_norm"] = (
+            compute_x_laplacian_normalized_matrix(L2, L2_down)
+        )
         return data
 
 

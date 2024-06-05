@@ -67,9 +67,9 @@ for model in models:
                 task_type=task,
                 seed=1234,
                 transforms=feature,
-                use_stratified=False
-                if task == TaskType.BETTI_NUMBERS
-                else True,
+                use_stratified=(
+                    False if task == TaskType.BETTI_NUMBERS else True
+                ),
                 learning_rate=0.01,
                 trainer_config=trainer_config,
                 conf_model=model_config,
