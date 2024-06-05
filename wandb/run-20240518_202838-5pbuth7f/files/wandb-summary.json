@@ -1,1 +1,0 @@
-{"id": "8260020c-5860-4a79-bf80-cef354223cda", "task": "name", "model": "Transformer", "features": "degree", "test_acc": 0.668803456226029, "val_acc": 0.43276985739540486, "_timestamp": 1716056920.1083825, "_runtime": 1.5634284019470215, "_step": 9, "_wandb": {"runtime": 0}}

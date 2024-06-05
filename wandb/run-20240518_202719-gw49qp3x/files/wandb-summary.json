@@ -1,1 +1,0 @@
-{"id": "a5d7f3de-7dc1-44d7-b6dd-b8bb8b8028cc", "task": "orientability", "model": "GAT", "features": "random", "test_acc": 0.1113792632946844, "val_acc": 0.46630618927908807, "_timestamp": 1716056840.65538, "_runtime": 1.5540380477905273, "_step": 9, "_wandb": {"runtime": 0}}

@@ -1,1 +1,0 @@
-{"id": "3ebf1637-4d1a-4d41-96b7-c3e6627983d2", "task": "betti_numbers", "model": "GAT", "features": "onehotdegree", "test_acc": 0.5560919260413165, "val_acc": 0.713141548702351, "_timestamp": 1716056947.5264394, "_runtime": 1.6124913692474365, "_step": 9, "_wandb": {"runtime": 0}}

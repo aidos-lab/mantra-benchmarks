@@ -1,1 +1,0 @@
-{"id": "eb0c38ba-255d-4fb6-8053-4bb832db071f", "task": "name", "model": "GCN", "features": "degree", "test_acc": 0.49438216355989584, "val_acc": 0.8714512066849359, "_timestamp": 1716056885.0611918, "_runtime": 1.6171767711639404, "_step": 9, "_wandb": {"runtime": 0}}

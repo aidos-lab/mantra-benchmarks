@@ -1,1 +1,0 @@
-{"columns": ["id", "task", "model", "features", "val_acc", "test_acc"], "data": [["qxhxvwwd", "orientability", "GCN", "features", 0.48206176880575335, 0.5521124272060216]]}

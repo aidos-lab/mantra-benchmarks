@@ -1,1 +1,0 @@
-{"id": "b237af27-f935-4229-84fc-243b75e4ba4f", "task": "betti_numbers", "model": "GCN", "features": "features", "test_acc": 0.5364321656610416, "_timestamp": 1716054125.67547, "_runtime": 1.513127088546753, "_step": 9, "_wandb": {"runtime": 0}}

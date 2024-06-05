@@ -1,1 +1,0 @@
-{"id": "8e411baf-0141-4df7-ad92-07ce912827d8", "task": "orientability", "model": "Transformer", "features": "onehotdegree", "test_acc": 0.06480186396894472, "val_acc": 0.6584145082787306, "_timestamp": 1716056958.6593645, "_runtime": 1.6074144840240479, "_step": 9, "_wandb": {"runtime": 0}}

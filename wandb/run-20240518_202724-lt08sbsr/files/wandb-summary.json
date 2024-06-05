@@ -1,1 +1,0 @@
-{"id": "859ff495-06ed-4b02-b9cb-88140fbe8628", "task": "betti_numbers", "model": "GAT", "features": "random", "test_acc": 0.5684303366142983, "val_acc": 0.8340908826891007, "_timestamp": 1716056846.1864407, "_runtime": 1.5386958122253418, "_step": 9, "_wandb": {"runtime": 0}}

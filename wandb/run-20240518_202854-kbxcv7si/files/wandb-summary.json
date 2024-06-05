@@ -1,1 +1,0 @@
-{"id": "11ec666d-a4eb-4baa-b371-1540447df091", "task": "name", "model": "GCN", "features": "onehotdegree", "test_acc": 0.4601017081635431, "val_acc": 0.7011356422451509, "_timestamp": 1716056936.4474828, "_runtime": 1.4955697059631348, "_step": 9, "_wandb": {"runtime": 0}}

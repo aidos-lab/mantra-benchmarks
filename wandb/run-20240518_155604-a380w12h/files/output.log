@@ -1,2 +1,0 @@
-
-wandb: WARNING Calling wandb.login() after wandb.init() has no effect.
