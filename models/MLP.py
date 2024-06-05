@@ -1,3 +1,7 @@
+"""
+Multi-Layer Perceptron implementation.
+"""
+
 import torch.nn as nn
 from torch_geometric.nn import pool
 from dataclasses import dataclass

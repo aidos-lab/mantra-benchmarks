@@ -1,3 +1,7 @@
+"""
+Implementation for Graph Convolutional Neural Network.
+"""
+
 import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv, global_mean_pool

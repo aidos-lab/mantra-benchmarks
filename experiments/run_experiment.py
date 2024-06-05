@@ -1,3 +1,7 @@
+"""
+Code for a single experiment run.
+"""
+
 from metrics.tasks import (
     TaskType,
     Task,

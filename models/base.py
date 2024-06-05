@@ -1,3 +1,7 @@
+"""
+Base pytorch lightning model.
+"""
+
 from typing import Literal
 import lightning as L
 import torch

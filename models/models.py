@@ -1,3 +1,7 @@
+"""
+Collection of models. Useful for quantitative comparisons and templating.
+"""
+
 from enum import Enum
 from typing import Dict, Union
 import torch.nn as nn

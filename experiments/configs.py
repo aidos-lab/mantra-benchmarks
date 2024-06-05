@@ -1,3 +1,7 @@
+"""
+Pydantic configuration of experiment runs.
+"""
+
 from pydantic_settings import BaseSettings
 from models.models import ModelConfig
 from mantra import TransformType
