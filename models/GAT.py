@@ -1,12 +1,10 @@
 import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GATConv, global_mean_pool
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class GATConfig:
-    model_name: str = "GAT"
+class GATConfig(BaseModel):
     hidden_channels: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1

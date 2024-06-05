@@ -1,11 +1,10 @@
 import torch.nn as nn
 from torch_geometric.nn import pool
 from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class MLPConfig:
-    model_name: str = "MLP"
+class MLPConfig(BaseModel):
     num_hidden_neurons: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1

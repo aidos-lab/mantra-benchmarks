@@ -1,17 +1,15 @@
-task: orientability
-model:
-  model_name: GCN
+conf_model:
   hidden_channels: 64
   num_hidden_layers: 3
   num_node_features: 8
   out_channels: 1
-trainer:
+learning_rate: 0.01
+seed: 1234
+task_type: orientability
+trainer_config:
   accelerator: auto
-  max_epochs: 50
   log_every_n_steps: 1
-litmodel:
-  learning_rate: 0.01
-data:
-  transforms: random_node_features
-  use_stratified: true
-  seed: 1234
+  max_epochs: 50
+transforms: random_node_features
+type_model: gcn
+use_stratified: true

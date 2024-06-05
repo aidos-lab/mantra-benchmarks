@@ -8,6 +8,7 @@ import torch
 from torch_geometric.data import InMemoryDataset, download_url, Data
 
 from mantra.convert import process_manifolds
+from mantra.generation import generate_random_split
 
 
 class SimplicialDataset(InMemoryDataset):
@@ -92,11 +93,12 @@ class SimplicialDataset(InMemoryDataset):
             triangulations,
             task_type="orientability",
         )
-        betti_numbers_train_indices, betti_numbers_test_indices = (
-            generate_random_split(
-                triangulations,
-                task_type="betti_numbers",
-            )
+        (
+            betti_numbers_train_indices,
+            betti_numbers_test_indices,
+        ) = generate_random_split(
+            triangulations,
+            task_type="betti_numbers",
         )
         name_train_indices, name_test_indices = generate_random_split(
             triangulations,

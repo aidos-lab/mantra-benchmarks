@@ -1,68 +1,84 @@
-from omegaconf import OmegaConf
+from metrics.tasks import TaskType
+from mantra.transforms import TransformType
+from models import ModelType, model_cfg_lookup
+from experiments.configs import ConfigExperimentRun, TrainerConfig
+import yaml
+import json
+import os
+import shutil
 
-from models.GCN import GCN, GCNConfig
-from models.GAT import GAT, GATConfig
-from models.MLP import MLP, MLPConfig 
-from models.TransfConv import TransfConv, TransfConvConfig
-from models.TAG import TAG, TAGConfig
-
-tasks = ["orientability", "name", "betti_numbers"]
+tasks = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
 
 features = [
-    "degree_transform",
-    "degree_transform_onehot",
-    "random_node_features",
+    TransformType.degree_transform,
+    TransformType.degree_transform_onehot,
+    TransformType.random_node_features,
 ]
 
-models = ["GCN", "GAT", "MLP", "TAG", "TransfConv"]
-# models = ["TransfConv"]
-
-models_dict = {"GCN": GCNConfig, "GAT": GATConfig, "MLP": MLPConfig,"TAG":TAGConfig, "TransfConv":TransfConvConfig}
-
+models = [
+    ModelType.GCN,
+    ModelType.GAT,
+    ModelType.GCN,
+    ModelType.TAG,
+    ModelType.TransfConv,
+]
 
 node_feature_dict = {
-    "degree_transform": 1,
-    "degree_transform_onehot": 9,
-    "random_node_features": 8,
+    TransformType.degree_transform: 1,
+    TransformType.degree_transform_onehot: 9,
+    TransformType.random_node_features: 8,
 }
 
 out_channels_dict = {
-    "orientability": 1,
-    "name": 5,
-    "betti_numbers": 3,
+    TaskType.ORIENTABILITY: 1,
+    TaskType.NAME: 5,
+    TaskType.BETTI_NUMBERS: 3,
 }
+
+
+def manage_directory(path: str):
+    """
+    Removes directory if exists and creates and empty directory
+    """
+    if os.path.exists(path):
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+        else:
+            os.remove(path)
+    os.makedirs(path)
+
+
+manage_directory("./configs")
 
 for model in models:
     for feature in features:
         for task in tasks:
             num_node_features = node_feature_dict[feature]
             out_channels = out_channels_dict[task]
-
-            modelconfig = models_dict[model](
-                num_node_features=num_node_features, out_channels=out_channels
-            ).__dict__
-            trainer = {
-                "accelerator": "auto",
-                "max_epochs": 50,
-                "log_every_n_steps": 1,
-            }
-            litmodel = {"learning_rate": 0.01}
-
-            data = {
-                "transforms": feature,
-                "use_stratified": False if task == "betti_numbers" else True,
-                "seed": 1234,
-            }
-
-            config = {
-                "task": task,
-                "model": modelconfig,
-                "trainer": trainer,
-                "litmodel": litmodel,
-                "data": data,
-            }
-
-            conf = OmegaConf.create(config)
-            OmegaConf.save(
-                conf, f"./configs/{model.lower()}_{task}_{feature}.yaml"
+            model_config_cls = model_cfg_lookup[model]
+            model_config = model_config_cls(
+                out_channels=out_channels, num_node_features=num_node_features
             )
+            trainer_config = TrainerConfig(
+                accelerator="auto", max_epochs=50, log_every_n_steps=1
+            )
+            config = ConfigExperimentRun(
+                type_model=model,
+                task_type=task,
+                seed=1234,
+                transforms=feature,
+                use_stratified=False
+                if task == TaskType.BETTI_NUMBERS
+                else True,
+                learning_rate=0.01,
+                trainer_config=trainer_config,
+                conf_model=model_config,
+            )
+
+            json_string = config.model_dump_json()
+
+            python_dict = json.loads(json_string)
+            yaml_string = yaml.dump(python_dict)
+            yaml_file_path = f"./configs/{model.name.lower()}_{task.name.lower()}_{feature.name.lower()}.yaml"
+            with open(yaml_file_path, "w") as file:
+                file.write(yaml_string)

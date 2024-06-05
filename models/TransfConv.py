@@ -2,12 +2,10 @@ import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import global_mean_pool, TransformerConv
 
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class TransfConvConfig:
-    model_name: str = "TransfConv"
+class TransfConvConfig(BaseModel):
     hidden_channels: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1
