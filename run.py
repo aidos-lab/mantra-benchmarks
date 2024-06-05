@@ -2,6 +2,7 @@ from experiments.configs import load_config
 from experiments.run_experiment import run_configuration
 import os
 
+
 def run_configs_folder():
     config_dir = "./configs"
     files = os.listdir(config_dir)

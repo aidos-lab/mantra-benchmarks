@@ -22,6 +22,7 @@ class ConfigExperimentRun(BaseSettings):
     trainer_config: TrainerConfig
     conf_model: ModelConfig
 
+
 def load_config(config_fpath: str) -> ConfigExperimentRun:
     with open(config_fpath, "r") as file:
         data = yaml.safe_load(file)
