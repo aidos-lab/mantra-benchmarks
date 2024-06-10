@@ -16,7 +16,7 @@ def get_wandb_logger(
     wandb_logger = WandbLogger(
         project="mantra-dev", entity="er-wnb-1a33y", save_dir=save_dir
     )
-    wandb_logger.experiment.config["task"] = task_name.name.lower()
+    wandb_logger.experiment.config["task"] = task_name.lower()
     wandb_logger.experiment.config["run_id"] = run_id
     wandb_logger.experiment.config["node_features"] = node_features
 
