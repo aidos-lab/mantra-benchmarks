@@ -1,15 +1,10 @@
-import gudhi
-import numpy as np
 import torch
 from toponetx.classes import SimplicialComplex
 from toponetx.utils import (
     compute_bunch_normalized_matrices,
     compute_x_laplacian_normalized_matrix,
 )
-from torch_geometric.transforms import ToUndirected
 from torch_geometric.utils import degree
-
-# import torchvision.transforms as transforms
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
 from datasets.utils import (
     create_signals_on_data_if_needed,
@@ -23,51 +18,6 @@ from enum import Enum
 class SetNumNodesTransform:
     def __call__(self, data):
         data.num_nodes = data.n_vertices
-        return data
-
-
-class Simplex2VecTransform:
-    def __call__(self, data):
-        st = gudhi.SimplexTree()
-
-        ei = [
-            [edge[0], edge[1]]
-            for edge in data.edge_index.T.tolist()
-            if edge[0] < edge[1]
-        ]
-        data.edge_index = torch.tensor(ei).T
-        # Say hi to bad programming
-        for edge in ei:
-            st.insert(edge)
-        st.expansion(3)
-
-        p1 = ks2v.assemble(cplx=st, k=1, scheme="uniform", laziness=None)
-        P1 = p1.toarray()
-
-        Simplices = list()
-        for simplex in st.get_filtration():
-            if simplex[1] != np.inf:
-                Simplices.append(simplex[0])
-            else:
-                break
-
-        ## Perform random walks on the edges
-        L = 20
-        N = 40
-        Walks = ks2v.RandomWalks(walk_length=L, number_walks=N, P=P1, seed=3)
-        # to save the walks in a text file
-        ks2v.save_random_walks(Walks, "RandomWalks_Edges.txt")
-
-        ## Embed the edges
-        Emb = ks2v.Embedding(
-            Walks=Walks,
-            emb_dim=20,
-            epochs=5,
-            filename="k-simplex2vec_Edge_embedding.model",
-        )
-        data.edge_attr = torch.tensor(Emb.wv.vectors)
-        toundirected = ToUndirected()
-        data = toundirected(data)
         return data
 
 
