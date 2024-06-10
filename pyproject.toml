@@ -1,31 +1,43 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
-name = "mantra"
+[tool.poetry]
+name = "mantra-benchmarks"
 version = "0.0.1"
-dependencies = [
-    "gudhi",
-    "lightning",
-    "wandb",
-]
-requires-python = ">=3.8"
-authors = [
-    { name = "Bastian Rieck", email = "bastian.rieck@helmholtz-munich.de" },
-]
 description = "Manifold Triangulations"
+authors = [
+    "Bastian Rieck <bastian.rieck@helmholtz-munich.de>"
+]
+license = "BSD-3-Clause"
 readme = "README.md"
-license = { file = "LICENSE.md" }
+homepage = "https://github.com/aidos-lab/mantra-benchmarks"
+repository = "https://github.com/aidos-lab/mantra-benchmarks.git"
+documentation = "https://github.com/aidos-lab/mantra-benchmarks.git/issues"
+package-mode = false 
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
     "License :: OSI Approved :: BSD-3-Clause",
 ]
 
-[project.urls]
-Repository = "https://github.com/aidos-lab/MANTRA.git"
-"Bug Tracker" = "https://github.com/aidos-lab/MANTRA.git/issues"
+[tool.poetry.dependencies]
+python = "3.10.13"
+gudhi = "3.9.0"
+lightning = "2.2.5"
+wandb = "0.17.0"
+scikit-learn = "1.5.0"
+scipy = "1.10.1"
+torch_geometric = "2.5.3"
+pandas = "2.2.2"
+pydantic = "2.7.2"
+torchvision = "0.18.0"
+gensim = "4.3.2"
+omegaconf = "2.3.0"
+pydantic-settings = "2.2.1"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^21.12b0", allow-prereleases = true}
 
 [tool.black]
 line-length = 79
