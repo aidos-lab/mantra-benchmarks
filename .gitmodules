@@ -1,0 +1,3 @@
+[submodule "mantra"]
+	path = mantra
+	url = git@github.com:aidos-lab/mantra.git
