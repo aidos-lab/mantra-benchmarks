@@ -9,7 +9,7 @@ from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
 import yaml
-from typing import Any
+from typing import Any, List
 
 
 class TrainerConfig(BaseSettings):

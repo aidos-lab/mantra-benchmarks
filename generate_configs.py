@@ -60,7 +60,6 @@ for model in models:
             model_config = model_config_cls(
                 out_channels=out_channels, num_node_features=num_node_features
             )
-            print(model_config)
             trainer_config = TrainerConfig(
                 accelerator="auto", max_epochs=50, log_every_n_steps=1
             )
