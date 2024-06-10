@@ -8,10 +8,10 @@ from toponetx.utils import (
 )
 from torch_geometric.transforms import ToUndirected
 from torch_geometric.utils import degree
-import torchvision.transforms as transforms
+
+# import torchvision.transforms as transforms
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
-import mantra.k_simplex2vec as ks2v
-from mantra.utils import (
+from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
     create_other_features_on_data_if_needed,

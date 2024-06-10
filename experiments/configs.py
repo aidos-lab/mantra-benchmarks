@@ -4,7 +4,7 @@ Pydantic configuration of experiment runs.
 
 from pydantic_settings import BaseSettings
 from models.models import ModelConfig
-from mantra import TransformType
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
 import yaml

@@ -10,12 +10,12 @@ from metrics.tasks import (
 from experiments.configs import ConfigExperimentRun
 from models import model_lookup
 from typing import Dict
-from mantra.dataset import SimplicialDataModule
+from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
 from experiments.loggers import get_wandb_logger
 import lightning as L
 import uuid
-from mantra import transforms_lookup
+from datasets.transforms import transforms_lookup
 
 
 def run_configuration(config: ConfigExperimentRun):

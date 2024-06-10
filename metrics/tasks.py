@@ -1,7 +1,7 @@
 from typing import List, Callable, Dict, Tuple
 from enum import Enum
 
-from mantra.transforms import (
+from datasets.transforms import (
     orientability_transforms,
     name_transforms,
     betti_numbers_transforms,

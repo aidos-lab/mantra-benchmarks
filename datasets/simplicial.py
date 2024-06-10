@@ -6,7 +6,6 @@ from torch_geometric.transforms import Compose
 import torch
 from torch.utils.data import Subset
 import numpy as np
-from numpy.random import RandomState
 
 
 class SimplicialDataModule(LightningDataModule):
