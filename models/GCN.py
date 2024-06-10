@@ -6,9 +6,11 @@ import torch.nn.functional as F
 from torch import nn
 from torch_geometric.nn import GCNConv, global_mean_pool
 from pydantic import BaseModel
+from .model_types import ModelType
 
 
 class GCNConfig(BaseModel):
+    type: ModelType = ModelType.GCN
     hidden_channels: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1

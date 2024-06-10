@@ -3,21 +3,15 @@ Collection of models. Useful for quantitative comparisons and templating.
 """
 
 from enum import Enum
-from typing import Dict, Union
+from typing import Dict, Union, Annotated
+from pydantic import Tag
 import torch.nn as nn
 from models.GCN import GCN, GCNConfig
 from models.GAT import GAT, GATConfig
 from models.MLP import MLP, MLPConfig
 from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
-
-
-class ModelType(Enum):
-    GAT = "gat"
-    GCN = "gcn"
-    MLP = "mlp"
-    TAG = "tag"
-    TransfConv = "transfconv"
+from .model_types import ModelType
 
 
 model_lookup: Dict[ModelType, nn.Module] = {
@@ -37,5 +31,9 @@ model_cfg_lookup: Dict[ModelType, nn.Module] = {
 }
 
 ModelConfig = Union[
-    GATConfig, GCNConfig, MLPConfig, TransfConvConfig, TAGConfig
+    Annotated[MLPConfig, Tag(ModelType.MLP)],
+    Annotated[GATConfig, Tag(ModelType.GAT)],
+    Annotated[GCNConfig, Tag(ModelType.GCN)],
+    Annotated[TransfConvConfig, Tag(ModelType.TransfConv)],
+    Annotated[TAGConfig, Tag(ModelType.TAG)],
 ]

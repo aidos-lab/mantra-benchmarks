@@ -31,7 +31,7 @@ def run_configuration(config: ConfigExperimentRun):
         seed=config.seed,
     )
 
-    model = model_lookup[config.type_model](config.conf_model)
+    model = model_lookup[config.conf_model.type](config.conf_model)
 
     lit_model = BaseModel(
         model,
@@ -43,7 +43,7 @@ def run_configuration(config: ConfigExperimentRun):
 
     logger = get_wandb_logger(
         task_name=config.task_type.name,
-        model_name=config.type_model.name,
+        model_name=config.conf_model.type.name,
         node_features=config.transforms.name,
         run_id=run_id,
     )
@@ -59,3 +59,5 @@ def run_configuration(config: ConfigExperimentRun):
     # run
     trainer.fit(lit_model, dm)
     logger.experiment.finish()
+
+    return trainer

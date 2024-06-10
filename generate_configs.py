@@ -18,7 +18,7 @@ features = [
 models = [
     ModelType.GCN,
     ModelType.GAT,
-    ModelType.GCN,
+    ModelType.MLP,
     ModelType.TAG,
     ModelType.TransfConv,
 ]
@@ -56,14 +56,15 @@ for model in models:
             num_node_features = node_feature_dict[feature]
             out_channels = out_channels_dict[task]
             model_config_cls = model_cfg_lookup[model]
+
             model_config = model_config_cls(
                 out_channels=out_channels, num_node_features=num_node_features
             )
+            print(model_config)
             trainer_config = TrainerConfig(
                 accelerator="auto", max_epochs=50, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
-                type_model=model,
                 task_type=task,
                 seed=1234,
                 transforms=feature,

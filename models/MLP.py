@@ -4,11 +4,12 @@ Multi-Layer Perceptron implementation.
 
 import torch.nn as nn
 from torch_geometric.nn import pool
-from dataclasses import dataclass
 from pydantic import BaseModel
+from .model_types import ModelType
 
 
 class MLPConfig(BaseModel):
+    type: ModelType = ModelType.MLP
     num_hidden_neurons: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1

@@ -3,9 +3,11 @@ from torch import nn
 from torch_geometric.nn import global_mean_pool, TransformerConv
 
 from pydantic import BaseModel
+from .model_types import ModelType
 
 
 class TransfConvConfig(BaseModel):
+    type: ModelType = ModelType.TransfConv
     hidden_channels: int = 64
     num_hidden_layers: int = 3
     num_node_features: int = 1
