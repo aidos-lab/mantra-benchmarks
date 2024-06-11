@@ -2,7 +2,6 @@
 Collection of models. Useful for quantitative comparisons and templating.
 """
 
-from enum import Enum
 from typing import Dict, Union, Annotated
 from pydantic import Tag
 import torch.nn as nn
@@ -12,6 +11,7 @@ from models.MLP import MLP, MLPConfig
 from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
 from .model_types import ModelType
+from pydantic import BaseModel
 
 
 model_lookup: Dict[ModelType, nn.Module] = {
@@ -22,7 +22,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.TransfConv: TransfConv,
 }
 
-model_cfg_lookup: Dict[ModelType, nn.Module] = {
+model_cfg_lookup: Dict[ModelType, BaseModel] = {
     ModelType.GAT: GATConfig,
     ModelType.GCN: GCNConfig,
     ModelType.MLP: MLPConfig,
