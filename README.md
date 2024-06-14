@@ -23,7 +23,7 @@ $ python ./run.py --mode "single" --config "/path/to/config.yaml" --wandb "wandb
 ```
 for running a single experiment or
 ```s
-$ python ./run.py --mode "all"
+$ python ./run.py --mode "all" --wandb "wandb-project-id"
 ```
 for running all experiments.
 
