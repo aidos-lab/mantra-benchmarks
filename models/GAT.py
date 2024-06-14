@@ -37,7 +37,8 @@ class GAT(nn.Module):
             config.hidden_channels, config.out_channels
         )
 
-    def forward(self, x, edge_index, batch):
+    def forward(self, batch):
+        x, edge_index, batch = batch.x, batch.edge_index, batch.batch
         # 1. Obtain node embeddings
         x = self.gat_input(x, edge_index)
         for layer in self.hidden_layers:
