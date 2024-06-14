@@ -35,11 +35,12 @@ class MLP(nn.Module):
             config.num_hidden_neurons, config.out_channels
         )
 
-    def forward(self, x, edge_index, signal_belongings):
+    def forward(self, batch):
+        x, _, batch = batch.x, batch.edge_index, batch.batch
         x = self.input_layer(x)
         x = nn.functional.relu(x)
         for hidden_layer in self.hidden_layers:
             x = hidden_layer(x)
             x = nn.functional.relu(x)
         x = self.output_layer(x)
-        return pool.global_mean_pool(x, signal_belongings)
+        return pool.global_mean_pool(x, batch)

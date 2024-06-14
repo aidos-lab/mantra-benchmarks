@@ -27,13 +27,22 @@ class BaseModel(L.LightningModule):
         self.model = model
         self.learning_rate = learning_rate
 
-    def forward(self, x, edge_index, batch):
-        x = self.model(x, edge_index, batch)
+    def forward(self, batch):
+        x = self.model(batch)
         return x
 
     def general_step(self, batch, batch_idx, step: str):
-        batch_len = len(batch.y)
-        x_hat = self(batch.x, batch.edge_index, batch.batch)
+
+        # This is rather ugly, open to better solutions,
+        # but torch_geometric and the toponetx dl have rather different
+        # signatures.
+        if hasattr(batch, "batch"):
+            batch_len = batch.batch.max() + 1
+        else:
+            batch_len = batch[-1]
+
+        # Generalizing to accomodate for the different signatures.
+        x_hat = self(batch)
         # Squeeze x_hat to match the shape of y
         x_hat = x_hat.squeeze()
         loss = self.loss_fn(x_hat, batch.y)
