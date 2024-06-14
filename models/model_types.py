@@ -7,3 +7,6 @@ class ModelType(Enum):
     MLP = "mlp"
     TAG = "tag"
     TransfConv = "transfconv"
+
+
+model_types_str = ", ".join(type_.value for type_ in ModelType)

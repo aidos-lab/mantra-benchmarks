@@ -15,8 +15,17 @@ $ poetry install
 
 ## Usage
 
-1. `python generate_configs.py`
-2. `python run.py`
+1. Generate experiment configurations: `python generate_configs.py`
+2. Run experiments:
+
+```s
+$ python ./run.py --mode "single" --config "/path/to/config.yaml" --wandb "wandb-project-id"
+```
+for running a single experiment or
+```s
+$ python ./run.py --mode "all"
+```
+for running all experiments.
 
 ## Results
 

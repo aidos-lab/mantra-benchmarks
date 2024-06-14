@@ -61,7 +61,7 @@ for model in models:
                 out_channels=out_channels, num_node_features=num_node_features
             )
             trainer_config = TrainerConfig(
-                accelerator="auto", max_epochs=50, log_every_n_steps=1
+                accelerator="auto", max_epochs=5, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
                 task_type=task,

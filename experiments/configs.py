@@ -13,9 +13,9 @@ from typing import Any, List
 
 
 class TrainerConfig(BaseSettings):
-    accelerator: str
-    max_epochs: int
-    log_every_n_steps: int
+    accelerator: str = "auto"
+    max_epochs: int = 10
+    log_every_n_steps: int = 1
 
 
 def get_discriminator_value(v: Any) -> ModelType:
@@ -27,13 +27,18 @@ def get_discriminator_value(v: Any) -> ModelType:
     return ModelType(type_str)
 
 
+class WandbConfig(BaseSettings):
+    wandb_project_id: str = "mantra-dev"
+
+
 class ConfigExperimentRun(BaseSettings):
     seed: int = 10
-    transforms: TransformType
+    transforms: TransformType = TransformType.degree_transform_onehot
     use_stratified: bool = True
-    task_type: TaskType
-    learning_rate: float
-    trainer_config: TrainerConfig
+    logging: WandbConfig = WandbConfig()
+    task_type: TaskType = TaskType.BETTI_NUMBERS
+    learning_rate: float = 1e-3
+    trainer_config: TrainerConfig = TrainerConfig()
     conf_model: ModelConfig = Field(
         discriminator=Discriminator(get_discriminator_value)
     )

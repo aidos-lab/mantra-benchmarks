@@ -46,6 +46,7 @@ def run_configuration(config: ConfigExperimentRun):
         model_name=config.conf_model.type.name,
         node_features=config.transforms.name,
         run_id=run_id,
+        project_id=config.logging.wandb_project_id,
     )
 
     trainer = L.Trainer(
