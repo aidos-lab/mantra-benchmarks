@@ -25,7 +25,7 @@ models = [
 
 node_feature_dict = {
     TransformType.degree_transform: 1,
-    TransformType.degree_transform_onehot: 9,
+    TransformType.degree_transform_onehot: 10,
     TransformType.random_node_features: 8,
 }
 
@@ -61,7 +61,7 @@ for model in models:
                 out_channels=out_channels, num_node_features=num_node_features
             )
             trainer_config = TrainerConfig(
-                accelerator="auto", max_epochs=5, log_every_n_steps=1
+                accelerator="auto", max_epochs=2, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
                 task_type=task,

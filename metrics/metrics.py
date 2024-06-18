@@ -3,6 +3,8 @@ from torch.nn import ModuleList
 import torch
 from torch import Tensor
 from torchmetrics import Metric
+import torchmetrics.classification
+from typing import List
 
 
 class GeneralAccuracy(Metric):
@@ -26,22 +28,23 @@ class GeneralAccuracy(Metric):
 
 def get_orientability_metrics():
     return (
-        torchmetrics.classification.BinaryAccuracy(),
-        torchmetrics.classification.BinaryAccuracy(),
-        torchmetrics.classification.BinaryAccuracy(),
+        torchmetrics.classification.F1Score(task="binary"),
+        torchmetrics.classification.F1Score(task="binary"),
+        torchmetrics.classification.F1Score(task="binary"),
     )
 
 
 def get_name_metrics(num_classes=5):
     return (
         torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes, average="micro"
+            num_classes=num_classes,
+            average="weighted",
         ),
         torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes, average="micro"
+            num_classes=num_classes, average="weighted"
         ),
         torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes, average="micro"
+            num_classes=num_classes, average="weighted"
         ),
     )
 

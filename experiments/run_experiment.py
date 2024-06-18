@@ -9,6 +9,7 @@ from metrics.tasks import (
 )
 from experiments.configs import ConfigExperimentRun
 from models import model_lookup
+from metrics.tasks import TaskType
 from typing import Dict
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
@@ -31,6 +32,20 @@ def run_configuration(config: ConfigExperimentRun):
         seed=config.seed,
     )
 
+    imbalance_statistics = dm.class_imbalance_statistics()
+    name_imbalance = imbalance_statistics["name"][1]
+    orientability_imbalace = imbalance_statistics["orientable"][1]
+
+    if config.task_type == TaskType.BETTI_NUMBERS:
+        # betti numbers is linear regression, so no imbalance necessary
+        imbalance = [1]
+    elif config.task_type == TaskType.NAME:
+        imbalance = name_imbalance
+    elif config.task_type == TaskType.ORIENTABILITY:
+        imbalance = orientability_imbalace
+
+    print(imbalance)
+
     model = model_lookup[config.conf_model.type](config.conf_model)
 
     lit_model = BaseModel(
@@ -39,6 +54,7 @@ def run_configuration(config: ConfigExperimentRun):
         task_lookup[config.task_type].accuracies,
         task_lookup[config.task_type].loss_fn,
         learning_rate=config.learning_rate,
+        imbalance=imbalance
     )
 
     logger = get_wandb_logger(
