@@ -22,7 +22,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "3.10.13"
+python = "~3.10"
 gudhi = "3.9.0"
 lightning = "2.2.5"
 wandb = "0.17.0"

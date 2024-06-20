@@ -1,3 +1,6 @@
 [submodule "mantra"]
 	path = mantra
 	url = git@github.com:aidos-lab/mantra.git
+[submodule "TopoBenchmarkX"]
+	path = TopoBenchmarkX
+	url = https://github.com/pyt-team/TopoBenchmarkX
