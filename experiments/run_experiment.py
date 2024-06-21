@@ -42,16 +42,16 @@ def run_configuration(config: ConfigExperimentRun):
         learning_rate=config.learning_rate,
     )
 
-    #logger = get_wandb_logger(
-    #    task_name=config.task_type.name,
-    #    model_name=config.conf_model.type.name,
-    #    node_features=config.transforms.name,
-    #    run_id=run_id,
-    #    project_id=config.logging.wandb_project_id,
-    #)
+    logger = get_wandb_logger(
+        task_name=config.task_type.name,
+        model_name=config.conf_model.type.name,
+        node_features=config.transforms.name,
+        run_id=run_id,
+        project_id=config.logging.wandb_project_id,
+    )
 
     trainer = L.Trainer(
-        #logger=logger,
+        # logger=logger,
         accelerator=config.trainer_config.accelerator,
         max_epochs=config.trainer_config.max_epochs,
         log_every_n_steps=config.trainer_config.log_every_n_steps,
@@ -60,6 +60,6 @@ def run_configuration(config: ConfigExperimentRun):
 
     # run
     trainer.fit(lit_model, dm)
-    # logger.experiment.finish()
+    logger.experiment.finish()
 
     return trainer

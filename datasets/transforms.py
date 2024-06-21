@@ -162,7 +162,9 @@ class RandomSimplicesFeatures:
         data = create_signals_on_data_if_needed(data)
         for dim in range(data.sc.dim + 1):
             data = append_signals(
-                data, dim, torch.normal(0, 1, size=(data.sc.shape[dim], self.size))
+                data,
+                dim,
+                torch.normal(0, 1, size=(data.sc.shape[dim], self.size)),
             )
         return data
 
@@ -201,7 +203,7 @@ degree_transform_sc = [
     SimplicialComplexDegreeTransform(),
     SimplicialComplexEdgeAdjacencyDegreeTransform(),
     SimplicialComplexEdgeCoadjacencyDegreeTransform(),
-    SimplicialComplexTriangleCoadjacencyDegreeTransform()
+    SimplicialComplexTriangleCoadjacencyDegreeTransform(),
 ]
 
 random_simplices_features = [
@@ -224,5 +226,5 @@ transforms_lookup = {
     TransformType.degree_transform_onehot: degree_transform_onehot,
     TransformType.random_node_features: random_node_features,
     TransformType.degree_transform_sc: degree_transform_sc,
-    TransformType.random_simplices_features: random_simplices_features
+    TransformType.random_simplices_features: random_simplices_features,
 }

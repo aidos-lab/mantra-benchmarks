@@ -17,7 +17,7 @@ graph_features = [
 
 simplicial_features = [
     TransformType.degree_transform_sc,
-    TransformType.random_simplices_features
+    TransformType.random_simplices_features,
 ]
 
 graph_models = {
@@ -32,7 +32,7 @@ simplicial_models = {
     ModelType.SAN,
     ModelType.SCCN,
     ModelType.SCCNN,
-    ModelType.SCN
+    ModelType.SCN,
 }
 
 models = list(graph_models) + list(simplicial_models)
@@ -42,7 +42,7 @@ feature_dim_dict = {
     TransformType.degree_transform_onehot: 9,
     TransformType.random_node_features: 8,
     TransformType.degree_transform_sc: [1, 2, 1],
-    TransformType.random_simplices_features: [8, 8, 8]
+    TransformType.random_simplices_features: [8, 8, 8],
 }
 
 out_channels_dict = {
@@ -59,7 +59,9 @@ def get_feature_types(model: ModelType):
         return simplicial_features
 
 
-def get_model_config(model: ModelType, out_channels: int, dim_features: int | tuple[int]):
+def get_model_config(
+    model: ModelType, out_channels: int, dim_features: int | tuple[int]
+):
     model_config_cls = model_cfg_lookup[model]
     if model in graph_models:
         model_config = model_config_cls(

@@ -19,23 +19,23 @@ class SCCNConfig(BaseModel):
 class SCCN(nn.Module):
     """Simplicial Complex Convolutional Network Implementation for binary node classification.
 
-        Original paper: Efficient Representation Learning for Higher-Order Data with Simplicial Complexes (https://openreview.net/pdf?id=nGqJY4DODN)
+    Original paper: Efficient Representation Learning for Higher-Order Data with Simplicial Complexes (https://openreview.net/pdf?id=nGqJY4DODN)
 
-        Parameters
-        ----------
-        in_channels: tuple[int]
-            Dimension of input features.
-        channels : int
-            Dimension of features backbone.
-        out_channels : int
-            Dimension of output features.
-        max_rank : int
-            Maximum rank of the cells in the simplicial complex.
-        n_layers : int
-            Number of message passing layers.
-        update_func : str
-            Activation function used in aggregation layers.
-        """
+    Parameters
+    ----------
+    in_channels: tuple[int]
+        Dimension of input features.
+    channels : int
+        Dimension of features backbone.
+    out_channels : int
+        Dimension of output features.
+    max_rank : int
+        Maximum rank of the cells in the simplicial complex.
+    n_layers : int
+        Number of message passing layers.
+    update_func : str
+        Activation function used in aggregation layers.
+    """
 
     def __init__(self, config: SCCNConfig):
         super().__init__()
@@ -49,11 +49,17 @@ class SCCN(nn.Module):
         self.input_1_proj_needed = config.in_channels[1] != config.channels
         self.input_2_proj_needed = config.in_channels[2] != config.channels
         if self.input_0_proj_needed:
-            self.input_projection_0 = nn.Linear(config.in_channels[0], config.channels)
+            self.input_projection_0 = nn.Linear(
+                config.in_channels[0], config.channels
+            )
         if self.input_1_proj_needed:
-            self.input_projection_1 = nn.Linear(config.in_channels[1], config.channels)
+            self.input_projection_1 = nn.Linear(
+                config.in_channels[1], config.channels
+            )
         if self.input_2_proj_needed:
-            self.input_projection_2 = nn.Linear(config.in_channels[2], config.channels)
+            self.input_projection_2 = nn.Linear(
+                config.in_channels[2], config.channels
+            )
         self.readout_0 = SumReadout(config.channels, config.out_channels)
         self.readout_1 = SumReadout(config.channels, config.out_channels)
         self.readout_2 = SumReadout(config.channels, config.out_channels)
@@ -62,7 +68,11 @@ class SCCN(nn.Module):
         x = batch.x
         connectivity_matrices = batch.connectivity
         x_belonging = batch.x_belonging
-        x_bel_0, x_bel_1, x_bel_2 = x_belonging[0], x_belonging[1], x_belonging[2]
+        x_bel_0, x_bel_1, x_bel_2 = (
+            x_belonging[0],
+            x_belonging[1],
+            x_belonging[2],
+        )
         if self.input_0_proj_needed:
             x[0] = self.input_projection_0(x[0])
         if self.input_1_proj_needed:
@@ -103,4 +113,3 @@ class SCCN(nn.Module):
                 f"Invalid number of output tensors: {len(output)}"
             )
         return out
-

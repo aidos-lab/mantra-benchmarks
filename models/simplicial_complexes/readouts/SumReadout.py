@@ -16,4 +16,3 @@ class SumReadout(nn.Module):
             x = self.linear(x)
         x = global_add_pool(x, signal_belongings)
         return x
-

@@ -1,6 +1,9 @@
 import numpy as np
 import torch
-from toponetx import compute_bunch_normalized_matrices, compute_x_laplacian_normalized_matrix
+from toponetx import (
+    compute_bunch_normalized_matrices,
+    compute_x_laplacian_normalized_matrix,
+)
 
 
 def create_signals_on_data_if_needed(data):
@@ -79,7 +82,7 @@ def get_complex_connectivity(complex, max_rank, signed=False):
                             n=practical_shape[rank_idx],
                         )
                     )
-    '''
+    """
     Not needed right now according to TopoBenchmarkX
     # Obtain normalized incidence matrices
     B1N, B1TN, B2N, B2TN = compute_bunch_normalized_matrices(connectivity['incidence_1'], connectivity['incidence_2'])
@@ -101,7 +104,7 @@ def get_complex_connectivity(complex, max_rank, signed=False):
                                                                connectivity['down_laplacian_2']))
                                                                
    connectivity["shape"] = practical_shape
-    '''
+    """
 
     return connectivity
 

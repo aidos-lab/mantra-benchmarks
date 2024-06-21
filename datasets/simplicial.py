@@ -9,6 +9,7 @@ import torch
 from torch.utils.data import Subset
 import numpy as np
 
+
 class SimplicialDataModule(LightningDataModule):
     def __init__(
         self,
@@ -53,7 +54,9 @@ class SimplicialDataModule(LightningDataModule):
         self.val_ds = Subset(simplicial_full, val_indices)
 
     def train_dataloader(self):
-        return self.dataloader_builder(self.train_ds, batch_size=self.batch_size)
+        return self.dataloader_builder(
+            self.train_ds, batch_size=self.batch_size
+        )
 
     def val_dataloader(self):
         return self.dataloader_builder(self.val_ds, batch_size=self.batch_size)

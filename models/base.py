@@ -41,7 +41,9 @@ class BaseModel(L.LightningModule):
         elif hasattr(batch, "batch"):
             batch_len = batch.batch.max() + 1
         else:
-            raise ValueError("Batch object does not have a known way to compute batch size.")
+            raise ValueError(
+                "Batch object does not have a known way to compute batch size."
+            )
 
         # Generalizing to accomodate for the different signatures.
         x_hat = self(batch)
