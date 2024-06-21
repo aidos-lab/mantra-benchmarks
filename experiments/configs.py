@@ -2,7 +2,7 @@
 Pydantic configuration of experiment runs.
 """
 
-from pydantic import Discriminator, Field
+from pydantic import Discriminator, Field, ValidationError
 from pydantic_settings import BaseSettings
 from models.models import ModelConfig
 from datasets.transforms import TransformType
@@ -47,7 +47,6 @@ class ConfigExperimentRun(BaseSettings):
 def load_config(config_fpath: str) -> ConfigExperimentRun:
     with open(config_fpath, "r") as file:
         data = yaml.safe_load(file)
-
     config = ConfigExperimentRun.model_validate(data)
     return config
 

@@ -1,16 +1,11 @@
 import torch
 from toponetx.classes import SimplicialComplex
-from toponetx.utils import (
-    compute_bunch_normalized_matrices,
-    compute_x_laplacian_normalized_matrix,
-)
 from torch_geometric.utils import degree
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
 from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
-    create_other_features_on_data_if_needed,
-    create_neighborhood_matrices_on_data_if_needed,
+    get_complex_connectivity,
 )
 from enum import Enum
 
@@ -52,8 +47,6 @@ class SimplicialComplexTransform:
     def __call__(self, data):
         data.sc = SimplicialComplex(data.triangulation)
         create_signals_on_data_if_needed(data)
-        create_other_features_on_data_if_needed(data)
-        create_neighborhood_matrices_on_data_if_needed(data)
         return data
 
 
@@ -111,65 +104,13 @@ class SimplicialComplexTriangleCoadjacencyDegreeTransform:
 
 class OrientableToClassSimplicialComplexTransform:
     def __call__(self, data):
-        data = create_other_features_on_data_if_needed(data)
         data.other_features["y"] = data.orientable.long()
         return data
 
 
-class SCNNNeighborhoodMatricesTransform:
+class SimplicialComplexStructureMatricesTransform:
     def __call__(self, data):
-        data = create_neighborhood_matrices_on_data_if_needed(data)
-        data.neighborhood_matrices["1_boundary"] = data.sc.incidence_matrix(1)
-        data.neighborhood_matrices["2_boundary"] = data.sc.incidence_matrix(2)
-        data.neighborhood_matrices["0_laplacian"] = data.sc.laplacian_matrix(0)
-        data.neighborhood_matrices["1_laplacian_up"] = (
-            data.sc.up_laplacian_matrix(rank=1)
-        )
-        data.neighborhood_matrices["1_laplacian_down"] = (
-            data.sc.down_laplacian_matrix(rank=1)
-        )
-        data.neighborhood_matrices["1_laplacian"] = (
-            data.sc.hodge_laplacian_matrix(rank=1)
-        )
-        data.neighborhood_matrices["2_laplacian"] = (
-            data.sc.hodge_laplacian_matrix(rank=2)
-        )
-        return data
-
-
-class SCConvNeighborhoodMatricesTransform:
-    def __call__(self, data):
-        B1 = data.sc.incidence_matrix(1)
-        B2 = data.sc.incidence_matrix(2)
-        B1N, B1TN, B2N, B2TN = compute_bunch_normalized_matrices(B1, B2)
-        data = create_neighborhood_matrices_on_data_if_needed(data)
-        data.neighborhood_matrices["1_boundary"] = B1
-        data.neighborhood_matrices["2_boundary"] = B2
-        data.neighborhood_matrices["1_boundary_norm"] = B1N
-        data.neighborhood_matrices["2_boundary_norm"] = B2N
-        data.neighborhood_matrices["1_boundary_transpose_norm"] = B1TN
-        data.neighborhood_matrices["2_boundary_transpose_norm"] = B2TN
-        # Matrices normalized using the normalization given by TopoNetX. For incidence matrices,
-        # it coincides with the normalization of the paper. For the Laplacian matrices, however, it does not coincide.
-        L0_up = data.sc.up_laplacian_matrix(0)
-        L1_down = data.sc.down_laplacian_matrix(1)
-        L1_up = data.sc.up_laplacian_matrix(1)
-        L2_down = data.sc.down_laplacian_matrix(2)
-        L0 = L0_up
-        L1 = L1_down + L1_up
-        L2 = L2_down
-        data.neighborhood_matrices["0_laplacian_up_norm"] = (
-            compute_x_laplacian_normalized_matrix(L0, L0_up)
-        )
-        data.neighborhood_matrices["1_laplacian_up_norm"] = (
-            compute_x_laplacian_normalized_matrix(L1, L1_up)
-        )
-        data.neighborhood_matrices["1_laplacian_down_norm"] = (
-            compute_x_laplacian_normalized_matrix(L1, L1_down)
-        )
-        data.neighborhood_matrices["2_laplacian_down_norm"] = (
-            compute_x_laplacian_normalized_matrix(L2, L2_down)
-        )
+        data.connectivity = get_complex_connectivity(data.sc, data.sc.dim)
         return data
 
 
@@ -200,15 +141,7 @@ class NameToClassSimplicialComplexTransform:
         }
 
     def __call__(self, data):
-        data = create_other_features_on_data_if_needed(data)
         data.other_features["y"] = torch.tensor([self.class_dict[data.name]])
-        return data
-
-
-class BettiNumbersToTargetSimplicialComplexTransform:
-    def __call__(self, data):
-        data = create_other_features_on_data_if_needed(data)
-        data.other_features["y"] = torch.tensor([data.betti_numbers])
         return data
 
 
@@ -218,6 +151,19 @@ class RandomNodeFeatures:
 
     def __call__(self, data):
         data.x = torch.normal(0, 1, size=(data.num_nodes, self.size))
+        return data
+
+
+class RandomSimplicesFeatures:
+    def __init__(self, size):
+        self.size = size
+
+    def __call__(self, data):
+        data = create_signals_on_data_if_needed(data)
+        for dim in range(data.sc.dim):
+            data = append_signals(
+                data, dim, torch.normal(0, 1, size=(data.sc.shape[dim], self.size))
+            )
         return data
 
 
@@ -232,7 +178,6 @@ degree_transform_onehot = [
     FaceToEdge(remove_faces=False),
     OneHotDegree(max_degree=8),
 ]
-
 
 degree_transform = [
     TriangulationToFaceTransform(),
@@ -250,15 +195,34 @@ betti_numbers_transforms = [
     BettiToY(),
 ]
 
+degree_transform_sc = [
+    SimplicialComplexTransform(),
+    SimplicialComplexStructureMatricesTransform(),
+    SimplicialComplexDegreeTransform(),
+    SimplicialComplexEdgeAdjacencyDegreeTransform(),
+    SimplicialComplexEdgeCoadjacencyDegreeTransform(),
+    SimplicialComplexTriangleCoadjacencyDegreeTransform()
+]
+
+random_simplices_features = [
+    SimplicialComplexTransform(),
+    SimplicialComplexStructureMatricesTransform(),
+    RandomSimplicesFeatures(size=8),
+]
+
 
 class TransformType(Enum):
     degree_transform = "degree_transform"
     degree_transform_onehot = "degree_transform_onehot"
     random_node_features = "random_node_features"
+    degree_transform_sc = "degree_transform_sc"
+    random_simplices_features = "random_simplices_features"
 
 
 transforms_lookup = {
     TransformType.degree_transform: degree_transform,
     TransformType.degree_transform_onehot: degree_transform_onehot,
     TransformType.random_node_features: random_node_features,
+    TransformType.degree_transform_sc: degree_transform_sc,
+    TransformType.random_simplices_features: random_simplices_features
 }
