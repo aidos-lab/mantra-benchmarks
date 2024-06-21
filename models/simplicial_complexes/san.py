@@ -81,7 +81,7 @@ class SAN(nn.Module):
         if self.input_2_proj_needed:
             x_2 = self.input_projection_2(x_2)
         x_bel_0, x_bel_1, x_bel_2 = x_belonging[0], x_belonging[1], x_belonging[2]
-        x_1 = self.backbone(
+        x_1 = self.san_backbone(
             x_1, connectivity_matrices['up_laplacian_1'], connectivity_matrices['down_laplacian_1']
         )
         # TODO: Not used, we can remove it, but it is written in TopoBenchmarkX

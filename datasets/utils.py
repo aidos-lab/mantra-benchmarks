@@ -65,9 +65,20 @@ def get_complex_connectivity(complex, max_rank, signed=False):
                     )
                 )
             except ValueError:
-                # In this case, the matrix does not exist, and therefore we do not add it to
-                # the connectivity dictionary.
-                pass
+                if connectivity_info == "incidence":
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx - 1],
+                            n=practical_shape[rank_idx],
+                        )
+                    )
+                else:
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx],
+                            n=practical_shape[rank_idx],
+                        )
+                    )
     '''
     Not needed right now according to TopoBenchmarkX
     # Obtain normalized incidence matrices

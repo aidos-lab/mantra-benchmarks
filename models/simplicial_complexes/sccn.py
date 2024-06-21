@@ -81,7 +81,7 @@ class SCCN(nn.Module):
             f"rank_{r}": connectivity_matrices[f"hodge_laplacian_{r}"]
             for r in range(self.backbone.layers[0].max_rank + 1)
         }
-        output = self.backbone(features, incidences, adjacencies)
+        output = self.sccn_backbone(features, incidences, adjacencies)
         if len(output) == 3:
             x_0, x_1, x_2 = (
                 output["rank_0"],

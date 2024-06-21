@@ -82,7 +82,7 @@ class SCCNN(nn.Module):
         )
         incidence_all = (connectivity_matrices['incidence_1'], connectivity_matrices['incidence_2'])
 
-        x_0, x_1, x_2 = self.scn_backbone(x_all, laplacian_all, incidence_all)
+        x_0, x_1, x_2 = self.sccnn_backbone(x_all, laplacian_all, incidence_all)
         out_0 = self.readout_0(x_0, x_bel_0)
         out_1 = self.readout_1(x_1, x_bel_1)
         out_2 = self.readout_2(x_2, x_bel_2)
