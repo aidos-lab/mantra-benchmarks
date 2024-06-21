@@ -9,9 +9,7 @@ from topomodelx.nn.simplicial.scn2 import SCN2
 
 class SCNConfig(BaseModel):
     type: ModelType = ModelType.SCN
-    in_channels_0: int
-    in_channels_1: int
-    in_channels_2: int
+    in_channels: tuple[int]
     out_channels: int
     n_layers: int = 2
 
@@ -69,9 +67,9 @@ class SCN(nn.Module):
     def __init__(self, config: SCNConfig):
         super().__init__()
         self.scn_backbone = SCN2(
-            config.in_channels_0,
-            config.in_channels_1,
-            config.in_channels_2,
+            config.in_channels[0],
+            config.in_channels[1],
+            config.in_channels[2],
             config.n_layers,
         )
         self.readout_0 = SumReadout(config.in_channels[0], config.out_channels)

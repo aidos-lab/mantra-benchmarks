@@ -20,17 +20,22 @@ simplicial_features = [
     TransformType.random_simplices_features
 ]
 
-models = [
+graph_models = {
     ModelType.GCN,
     ModelType.GAT,
     ModelType.MLP,
     ModelType.TAG,
     ModelType.TransfConv,
+}
+
+simplicial_models = {
     ModelType.SAN,
     ModelType.SCCN,
     ModelType.SCCNN,
     ModelType.SCN
-]
+}
+
+models = list(graph_models) + list(simplicial_models)
 
 feature_dim_dict = {
     TransformType.degree_transform: 1,
@@ -48,10 +53,23 @@ out_channels_dict = {
 
 
 def get_feature_types(model: ModelType):
-    if model in {ModelType.GCN, ModelType.GAT, ModelType.MLP, ModelType.TAG, ModelType.TransfConv}:
+    if model in graph_models:
         return graph_features
     else:
         return simplicial_features
+
+
+def get_model_config(model: ModelType, out_channels: int, dim_features: int | tuple[int]):
+    model_config_cls = model_cfg_lookup[model]
+    if model in graph_models:
+        model_config = model_config_cls(
+            out_channels=out_channels, num_node_features=dim_features
+        )
+    else:
+        model_config = model_config_cls(
+            out_channels=out_channels, in_channels=dim_features
+        )
+    return model_config
 
 
 def manage_directory(path: str):
@@ -72,13 +90,10 @@ for model in models:
     features = get_feature_types(model)
     for feature in features:
         for task in tasks:
-            num_node_features = feature_dim_dict[feature]
+            dim_features = feature_dim_dict[feature]
             out_channels = out_channels_dict[task]
+            model_config = get_model_config(model, out_channels, dim_features)
             model_config_cls = model_cfg_lookup[model]
-
-            model_config = model_config_cls(
-                out_channels=out_channels, num_node_features=num_node_features
-            )
             trainer_config = TrainerConfig(
                 accelerator="auto", max_epochs=5, log_every_n_steps=1
             )
