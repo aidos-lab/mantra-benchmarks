@@ -52,7 +52,7 @@ class SCCNN(nn.Module):
             self,
             config: SCCNNConfig
     ):
-        super(SCCNN, self).__init__()
+        super().__init__()
         self.sccnn_backbone = SCCNNCustom(
             config.in_channels,
             config.hidden_channels_all,

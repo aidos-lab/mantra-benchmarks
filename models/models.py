@@ -5,10 +5,9 @@ Collection of models. Useful for quantitative comparisons and templating.
 from typing import Dict, Union, Annotated, Callable
 from pydantic import Tag
 import torch.nn as nn
-from topomodelx.nn.simplicial.sccnn import SCCNN
 from torch_geometric.loader import DataLoader
 
-from datasets.topox_dataloader import collate_simplicial_models_topox, SimplicialTopoXDataloader
+from datasets.topox_dataloader import SimplicialTopoXDataloader
 from models.GCN import GCN, GCNConfig
 from models.GAT import GAT, GATConfig
 from models.MLP import MLP, MLPConfig
@@ -19,7 +18,7 @@ from pydantic import BaseModel
 
 from models.simplicial_complexes.san import SAN, SANConfig
 from models.simplicial_complexes.sccn import SCCN, SCCNConfig
-from models.simplicial_complexes.sccnn import SCCNNConfig
+from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
 
 model_lookup: Dict[ModelType, nn.Module] = {
