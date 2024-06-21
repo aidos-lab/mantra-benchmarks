@@ -9,10 +9,15 @@ import shutil
 
 tasks = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
 
-features = [
+graph_features = [
     TransformType.degree_transform,
     TransformType.degree_transform_onehot,
     TransformType.random_node_features,
+]
+
+simplicial_features = [
+    TransformType.degree_transform_sc,
+    TransformType.random_simplices_features
 ]
 
 models = [
@@ -21,12 +26,18 @@ models = [
     ModelType.MLP,
     ModelType.TAG,
     ModelType.TransfConv,
+    ModelType.SAN,
+    ModelType.SCCN,
+    ModelType.SCCNN,
+    ModelType.SCN
 ]
 
-node_feature_dict = {
+feature_dim_dict = {
     TransformType.degree_transform: 1,
     TransformType.degree_transform_onehot: 9,
     TransformType.random_node_features: 8,
+    TransformType.degree_transform_sc: [1, 2, 1],
+    TransformType.random_simplices_features: [8, 8, 8]
 }
 
 out_channels_dict = {
@@ -34,6 +45,13 @@ out_channels_dict = {
     TaskType.NAME: 5,
     TaskType.BETTI_NUMBERS: 3,
 }
+
+
+def get_feature_types(model: ModelType):
+    if model in {ModelType.GCN, ModelType.GAT, ModelType.MLP, ModelType.TAG, ModelType.TransfConv}:
+        return graph_features
+    else:
+        return simplicial_features
 
 
 def manage_directory(path: str):
@@ -51,9 +69,10 @@ def manage_directory(path: str):
 manage_directory("./configs")
 
 for model in models:
+    features = get_feature_types(model)
     for feature in features:
         for task in tasks:
-            num_node_features = node_feature_dict[feature]
+            num_node_features = feature_dim_dict[feature]
             out_channels = out_channels_dict[task]
             model_config_cls = model_cfg_lookup[model]
 

@@ -57,12 +57,8 @@ class SCN(nn.Module):
 
         Parameters
         ----------
-        in_channels_0 : int
-            Dimension of input features on nodes.
-        in_channels_1 : int
-            Dimension of input features on edges.
-        in_channels_2 : int
-            Dimension of input features on faces.
+        in_channels : tuple[int]
+            Dimension of input features.
         out_channels : int
             Dimension of output features.
         n_layers : int
@@ -78,9 +74,9 @@ class SCN(nn.Module):
             config.in_channels_2,
             config.n_layers,
         )
-        self.readout_0 = SumReadout(config.in_channels_0, config.out_channels)
-        self.readout_1 = SumReadout(config.in_channels_1, config.out_channels)
-        self.readout_2 = SumReadout(config.in_channels_2, config.out_channels)
+        self.readout_0 = SumReadout(config.in_channels[0], config.out_channels)
+        self.readout_1 = SumReadout(config.in_channels[1], config.out_channels)
+        self.readout_2 = SumReadout(config.in_channels[2], config.out_channels)
 
     def forward(self, batch):
         x = batch.x
