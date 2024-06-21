@@ -160,7 +160,7 @@ class RandomSimplicesFeatures:
 
     def __call__(self, data):
         data = create_signals_on_data_if_needed(data)
-        for dim in range(data.sc.dim):
+        for dim in range(data.sc.dim + 1):
             data = append_signals(
                 data, dim, torch.normal(0, 1, size=(data.sc.shape[dim], self.size))
             )
