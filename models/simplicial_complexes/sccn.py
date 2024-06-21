@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 class SCCNConfig(BaseModel):
     type: ModelType = ModelType.SCCN
-    in_channels: tuple[int]
+    in_channels: tuple[int, ...]
     channels: int = 64
     out_channels: int
     max_rank: int = 2

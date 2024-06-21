@@ -10,14 +10,14 @@ from topox.models.sccnn import SCCNNCustom
 
 class SCCNNConfig(BaseModel):
     type: ModelType = ModelType.SCCNN
-    in_channels: tuple[int]
-    hidden_channels_all: tuple[int] = [64, 64, 64]
+    in_channels: tuple[int, ...]
+    hidden_channels_all: tuple[int, ...] = (64, 64, 64)
     out_channels: int
     conv_order: int = 1
     sc_order: int = 3
     aggr_norm: bool = False
-    update_func: Optional[str] = None,
-    n_layers: int = 2,
+    n_layers: int = 2
+    update_func: Optional[str] = None
 
 
 class SCCNN(nn.Module):

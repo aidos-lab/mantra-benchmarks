@@ -67,7 +67,7 @@ def get_model_config(model: ModelType, out_channels: int, dim_features: int | tu
         )
     else:
         model_config = model_config_cls(
-            out_channels=out_channels, in_channels=dim_features
+            out_channels=out_channels, in_channels=tuple(dim_features)
         )
     return model_config
 
