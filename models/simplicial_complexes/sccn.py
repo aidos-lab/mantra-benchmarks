@@ -81,15 +81,15 @@ class SCCN(nn.Module):
             x[2] = self.input_projection_2(x[2])
         features = {
             f"rank_{r}": x[r]
-            for r in range(self.backbone.layers[0].max_rank + 1)
+            for r in range(self.sccn_backbone.layers[0].max_rank + 1)
         }
         incidences = {
             f"rank_{r}": connectivity_matrices[f"incidence_{r}"]
-            for r in range(1, self.backbone.layers[0].max_rank + 1)
+            for r in range(1, self.sccn_backbone.layers[0].max_rank + 1)
         }
         adjacencies = {
             f"rank_{r}": connectivity_matrices[f"hodge_laplacian_{r}"]
-            for r in range(self.backbone.layers[0].max_rank + 1)
+            for r in range(self.sccn_backbone.layers[0].max_rank + 1)
         }
         output = self.sccn_backbone(features, incidences, adjacencies)
         if len(output) == 3:
