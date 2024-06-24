@@ -49,12 +49,15 @@ def get_setup(
     print(imbalance)
 
     model = model_lookup[config.conf_model.type](config.conf_model)
+    metrics = task_lookup[config.task_type].get_metrics()
 
     lit_model = BaseModel(
-        model,
-        *task_lookup[config.task_type].get_metrics(),
-        task_lookup[config.task_type].accuracies,
-        task_lookup[config.task_type].loss_fn,
+        model=model,
+        training_accuracy=metrics.train,
+        test_accuracy=metrics.test,
+        validation_accuracy=metrics.val,
+        accuracies_fn=task_lookup[config.task_type].accuracies,
+        loss_fn=task_lookup[config.task_type].loss_fn,
         learning_rate=config.learning_rate,
         imbalance=imbalance,
     )

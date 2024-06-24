@@ -4,7 +4,23 @@ import torch
 from torch import Tensor
 from torchmetrics import Metric
 import torchmetrics.classification
-from typing import List
+from typing import Optional
+
+
+class MetricTrainValTest:
+    train: Metric
+    val: Metric
+    test: Metric
+
+    def __init__(
+        self,
+        train: Metric,
+        val: Optional[Metric] = None,
+        test: Optional[Metric] = None,
+    ) -> None:
+        self.train = train
+        self.val = self.train if val is None else val
+        self.test = self.train if test is None else test
 
 
 class GeneralAccuracy(Metric):
@@ -27,31 +43,24 @@ class GeneralAccuracy(Metric):
 
 
 def get_orientability_metrics():
-    return (
-        torchmetrics.classification.F1Score(task="binary"),
-        torchmetrics.classification.F1Score(task="binary"),
-        torchmetrics.classification.F1Score(task="binary"),
+    metrics = MetricTrainValTest(
+        torchmetrics.classification.F1Score(task="binary")
     )
+    return metrics
 
 
 def get_name_metrics(num_classes=5):
-    return (
+    metrics = MetricTrainValTest(
         torchmetrics.classification.MulticlassAccuracy(
             num_classes=num_classes,
             average="weighted",
-        ),
-        torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes, average="weighted"
-        ),
-        torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes, average="weighted"
-        ),
+        )
     )
+    return metrics
 
 
 def get_betti_numbers_metrics():
-    return (
-        ModuleList([GeneralAccuracy() for _ in range(3)]),
-        ModuleList([GeneralAccuracy() for _ in range(3)]),
-        ModuleList([GeneralAccuracy() for _ in range(3)]),
+    metrics = MetricTrainValTest(
+        ModuleList([GeneralAccuracy() for _ in range(3)])
     )
+    return metrics

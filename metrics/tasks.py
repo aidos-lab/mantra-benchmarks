@@ -21,6 +21,7 @@ from .metrics import (
     get_betti_numbers_metrics,
     get_name_metrics,
     get_orientability_metrics,
+    MetricTrainValTest,
 )
 
 from enum import Enum, auto
@@ -30,7 +31,7 @@ from torch_geometric.transforms import Compose
 class Task:
     transforms: Compose
     loss_fn: Callable
-    get_metrics: Callable[[], Tuple]
+    get_metrics: Callable[[], MetricTrainValTest]
     accuracies: Callable
 
     def __init__(self, transforms, loss_fn, metrics, accuracies) -> None:
