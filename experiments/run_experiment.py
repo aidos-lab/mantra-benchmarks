@@ -16,10 +16,10 @@ from experiments.loggers import get_wandb_logger
 import lightning as L
 import uuid
 from datasets.transforms import transforms_lookup
+from models.models import dataloader_lookup
 
 
 def run_configuration(config: ConfigExperimentRun):
-
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup[config.transforms]
     task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
@@ -29,6 +29,7 @@ def run_configuration(config: ConfigExperimentRun):
         transform=task_lookup[config.task_type].transforms,
         use_stratified=config.use_stratified,
         seed=config.seed,
+        dataloader_builder=dataloader_lookup[config.conf_model.type],
     )
 
     model = model_lookup[config.conf_model.type](config.conf_model)

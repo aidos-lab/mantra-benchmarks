@@ -1,5 +1,9 @@
 import numpy as np
 import torch
+from toponetx import (
+    compute_bunch_normalized_matrices,
+    compute_x_laplacian_normalized_matrix,
+)
 
 
 def create_signals_on_data_if_needed(data):
@@ -8,19 +12,101 @@ def create_signals_on_data_if_needed(data):
     return data
 
 
-def create_other_features_on_data_if_needed(data):
-    if not hasattr(data, "other_features") or data.other_features is None:
-        data.other_features = {}
-    return data
+def generate_zero_sparse_connectivity(m, n):
+    # Function extracted from TopoBenchmarkX
+    """Generate a zero sparse connectivity matrix.
+
+    Parameters
+    ----------
+    m : int
+        Number of rows.
+    n : int
+        Number of columns.
+
+    Returns
+    -------
+    torch.sparse_coo_tensor
+        Zero sparse connectivity matrix.
+    """
+    return torch.sparse_coo_tensor((m, n)).coalesce()
 
 
-def create_neighborhood_matrices_on_data_if_needed(data):
-    if (
-        not hasattr(data, "neighborhood_matrices")
-        or data.neighborhood_matrices is None
-    ):
-        data.neighborhood_matrices = {}
-    return data
+def get_complex_connectivity(complex, max_rank, signed=False):
+    # Function extracted from TopoBenchmarkX
+    """Get the connectivity matrices for the complex.
+
+    Parameters
+    ----------
+    complex : topnetx.CellComplex or topnetx.SimplicialComplex
+        Cell complex.
+    max_rank : int
+        Maximum rank of the complex.
+    signed : bool, optional
+        If True, returns signed connectivity matrices.
+
+    Returns
+    -------
+    dict
+        Dictionary containing the connectivity matrices.
+    """
+    practical_shape = list(
+        np.pad(list(complex.shape), (0, max_rank + 1 - len(complex.shape)))
+    )
+    connectivity = {}
+    for rank_idx in range(max_rank + 1):
+        for connectivity_info in [
+            "incidence",
+            "down_laplacian",
+            "up_laplacian",
+            "adjacency",
+            "hodge_laplacian",
+        ]:
+            try:
+                connectivity[f"{connectivity_info}_{rank_idx}"] = from_sparse(
+                    getattr(complex, f"{connectivity_info}_matrix")(
+                        rank=rank_idx, signed=signed
+                    )
+                )
+            except ValueError:
+                if connectivity_info == "incidence":
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx - 1],
+                            n=practical_shape[rank_idx],
+                        )
+                    )
+                else:
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx],
+                            n=practical_shape[rank_idx],
+                        )
+                    )
+    """
+    Not needed right now according to TopoBenchmarkX
+    # Obtain normalized incidence matrices
+    B1N, B1TN, B2N, B2TN = compute_bunch_normalized_matrices(connectivity['incidence_1'], connectivity['incidence_2'])
+    connectivity['incidence_1_normalized'] = B1N
+    connectivity['incidence_1_transposed_normalized'] = B1TN
+    connectivity['incidence_2_normalized'] = B2N
+    connectivity['incidence_2_transposed_normalized'] = B2TN
+    connectivity['up_laplacian_0_normalized'] = from_sparse(compute_x_laplacian_normalized_matrix
+                                                            (connectivity['hodge_laplacian_0'],
+                                                             connectivity['up_laplacian_0']))
+    connectivity['up_laplacian_1_normalized'] = from_sparse(compute_x_laplacian_normalized_matrix
+                                                            (connectivity['hodge_laplacian_1'],
+                                                             connectivity['up_laplacian_1']))
+    connectivity['down_laplacian_1_normalized'] = from_sparse(compute_x_laplacian_normalized_matrix
+                                                              (connectivity['hodge_laplacian_1'],
+                                                               connectivity['down_laplacian_1']))
+    connectivity['down_laplacian_2_normalized'] = from_sparse(compute_x_laplacian_normalized_matrix
+                                                              (connectivity['hodge_laplacian_2'],
+                                                               connectivity['down_laplacian_2']))
+                                                               
+   connectivity["shape"] = practical_shape
+    """
+
+    return connectivity
 
 
 def append_signals(data, signals_key, signals):

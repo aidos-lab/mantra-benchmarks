@@ -47,7 +47,6 @@ class ConfigExperimentRun(BaseSettings):
 def load_config(config_fpath: str) -> ConfigExperimentRun:
     with open(config_fpath, "r") as file:
         data = yaml.safe_load(file)
-
     config = ConfigExperimentRun.model_validate(data)
     return config
 
