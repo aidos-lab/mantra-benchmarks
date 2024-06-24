@@ -63,7 +63,7 @@ class GeneralAccuracy(Metric):
 
 class MatthewsCorrCoeff(Metric):
     """
-    MCC according to https://en.wikipedia.org/wiki/Phi_coefficient
+    Binary MCC according to https://en.wikipedia.org/wiki/Phi_coefficient
     """
 
     def __init__(self, **kwargs):
@@ -75,7 +75,6 @@ class MatthewsCorrCoeff(Metric):
     def update(self, preds: Tensor, target: Tensor) -> None:
         if preds.shape != target.shape:
             raise ValueError("preds and target must have the same shape")
-
         self.binary_confusion_matrix.update(preds, target)
 
     def compute(self) -> Tensor:
@@ -118,7 +117,9 @@ def get_betti_numbers_metrics():
     betti_1_metrics = ModuleList([GeneralAccuracy()])
     betti_2_metrics = ModuleList(
         [
-            GeneralAccuracy()
+            GeneralAccuracy(),
+            MatthewsCorrCoeff(),
+            torchmetrics.classification.BinaryF1Score(),
         ]
     )
 

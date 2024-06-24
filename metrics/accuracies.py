@@ -35,7 +35,10 @@ def compute_betti_numbers_accuracies(
                 {
                     "name": name + f"_betti_{dim}_{metric.__class__.__name__}",
                     "value": metric(
-                        y_hat[:, dim].round().long(), y[:, dim].long()
+                        torch.max(y_hat[:, dim], torch.tensor(0.0))
+                        .round()
+                        .long(),
+                        y[:, dim].long(),
                     ),
                 }
             )
