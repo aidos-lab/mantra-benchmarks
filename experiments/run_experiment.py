@@ -51,7 +51,7 @@ def run_configuration(config: ConfigExperimentRun):
     )
 
     trainer = L.Trainer(
-        # logger=logger,
+        logger=logger,
         accelerator=config.trainer_config.accelerator,
         max_epochs=config.trainer_config.max_epochs,
         log_every_n_steps=config.trainer_config.log_every_n_steps,
