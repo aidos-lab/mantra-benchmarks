@@ -118,9 +118,7 @@ def get_betti_numbers_metrics():
     betti_1_metrics = ModuleList([GeneralAccuracy()])
     betti_2_metrics = ModuleList(
         [
-            torchmetrics.classification.BinaryAccuracy(),
-            torchmetrics.classification.BinaryF1Score(),
-            MatthewsCorrCoeff(),
+            GeneralAccuracy()
         ]
     )
 
