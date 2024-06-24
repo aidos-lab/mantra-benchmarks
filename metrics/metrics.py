@@ -114,12 +114,24 @@ def get_name_metrics(num_classes=5):
 def get_betti_numbers_metrics():
 
     betti_0_metrics = ModuleList([GeneralAccuracy()])
-    betti_1_metrics = ModuleList([GeneralAccuracy()])
+    betti_1_metrics = ModuleList(
+        [
+            GeneralAccuracy(),
+            torchmetrics.classification.MulticlassAccuracy(
+                num_classes=7,
+                average="macro",
+            ),
+        ]
+    )
     betti_2_metrics = ModuleList(
         [
             GeneralAccuracy(),
             MatthewsCorrCoeff(),
             torchmetrics.classification.BinaryF1Score(),
+            torchmetrics.classification.MulticlassAccuracy(
+                num_classes=2,
+                average="macro",
+            ),
         ]
     )
 
