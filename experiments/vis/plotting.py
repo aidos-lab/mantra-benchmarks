@@ -24,7 +24,9 @@ def above_legend_args(ax):
     )
 
 
-def add_single_row_legend(ax: matplotlib.pyplot.Axes, title: str, **legend_args):
+def add_single_row_legend(
+    ax: matplotlib.pyplot.Axes, title: str, **legend_args
+):
     # Extracting handles and labels
     try:
         h, l = legend_args.pop("legs")
@@ -49,7 +51,9 @@ def filter_duplicate_handles(ax):
 
     handles, labels = ax.get_legend_handles_labels()
     unique = [
-        (h, l) for i, (h, l) in enumerate(zip(handles, labels)) if l not in labels[:i]
+        (h, l)
+        for i, (h, l) in enumerate(zip(handles, labels))
+        if l not in labels[:i]
     ]
     return zip(*unique)
 

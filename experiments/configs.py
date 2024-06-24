@@ -10,6 +10,7 @@ from metrics.tasks import TaskType
 from models.models import ModelType
 import yaml
 from typing import Any, List
+import os
 
 
 class TrainerConfig(BaseSettings):
@@ -42,6 +43,10 @@ class ConfigExperimentRun(BaseSettings):
     conf_model: ModelConfig = Field(
         discriminator=Discriminator(get_discriminator_value)
     )
+
+    def get_checkpoint_path(self, base_folder: str):
+        identifier = f"{self.transforms.name.lower()}_{self.task_type.name.lower()}_{self.conf_model.type.name.lower()}_seed_{self.seed}.ckpt"
+        return os.path.join(base_folder, identifier)
 
 
 def load_config(config_fpath: str) -> ConfigExperimentRun:

@@ -70,7 +70,9 @@ for name, values in cdict.items():
             scale_white_amount(values, step)
         )
 
-matplotlib.cm.register_cmap(name="US", cmap=matplotlib.colors.ListedColormap(list_cmap))
+matplotlib.cm.register_cmap(
+    name="US", cmap=matplotlib.colors.ListedColormap(list_cmap)
+)
 
 register_name("others", (200, 200, 200))
 register_name("graytext", (120, 120, 120))
@@ -94,7 +96,9 @@ if __name__ == "__main__":
     for base_name in cdict:
         step_labels = [f"{step * 100:.0f}" for step in steps]
         for name in [base_name] + [f"{base_name}!{sl}" for sl in step_labels]:
-            colors[name] = ", ".join(f"{v:.3f}" for v in matplotlib.colors.to_rgb(name))
+            colors[name] = ", ".join(
+                f"{v:.3f}" for v in matplotlib.colors.to_rgb(name)
+            )
 
     out = Path("uni-stuttgart-colors.sty")
     out.write_text(
@@ -104,7 +108,8 @@ if __name__ == "__main__":
     )
     out.write_text(
         "\n".join(
-            f"\\definecolor{{{name}}}{{rgb}}{{{rgb}}}" for name, rgb in colors.items()
+            f"\\definecolor{{{name}}}{{rgb}}{{{rgb}}}"
+            for name, rgb in colors.items()
         )
     )
     print(f"wrote color map to {out.as_posix()}")

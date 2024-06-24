@@ -1,7 +1,6 @@
 .ignore*
 raw_data
 data
-test*.*
 **/__pycache__
 /lightning_logs/
 k-simplex*
@@ -9,6 +8,8 @@ RandomWalks*
 results
 wandb
 configs
+*.lock
+*.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

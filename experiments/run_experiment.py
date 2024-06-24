@@ -10,17 +10,19 @@ from metrics.tasks import (
 from experiments.configs import ConfigExperimentRun
 from models import model_lookup
 from metrics.tasks import TaskType
-from typing import Dict
+from typing import Dict, Optional, Tuple
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
 from experiments.loggers import get_wandb_logger
 import lightning as L
 import uuid
 from datasets.transforms import transforms_lookup
+from lightning.pytorch.loggers import WandbLogger
 
 
-def run_configuration(config: ConfigExperimentRun):
-
+def get_setup(
+    config: ConfigExperimentRun,
+) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup[config.transforms]
     task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
@@ -54,7 +56,7 @@ def run_configuration(config: ConfigExperimentRun):
         task_lookup[config.task_type].accuracies,
         task_lookup[config.task_type].loss_fn,
         learning_rate=config.learning_rate,
-        imbalance=imbalance
+        imbalance=imbalance,
     )
 
     logger = get_wandb_logger(
@@ -73,8 +75,28 @@ def run_configuration(config: ConfigExperimentRun):
         fast_dev_run=False,
     )
 
+    return dm, lit_model, trainer, logger
+
+
+def run_configuration(
+    config: ConfigExperimentRun, save_checkpoint_path: Optional[str] = None
+):
+    dm, lit_model, trainer, logger = get_setup(config)
+
     # run
     trainer.fit(lit_model, dm)
     logger.experiment.finish()
 
+    if save_checkpoint_path:
+        print(f"[INFO] Saving checkpoint here {save_checkpoint_path}")
+        trainer.save_checkpoint(save_checkpoint_path)
+
     return trainer
+
+
+def benchmark_configuration(
+    config: ConfigExperimentRun, save_checkpoint_path: str
+):
+    dm, lit_model, trainer, logger = get_setup(config)
+
+    trainer.test(lit_model, dm, save_checkpoint_path)
