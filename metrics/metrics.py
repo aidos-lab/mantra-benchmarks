@@ -7,6 +7,15 @@ import torchmetrics.classification
 from typing import Optional, List
 
 
+class NamedMetric:
+    metric: Metric
+    name: str
+
+    def __init__(self, metric: Metric, name: str) -> None:
+        self.metric = metric
+        self.name = name
+
+
 class BettiNumbersMetricCollection:
     betti_0: ModuleList
     betti_1: ModuleList
@@ -14,9 +23,9 @@ class BettiNumbersMetricCollection:
 
     def __init__(
         self,
-        betti_0: List[Metric],
-        betti_1: List[Metric],
-        betti_2: List[Metric],
+        betti_0: List[NamedMetric],
+        betti_1: List[NamedMetric],
+        betti_2: List[NamedMetric],
     ) -> None:
         self.betti_0 = betti_0
         self.betti_1 = betti_1
@@ -27,15 +36,15 @@ class BettiNumbersMetricCollection:
 
 
 class MetricTrainValTest:
-    train: Metric | BettiNumbersMetricCollection
-    val: Metric | BettiNumbersMetricCollection
-    test: Metric | BettiNumbersMetricCollection
+    train: NamedMetric | BettiNumbersMetricCollection
+    val: NamedMetric | BettiNumbersMetricCollection
+    test: NamedMetric | BettiNumbersMetricCollection
 
     def __init__(
         self,
-        train: Metric,
-        val: Optional[Metric] = None,
-        test: Optional[Metric] = None,
+        train: NamedMetric,
+        val: Optional[NamedMetric] = None,
+        test: Optional[NamedMetric] = None,
     ) -> None:
         self.train = train
         self.val = self.train if val is None else val
@@ -96,16 +105,21 @@ class MatthewsCorrCoeff(Metric):
 
 def get_orientability_metrics():
     metrics = MetricTrainValTest(
-        torchmetrics.classification.F1Score(task="binary")
+        NamedMetric(
+            torchmetrics.classification.F1Score(task="binary"), "F1Score"
+        )
     )
     return metrics
 
 
 def get_name_metrics(num_classes=5):
     metrics = MetricTrainValTest(
-        torchmetrics.classification.MulticlassAccuracy(
-            num_classes=num_classes,
-            average="weighted",
+        NamedMetric(
+            torchmetrics.classification.MulticlassAccuracy(
+                num_classes=num_classes,
+                average="weighted",
+            ),
+            "Accuracy",
         )
     )
     return metrics
@@ -116,21 +130,27 @@ def get_betti_numbers_metrics():
     betti_0_metrics = ModuleList([GeneralAccuracy()])
     betti_1_metrics = ModuleList(
         [
-            GeneralAccuracy(),
-            torchmetrics.classification.MulticlassAccuracy(
-                num_classes=7,
-                average="macro",
+            NamedMetric(GeneralAccuracy(), "Accuracy"),
+            NamedMetric(
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=7,
+                    average="macro",
+                ),
+                "BalancedAccuracy",
             ),
         ]
     )
     betti_2_metrics = ModuleList(
         [
-            GeneralAccuracy(),
-            MatthewsCorrCoeff(),
-            torchmetrics.classification.BinaryF1Score(),
-            torchmetrics.classification.MulticlassAccuracy(
-                num_classes=2,
-                average="macro",
+            NamedMetric(GeneralAccuracy(), "Accuracy"),
+            NamedMetric(MatthewsCorrCoeff(), "MCC"),
+            NamedMetric(torchmetrics.classification.BinaryF1Score(), "F1"),
+            NamedMetric(
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=2,
+                    average="macro",
+                ),
+                "BalancedAccuracy",
             ),
         ]
     )
