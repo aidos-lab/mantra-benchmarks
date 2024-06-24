@@ -15,7 +15,7 @@ def run_configs_folder(
     config_dir = "./configs"
     files = os.listdir(config_dir)
     for file in files:
-        for _ in range(5):
+        for i in range(5):
             config_file = os.path.join(config_dir, file)
             config = load_config(config_file)
             print("[INFO] Using configuration file:", config_file)
@@ -23,7 +23,9 @@ def run_configs_folder(
 
             checkpoint_path = None
             if checkpoint_folder:
-                checkpoint_path = config.get_checkpoint_path(checkpoint_folder)
+                checkpoint_path = config.get_checkpoint_path(
+                    checkpoint_folder, f"{i}"
+                )
                 print("[INFO] Using checkpoint folder:", checkpoint_path)
             else:
                 print("[INFO] No checkpoint folder.")
