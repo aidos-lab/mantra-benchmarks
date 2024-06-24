@@ -69,7 +69,7 @@ class SimplicialDataModule(LightningDataModule):
             test_size=0.2,
             shuffle=True,
             stratify=self.stratified,
-            # random_state=RandomState(self.seed),
+            random_state=self.seed,
         )
         self.train_ds = Subset(simplicial_full, train_indices)
         self.val_ds = Subset(simplicial_full, val_indices)
