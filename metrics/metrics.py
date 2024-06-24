@@ -4,13 +4,32 @@ import torch
 from torch import Tensor
 from torchmetrics import Metric
 import torchmetrics.classification
-from typing import Optional
+from typing import Optional, List
+
+
+class BettiNumbersMetricCollection:
+    betti_0: ModuleList
+    betti_1: ModuleList
+    betti_2: ModuleList
+
+    def __init__(
+        self,
+        betti_0: List[Metric],
+        betti_1: List[Metric],
+        betti_2: List[Metric],
+    ) -> None:
+        self.betti_0 = betti_0
+        self.betti_1 = betti_1
+        self.betti_2 = betti_2
+
+    def as_list(self):
+        return [self.betti_0, self.betti_1, self.betti_2]
 
 
 class MetricTrainValTest:
-    train: Metric
-    val: Metric
-    test: Metric
+    train: Metric | BettiNumbersMetricCollection
+    val: Metric | BettiNumbersMetricCollection
+    test: Metric | BettiNumbersMetricCollection
 
     def __init__(
         self,
@@ -60,7 +79,16 @@ def get_name_metrics(num_classes=5):
 
 
 def get_betti_numbers_metrics():
-    metrics = MetricTrainValTest(
-        ModuleList([GeneralAccuracy() for _ in range(3)])
+
+    betti_0_metrics = ModuleList([GeneralAccuracy()])
+    betti_1_metrics = ModuleList([GeneralAccuracy()])
+    betti_2_metrics = ModuleList([GeneralAccuracy()])
+
+    collection = BettiNumbersMetricCollection(
+        betti_0=betti_0_metrics,
+        betti_1=betti_1_metrics,
+        betti_2=betti_2_metrics,
     )
+
+    metrics = MetricTrainValTest(collection)
     return metrics
