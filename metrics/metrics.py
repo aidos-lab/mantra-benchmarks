@@ -36,15 +36,15 @@ class BettiNumbersMetricCollection:
 
 
 class MetricTrainValTest:
-    train: NamedMetric | BettiNumbersMetricCollection
-    val: NamedMetric | BettiNumbersMetricCollection
-    test: NamedMetric | BettiNumbersMetricCollection
+    train: List[NamedMetric] | BettiNumbersMetricCollection
+    val: List[NamedMetric] | BettiNumbersMetricCollection
+    test: List[NamedMetric] | BettiNumbersMetricCollection
 
     def __init__(
         self,
-        train: NamedMetric,
-        val: Optional[NamedMetric] = None,
-        test: Optional[NamedMetric] = None,
+        train: List[NamedMetric] | BettiNumbersMetricCollection,
+        val: Optional[List[NamedMetric]] = None,
+        test: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.train = train
         self.val = self.train if val is None else val
@@ -105,27 +105,41 @@ class MatthewsCorrCoeff(Metric):
 
 def get_orientability_metrics():
     metrics = MetricTrainValTest(
-        NamedMetric(
-            torchmetrics.classification.F1Score(task="binary"), "F1Score"
-        )
+        [
+            NamedMetric(
+                torchmetrics.classification.F1Score(task="binary"), "F1Score"
+            ),
+            NamedMetric(MatthewsCorrCoeff(), "MCC"),
+        ]
     )
     return metrics
 
 
 def get_name_metrics(num_classes=5):
     metrics = MetricTrainValTest(
-        NamedMetric(
-            torchmetrics.classification.MulticlassAccuracy(
-                num_classes=num_classes,
-                average="weighted",
+        [
+            NamedMetric(
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=num_classes,
+                    average="weighted",
+                ),
+                "Accuracy",
             ),
-            "Accuracy",
-        )
+            NamedMetric(
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=num_classes,
+                    average="macro",
+                ),
+                "BalancedAccuracy",
+            ),
+        ]
     )
     return metrics
 
 
 def get_betti_numbers_metrics():
+
+    accuracy_only = [NamedMetric(GeneralAccuracy(), "Accuracy")]
 
     betti_0_metrics = [NamedMetric(GeneralAccuracy(), "Accuracy")]
     betti_1_metrics = [
@@ -158,5 +172,11 @@ def get_betti_numbers_metrics():
         betti_2=betti_2_metrics,
     )
 
-    metrics = MetricTrainValTest(collection)
+    collection_train = BettiNumbersMetricCollection(
+        betti_0=accuracy_only, betti_1=accuracy_only, betti_2=accuracy_only
+    )
+
+    metrics = MetricTrainValTest(
+        train=collection_train, val=collection_train, test=collection
+    )
     return metrics

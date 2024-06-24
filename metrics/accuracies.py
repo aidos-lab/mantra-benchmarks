@@ -1,20 +1,31 @@
 import torch
 from .metrics import BettiNumbersMetricCollection, NamedMetric
 from torchmetrics import Metric
+from typing import List
 
 
 def compute_orientability_accuracies(
-    metrics: NamedMetric, y_hat, y, name: str
+    metrics: List[NamedMetric], y_hat, y, name: str
 ):
-    y_hat = torch.sigmoid(y_hat)
-    metric = metrics.metric.to(y_hat.device)
-    return [{"name": f"{name}_{metrics.name}", "value": metric(y_hat, y)}]
+    benchmarks = []
+    for metrics_ in metrics:
+        y_hat = torch.sigmoid(y_hat)
+        metric = metrics_.metric.to(y_hat.device)
+        benchmarks.append(
+            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat, y)}
+        )
+    return benchmarks
 
 
-def compute_name_accuracies(metrics: NamedMetric, y_hat, y, name: str):
-    y_hat = torch.sigmoid(y_hat)
-    metric = metrics.metric.to(y_hat.device)
-    return [{"name": f"{name}_{metrics.name}", "value": metric(y_hat, y)}]
+def compute_name_accuracies(metrics: List[NamedMetric], y_hat, y, name: str):
+    benchmarks = []
+    for metrics_ in metrics:
+        y_hat = torch.sigmoid(y_hat)
+        metric = metrics_.metric.to(y_hat.device)
+        benchmarks.append(
+            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat, y)}
+        )
+    return benchmarks
 
 
 def compute_betti_numbers_accuracies(
