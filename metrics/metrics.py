@@ -61,6 +61,40 @@ class GeneralAccuracy(Metric):
         return self.correct.float() / self.total
 
 
+class MatthewsCorrCoeff(Metric):
+    """
+    MCC according to https://en.wikipedia.org/wiki/Phi_coefficient
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.binary_confusion_matrix = (
+            torchmetrics.classification.BinaryConfusionMatrix()
+        )
+
+    def update(self, preds: Tensor, target: Tensor) -> None:
+        if preds.shape != target.shape:
+            raise ValueError("preds and target must have the same shape")
+
+        self.binary_confusion_matrix.update(preds, target)
+
+    def compute(self) -> Tensor:
+        conf_matrix = self.binary_confusion_matrix.compute()
+
+        tn, fp, fn, tp = conf_matrix.flatten()
+
+        denom = torch.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn))
+        nom = (tp * tn) - (fp * fn)
+
+        if denom == 0 and nom == 0:
+            # model predicts only positives or only negatives. Thus, correlation is 0.
+            mcc = 0
+        else:
+            mcc = nom / denom
+
+        return mcc
+
+
 def get_orientability_metrics():
     metrics = MetricTrainValTest(
         torchmetrics.classification.F1Score(task="binary")
@@ -82,7 +116,13 @@ def get_betti_numbers_metrics():
 
     betti_0_metrics = ModuleList([GeneralAccuracy()])
     betti_1_metrics = ModuleList([GeneralAccuracy()])
-    betti_2_metrics = ModuleList([GeneralAccuracy()])
+    betti_2_metrics = ModuleList(
+        [
+            torchmetrics.classification.BinaryAccuracy(),
+            torchmetrics.classification.BinaryF1Score(),
+            MatthewsCorrCoeff(),
+        ]
+    )
 
     collection = BettiNumbersMetricCollection(
         betti_0=betti_0_metrics,
