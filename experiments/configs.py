@@ -2,7 +2,7 @@
 Pydantic configuration of experiment runs.
 """
 
-from pydantic import Discriminator, Field, ValidationError
+from pydantic import Discriminator, Field
 from pydantic_settings import BaseSettings
 from models.models import ModelConfig
 from datasets.transforms import TransformType
