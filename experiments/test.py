@@ -1,5 +1,6 @@
-import sys 
+import sys
 import os
+
 sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun
 from experiments.utils.run_experiment import (
@@ -20,6 +21,7 @@ def test(config: ConfigExperimentRun, checkpoint_path: str):
     benchmark_configuration(
         config=config, save_checkpoint_path=checkpoint_path
     )
+
 
 def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
     files = os.listdir(config_dir)
@@ -43,7 +45,7 @@ def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
 
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser(
         description="Argument parser for experiment configurations."
     )

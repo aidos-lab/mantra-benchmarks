@@ -7,6 +7,7 @@ from ..model_types import ModelType
 from pydantic import BaseModel
 from models.simplicial_complexes.scnn_custom import SCCNNCustom
 
+
 class SCCNNConfig(BaseModel):
     type: ModelType = ModelType.SCCNN
     in_channels: tuple[int, ...]

@@ -1,5 +1,6 @@
-import sys 
+import sys
 import os
+
 sys.path.append(os.curdir)
 from metrics.tasks import TaskType
 from datasets.transforms import TransformType
