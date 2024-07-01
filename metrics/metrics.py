@@ -12,6 +12,10 @@ from metrics.custom_metrics.mcc import MatthewsCorrCoeff
 
 
 class NamedMetric:
+    """
+    torchmetrics.Metric with a name. Name is later used for annotating the result in the benchmark .csv file.
+    """
+
     metric: Metric
     name: str
 
@@ -21,6 +25,12 @@ class NamedMetric:
 
 
 class BettiNumbersMetricCollection:
+    """
+    Class containing the metrics for benchmarking performance on betti number prediction.
+
+    Different metrics for the different betti number types can be specified.
+    """
+
     betti_0: List[NamedMetric]
     betti_1: List[NamedMetric]
     betti_2: List[NamedMetric]
@@ -40,6 +50,10 @@ class BettiNumbersMetricCollection:
 
 
 class MetricTrainValTest:
+    """
+    Wrapper class for the metrics during training, validation and testing phase. Allows for using different metrics during testing and training.
+    """
+
     train: List[NamedMetric] | BettiNumbersMetricCollection
     val: List[NamedMetric] | BettiNumbersMetricCollection
     test: List[NamedMetric] | BettiNumbersMetricCollection
