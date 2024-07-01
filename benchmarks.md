@@ -28,7 +28,7 @@ Multi-class classification with $N=5$
 
 - $\text{Weighted Accuracy} = \frac{\sum_{i=1}^{N} w_i \cdot \text{Accuracy}_i}{\sum_{i=1}^{N} w_i}$
     - $ N $ is the number of classes.
-    - $ w_i $ is the weight for class $i$, typically the number of instances of class $i$.
+    - $ w_i $ is the weight for class $i$, i.e. the number of instances of class $i$.
     - $ \text{Accuracy}_i $ is the accuracy for class $ i $, which is calculated as $ \frac{\text{True Positives}_i}{\text{Total Instances}_i} $.
 - $\text{Balanced Accuracy} = \frac{1}{N} \sum_{i=1}^{N} \text{Accuracy}_i$
     - $ N $ is the number of classes.
