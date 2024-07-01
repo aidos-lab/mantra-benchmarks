@@ -18,7 +18,7 @@ import lightning as L
 import uuid
 from datasets.transforms import transforms_lookup
 from lightning.pytorch.loggers import WandbLogger
-
+from models.models import dataloader_lookup
 
 def get_setup(
     config: ConfigExperimentRun,
@@ -32,6 +32,7 @@ def get_setup(
         transform=task_lookup[config.task_type].transforms,
         use_stratified=config.use_stratified,
         seed=config.seed,
+        dataloader_builder=dataloader_lookup[config.conf_model.type],
     )
 
     imbalance_statistics = dm.class_imbalance_statistics()

@@ -34,3 +34,27 @@ Results can be inspected in [notebooks/export_results.ipynb](./notebooks/export_
 ## Development
 
 - Formatting using black 24.4.2. Install via pip (`pip install black==24.4.2`).
+
+
+## Dataset distribution
+
+| Name              |           |        |                 |       |      |     |
+| ----------------- | --------- | ------ | --------------- | ----- | ---- | --- |
+| 'S^2'             |  'RP^2'   | 'T^2'  | 'Klein bottle'  | ''    |      |     |
+| 306               | 1367      | 2229   | 4655            | 34584 |      |     |
+|                   |           |        |                 |       |      |     |
+| **Orientability** |           |        |                 |       |      |     |
+| True              | False     |        |                 |       |      |     |
+| 3420              | 39718     |        |                 |       |      |     |
+|                   |           |        |                 |       |      |     |
+| **Betti Numbers** |           |        |                 |       |      |     |
+| **Betti_0**       |           |        |                 |       |      |     |
+| 1                 |           |        |                 |       |      |     |
+| 43138             |           |        |                 |       |      |     |
+| **Betti_1**       |           |        |                 |       |      |     |
+| 0                 | 1         | 2      | 3               | 4     | 5    | 6   |
+| 1670              | 4655      | 14146  | 13694           | 7917  | 1022 | 34  |
+| **Betti_2**       |           |        |                 |       |      |     |
+| 0                 | 1         |        |                 |       |      |     |
+| 39718             | 3420      |        |                 |       |      |     |
+

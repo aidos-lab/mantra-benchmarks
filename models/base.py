@@ -40,10 +40,14 @@ class BaseModel(L.LightningModule):
         # This is rather ugly, open to better solutions,
         # but torch_geometric and the toponetx dl have rather different
         # signatures.
-        if hasattr(batch, "batch"):
+        if hasattr(batch, "batch_size"):
+            batch_len = batch.batch_size
+        elif hasattr(batch, "batch"):
             batch_len = batch.batch.max() + 1
         else:
-            batch_len = batch[-1]
+            raise ValueError(
+                "Batch object does not have a known way to compute batch size."
+            )
 
         # Generalizing to accomodate for the different signatures.
         x_hat = self(batch)

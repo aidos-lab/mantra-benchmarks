@@ -9,24 +9,40 @@ import shutil
 
 tasks = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
 
-features = [
+graph_features = [
     TransformType.degree_transform,
     TransformType.degree_transform_onehot,
     TransformType.random_node_features,
 ]
 
-models = [
+simplicial_features = [
+    TransformType.degree_transform_sc,
+    TransformType.random_simplices_features,
+]
+
+graph_models = {
     ModelType.GCN,
     ModelType.GAT,
     ModelType.MLP,
     ModelType.TAG,
     ModelType.TransfConv,
-]
+}
 
-node_feature_dict = {
+simplicial_models = {
+    ModelType.SAN,
+    ModelType.SCCN,
+    ModelType.SCCNN,
+    ModelType.SCN,
+}
+
+models = list(graph_models) + list(simplicial_models)
+
+feature_dim_dict = {
     TransformType.degree_transform: 1,
     TransformType.degree_transform_onehot: 10,
     TransformType.random_node_features: 8,
+    TransformType.degree_transform_sc: [1, 2, 1],
+    TransformType.random_simplices_features: [8, 8, 8],
 }
 
 out_channels_dict = {
@@ -34,6 +50,28 @@ out_channels_dict = {
     TaskType.NAME: 5,
     TaskType.BETTI_NUMBERS: 3,
 }
+
+
+def get_feature_types(model: ModelType):
+    if model in graph_models:
+        return graph_features
+    else:
+        return simplicial_features
+
+
+def get_model_config(
+    model: ModelType, out_channels: int, dim_features: int | tuple[int]
+):
+    model_config_cls = model_cfg_lookup[model]
+    if model in graph_models:
+        model_config = model_config_cls(
+            out_channels=out_channels, num_node_features=dim_features
+        )
+    else:
+        model_config = model_config_cls(
+            out_channels=out_channels, in_channels=tuple(dim_features)
+        )
+    return model_config
 
 
 def manage_directory(path: str):
@@ -51,15 +89,13 @@ def manage_directory(path: str):
 manage_directory("./configs")
 
 for model in models:
+    features = get_feature_types(model)
     for feature in features:
         for task in tasks:
-            num_node_features = node_feature_dict[feature]
+            dim_features = feature_dim_dict[feature]
             out_channels = out_channels_dict[task]
+            model_config = get_model_config(model, out_channels, dim_features)
             model_config_cls = model_cfg_lookup[model]
-
-            model_config = model_config_cls(
-                out_channels=out_channels, num_node_features=num_node_features
-            )
             trainer_config = TrainerConfig(
                 accelerator="auto", max_epochs=2, log_every_n_steps=1
             )
