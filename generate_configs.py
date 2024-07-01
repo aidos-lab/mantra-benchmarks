@@ -1,7 +1,7 @@
 from metrics.tasks import TaskType
 from datasets.transforms import TransformType
 from models import ModelType, model_cfg_lookup
-from experiments.configs import ConfigExperimentRun, TrainerConfig
+from experiments.utils.configs import ConfigExperimentRun, TrainerConfig
 import yaml
 import json
 import os

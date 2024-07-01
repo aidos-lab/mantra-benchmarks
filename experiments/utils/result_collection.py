@@ -1,5 +1,5 @@
 from typing import List, TaskType, Dict 
-from experiments.configs import ConfigExperimentRun
+from experiments.utils.configs import ConfigExperimentRun
 import pandas as pd
 
 class Result:

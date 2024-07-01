@@ -1,5 +1,5 @@
-from experiments.configs import load_config, ConfigExperimentRun
-from experiments.run_experiment import (
+from experiments.utils.configs import load_config, ConfigExperimentRun
+from experiments.utils.run_experiment import (
     benchmark_configuration,
 )
 import os
@@ -7,7 +7,7 @@ import argparse
 from typing import Dict, List
 from metrics.tasks import TaskType
 import pandas as pd
-from experiments.result_collection import ResultCollection
+from experiments.utils.result_collection import ResultCollection
 
 def test(config: ConfigExperimentRun, checkpoint_path: str):
     print("[INFO] Testing with config", config)

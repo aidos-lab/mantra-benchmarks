@@ -1,5 +1,5 @@
-from experiments.configs import load_config, ConfigExperimentRun
-from experiments.run_experiment import run_configuration
+from experiments.utils.configs import load_config, ConfigExperimentRun
+from experiments.utils.run_experiment import run_configuration
 import os
 import argparse
 from typing import Dict, Any, Optional

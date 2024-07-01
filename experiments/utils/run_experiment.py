@@ -7,13 +7,13 @@ from metrics.tasks import (
     Task,
     get_task_lookup,
 )
-from experiments.configs import ConfigExperimentRun
+from experiments.utils.configs import ConfigExperimentRun
 from models import model_lookup
 from metrics.tasks import TaskType
 from typing import Dict, Optional, Tuple, List
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
-from experiments.loggers import get_wandb_logger
+from experiments.utils.loggers import get_wandb_logger
 import lightning as L
 import uuid
 from datasets.transforms import transforms_lookup
