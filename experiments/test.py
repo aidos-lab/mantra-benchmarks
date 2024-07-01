@@ -1,3 +1,6 @@
+import sys 
+import os
+sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun
 from experiments.utils.run_experiment import (
     benchmark_configuration,
@@ -8,6 +11,7 @@ from typing import Dict, List
 from metrics.tasks import TaskType
 import pandas as pd
 from experiments.utils.result_collection import ResultCollection
+
 
 def test(config: ConfigExperimentRun, checkpoint_path: str):
     print("[INFO] Testing with config", config)
@@ -39,6 +43,7 @@ def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
 
 
 if __name__ == "__main__":
+    
     parser = argparse.ArgumentParser(
         description="Argument parser for experiment configurations."
     )

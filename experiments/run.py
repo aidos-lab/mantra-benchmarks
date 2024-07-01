@@ -1,3 +1,6 @@
+import sys 
+import os
+sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun
 from experiments.utils.run_experiment import run_configuration
 import os
