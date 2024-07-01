@@ -7,7 +7,7 @@ import argparse
 from typing import Dict, List
 from metrics.tasks import TaskType
 import pandas as pd
-
+from experiments.result_collection import ResultCollection
 
 def test(config: ConfigExperimentRun, checkpoint_path: str):
     print("[INFO] Testing with config", config)
@@ -16,47 +16,6 @@ def test(config: ConfigExperimentRun, checkpoint_path: str):
     benchmark_configuration(
         config=config, save_checkpoint_path=checkpoint_path
     )
-
-
-class Result:
-
-    def __init__(
-        self, data: Dict[str, float], config: ConfigExperimentRun
-    ) -> None:
-        self.data = data
-        self.config = config
-
-
-class ResultCollection:
-    collection: Dict[TaskType, List[Result]]
-
-    def __init__(self) -> None:
-        self.collection = {
-            TaskType.BETTI_NUMBERS: [],
-            TaskType.NAME: [],
-            TaskType.ORIENTABILITY: [],
-        }
-
-    def add(self, data: Dict[str, float], config: ConfigExperimentRun):
-        self.collection[config.task_type].append(
-            Result(data=data, config=config)
-        )
-
-    def save(self, t_file_prefix: str = "res"):
-
-        for task_type in TaskType:
-            t_file = f"{t_file_prefix}_{task_type.name.lower()}.csv"
-
-            data = []
-            for x in self.collection[task_type]:
-                result = x.data
-                result["type_model"] = x.config.conf_model.type.name.lower()
-                result["transform"] = x.config.transforms.name.lower()
-                data.append(x.data)
-
-            df = pd.DataFrame(data)
-            df.to_csv(t_file, index=False)
-
 
 def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
     files = os.listdir(config_dir)
