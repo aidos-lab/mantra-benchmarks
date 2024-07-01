@@ -8,13 +8,14 @@ from experiments.utils.run_experiment import (
 )
 import os
 import argparse
-from typing import Dict, List
-from metrics.tasks import TaskType
-import pandas as pd
 from experiments.utils.result_collection import ResultCollection
 
 
 def test(config: ConfigExperimentRun, checkpoint_path: str):
+    """
+    Runs the benchmark for one specific configuration and trained weights.
+    """
+
     print("[INFO] Testing with config", config)
     print("[INFO] Testing with checkpoint path:", checkpoint_path)
 
@@ -23,23 +24,34 @@ def test(config: ConfigExperimentRun, checkpoint_path: str):
     )
 
 
-def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
-    files = os.listdir(config_dir)
+def test_all(checkpoint_dir: str, config_dir: str = "./configs", n_runs=5):
+    """
+    Tests all configurations in a config directory. Assumes that for every run and every config there is a
+    corresponding checkpoint in checkpoint_dir given.
+    """
 
+    files = os.listdir(config_dir)
     results = ResultCollection()
 
     # get the benchmarks:
     for file in files:
-        config_file = os.path.join(config_dir, file)
-        config = load_config(config_file)
-        checkpoint_path = config.get_checkpoint_path(checkpoint_dir)
-        out = benchmark_configuration(
-            config=config, save_checkpoint_path=checkpoint_path
-        )
+        for run in range(n_runs):
 
-        results.add(data=out[0], config=config)
+            # load config and weights
+            config_file = os.path.join(config_dir, file)
+            config = load_config(config_file)
+            checkpoint_path = config.get_checkpoint_path(
+                checkpoint_dir, run=run
+            )
 
-        results.save(".ignore_temp")
+            # run benchmark
+            out = benchmark_configuration(
+                config=config, save_checkpoint_path=checkpoint_path
+            )
+
+            # add benchmarking results
+            results.add(data=out[0], config=config)
+            results.save(".ignore_temp")
 
     results.save("results")
 
