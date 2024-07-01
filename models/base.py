@@ -90,11 +90,11 @@ class BaseModel(L.LightningModule):
             ValueError("Unknown step Literal")
 
         accuracies = self.accuracies_fn(
-                acc_fun,
-                x_hat,
-                y,
-                step,
-            )
+            acc_fun,
+            x_hat,
+            y,
+            step,
+        )
         for accuracy in accuracies:
             self.log(
                 **accuracy,

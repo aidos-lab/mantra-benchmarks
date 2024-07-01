@@ -8,6 +8,7 @@ from typing import Dict, List
 from metrics.tasks import TaskType
 import pandas as pd
 
+
 def test(config: ConfigExperimentRun, checkpoint_path: str):
     print("[INFO] Testing with config", config)
     print("[INFO] Testing with checkpoint path:", checkpoint_path)
@@ -16,30 +17,31 @@ def test(config: ConfigExperimentRun, checkpoint_path: str):
         config=config, save_checkpoint_path=checkpoint_path
     )
 
+
 class Result:
-    
-    def __init__(self, data: Dict[str, float], config: ConfigExperimentRun) -> None:
+
+    def __init__(
+        self, data: Dict[str, float], config: ConfigExperimentRun
+    ) -> None:
         self.data = data
         self.config = config
+
 
 class ResultCollection:
     collection: Dict[TaskType, List[Result]]
 
     def __init__(self) -> None:
         self.collection = {
-            TaskType.BETTI_NUMBERS : [],
+            TaskType.BETTI_NUMBERS: [],
             TaskType.NAME: [],
-            TaskType.ORIENTABILITY: []
+            TaskType.ORIENTABILITY: [],
         }
 
     def add(self, data: Dict[str, float], config: ConfigExperimentRun):
         self.collection[config.task_type].append(
-            Result(
-                data=data,
-                config=config
-            )
+            Result(data=data, config=config)
         )
-    
+
     def save(self, t_file_prefix: str = "res"):
 
         for task_type in TaskType:
@@ -47,9 +49,9 @@ class ResultCollection:
 
             data = []
             for x in self.collection[task_type]:
-                result = x.data 
-                result["type_model"] = x.config.conf_model.type.name.lower() 
-                result["transform"] =  x.config.transforms.name.lower()
+                result = x.data
+                result["type_model"] = x.config.conf_model.type.name.lower()
+                result["transform"] = x.config.transforms.name.lower()
                 data.append(x.data)
 
             df = pd.DataFrame(data)
@@ -67,19 +69,15 @@ def test_all(checkpoint_dir: str, config_dir: str = "./configs"):
         config = load_config(config_file)
         checkpoint_path = config.get_checkpoint_path(checkpoint_dir)
         out = benchmark_configuration(
-            config=config,
-            save_checkpoint_path=checkpoint_path
+            config=config, save_checkpoint_path=checkpoint_path
         )
 
-        results.add(
-            data=out[0],
-            config=config
-        )
+        results.add(data=out[0], config=config)
 
         results.save(".ignore_temp")
 
     results.save("results")
-    
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -111,8 +109,6 @@ if __name__ == "__main__":
         checkpoint_path = config.get_checkpoint_path(args_dict["checkpoints"])
         test(config=config, checkpoint_path=checkpoint_path)
     elif args_dict["mode"] == "all":
-        test_all(
-            checkpoint_dir=args_dict["checkpoints"]
-        )
+        test_all(checkpoint_dir=args_dict["checkpoints"])
     else:
         ValueError("Unknown mode")

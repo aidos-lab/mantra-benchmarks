@@ -20,6 +20,7 @@ from datasets.transforms import transforms_lookup
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
 
+
 def get_setup(
     config: ConfigExperimentRun,
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
@@ -105,4 +106,4 @@ def benchmark_configuration(
 
     output = trainer.test(lit_model, dm, save_checkpoint_path)
     logger.experiment.finish()
-    return output 
+    return output
