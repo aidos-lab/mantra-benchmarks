@@ -35,7 +35,7 @@ $ python ./experiments/run.py --mode "<single/all>" --checkpoints "<checkpoints/
 
 ## Results
 
-Results can be inspected in [notebooks/export_results.ipynb](./notebooks/export_results.ipynb)
+Results can be inspected in [notebooks/interpret_results.ipynb](./notebooks/interpret_results.ipynb)
 
 ## Development
 
