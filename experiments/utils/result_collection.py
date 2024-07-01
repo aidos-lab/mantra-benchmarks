@@ -1,4 +1,5 @@
-from typing import List, TaskType, Dict 
+from typing import List, Dict 
+from metrics.tasks import  TaskType
 from experiments.utils.configs import ConfigExperimentRun
 import pandas as pd
 
