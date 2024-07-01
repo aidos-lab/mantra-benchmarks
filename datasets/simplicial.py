@@ -8,6 +8,12 @@ from torch_geometric.transforms import Compose
 import torch
 from torch.utils.data import Subset
 import numpy as np
+from collections import Counter
+from typing import List, Dict
+
+
+def unique_counts(input_list: List[str]):
+    return Counter(input_list).keys(), Counter(input_list).values()
 
 
 class SimplicialDataModule(LightningDataModule):
@@ -32,6 +38,25 @@ class SimplicialDataModule(LightningDataModule):
     def prepare_data(self) -> None:
         SimplicialDataset(root=self.data_dir)
 
+    def class_imbalance_statistics(self) -> Dict[str, Dict]:
+        dataset = SimplicialDataset(root=self.data_dir)
+
+        name_statistics = unique_counts(dataset.name)
+        orientability_statistics = unique_counts(dataset.orientable.tolist())
+
+        betti = np.array(dataset.betti_numbers)
+        betti_0_statistics = unique_counts(betti[:, 0])
+        betti_1_statistics = unique_counts(betti[:, 1])
+        betti_2_statistics = unique_counts(betti[:, 2])
+
+        return {
+            "name": name_statistics,
+            "orientable": orientability_statistics,
+            "betti_0": betti_0_statistics,
+            "betti_1": betti_1_statistics,
+            "betti_2": betti_2_statistics,
+        }
+
     def setup(self, stage=None):
         simplicial_full = SimplicialDataset(
             root=self.data_dir, transform=self.transform
@@ -48,7 +73,7 @@ class SimplicialDataModule(LightningDataModule):
             test_size=0.2,
             shuffle=True,
             stratify=self.stratified,
-            # random_state=RandomState(self.seed),
+            random_state=self.seed,
         )
         self.train_ds = Subset(simplicial_full, train_indices)
         self.val_ds = Subset(simplicial_full, val_indices)

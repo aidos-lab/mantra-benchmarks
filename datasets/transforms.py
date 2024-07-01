@@ -178,7 +178,7 @@ random_node_features = [
 degree_transform_onehot = [
     TriangulationToFaceTransform(),
     FaceToEdge(remove_faces=False),
-    OneHotDegree(max_degree=8),
+    OneHotDegree(max_degree=9),
 ]
 
 degree_transform = [

@@ -1,7 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.curdir)
 from metrics.tasks import TaskType
 from datasets.transforms import TransformType
 from models import ModelType, model_cfg_lookup
-from experiments.configs import ConfigExperimentRun, TrainerConfig
+from experiments.utils.configs import ConfigExperimentRun, TrainerConfig
 import yaml
 import json
 import os
@@ -39,7 +43,7 @@ models = list(graph_models) + list(simplicial_models)
 
 feature_dim_dict = {
     TransformType.degree_transform: 1,
-    TransformType.degree_transform_onehot: 9,
+    TransformType.degree_transform_onehot: 10,
     TransformType.random_node_features: 8,
     TransformType.degree_transform_sc: [1, 2, 1],
     TransformType.random_simplices_features: [8, 8, 8],
@@ -97,7 +101,7 @@ for model in models:
             model_config = get_model_config(model, out_channels, dim_features)
             model_config_cls = model_cfg_lookup[model]
             trainer_config = TrainerConfig(
-                accelerator="auto", max_epochs=5, log_every_n_steps=1
+                accelerator="auto", max_epochs=2, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
                 task_type=task,
