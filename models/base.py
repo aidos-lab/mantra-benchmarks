@@ -77,47 +77,28 @@ class BaseModel(L.LightningModule):
         self, x_hat, y, batch_len, step: Literal["train", "test", "validation"]
     ):
         if step == "train":
-            accuracies = self.accuracies_fn(
-                self.training_accuracy,
-                x_hat,
-                y,
-                "train_accuracy",
-            )
-            for accuracy in accuracies:
-                self.log(
-                    **accuracy,
-                    prog_bar=True,
-                    on_step=False,
-                    on_epoch=True,
-                    batch_size=batch_len,
-                )
+            acc_fun = self.training_accuracy
         elif step == "test":
-            accuracies = self.accuracies_fn(
-                self.test_accuracy, x_hat, y, "test_accuracy"
-            )
-            for accuracy in accuracies:
-                self.log(
-                    **accuracy,
-                    prog_bar=True,
-                    on_step=False,
-                    on_epoch=True,
-                    batch_size=batch_len,
-                )
+            acc_fun = self.test_accuracy
         elif step == "validation":
-            accuracies = self.accuracies_fn(
-                self.validation_accuracy,
+            acc_fun = self.validation_accuracy
+        else:
+            ValueError("Unknown step Literal")
+
+        accuracies = self.accuracies_fn(
+                acc_fun,
                 x_hat,
                 y,
-                "validation_accuracy",
+                step,
             )
-            for accuracy in accuracies:
-                self.log(
-                    **accuracy,
-                    prog_bar=True,
-                    on_step=False,
-                    on_epoch=True,
-                    batch_size=batch_len,
-                )
+        for accuracy in accuracies:
+            self.log(
+                **accuracy,
+                prog_bar=True,
+                on_step=False,
+                on_epoch=True,
+                batch_size=batch_len,
+            )
 
     def test_step(self, batch, batch_idx):
         return self.general_step(batch, batch_idx, "test")

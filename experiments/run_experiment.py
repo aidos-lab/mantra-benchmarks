@@ -10,7 +10,7 @@ from metrics.tasks import (
 from experiments.configs import ConfigExperimentRun
 from models import model_lookup
 from metrics.tasks import TaskType
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
 from experiments.loggers import get_wandb_logger
@@ -99,7 +99,9 @@ def run_configuration(
 
 def benchmark_configuration(
     config: ConfigExperimentRun, save_checkpoint_path: str
-):
+) -> List[Dict[str, float]]:
     dm, lit_model, trainer, logger = get_setup(config)
 
-    trainer.test(lit_model, dm, save_checkpoint_path)
+    output = trainer.test(lit_model, dm, save_checkpoint_path)
+    logger.experiment.finish()
+    return output 
