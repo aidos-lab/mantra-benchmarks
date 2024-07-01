@@ -5,8 +5,7 @@ from torch import nn
 from .readouts.SumReadout import SumReadout
 from ..model_types import ModelType
 from pydantic import BaseModel
-from topox.models.sccnn import SCCNNCustom
-
+from models.simplicial_complexes.scnn_custom import SCCNNCustom
 
 class SCCNNConfig(BaseModel):
     type: ModelType = ModelType.SCCNN
