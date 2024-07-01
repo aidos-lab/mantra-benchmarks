@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python ./run.py \
+python ./experiments/run.py \
     --mode "single" \
     --config "./configs/gat_betti_numbers_degree_transform_onehot.yaml" \
     --wandb "mantra-proj" \
