@@ -101,7 +101,7 @@ for model in models:
             model_config = get_model_config(model, out_channels, dim_features)
             model_config_cls = model_cfg_lookup[model]
             trainer_config = TrainerConfig(
-                accelerator="auto", max_epochs=2, log_every_n_steps=1
+                accelerator="auto", max_epochs=10, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
                 task_type=task,
