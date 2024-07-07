@@ -105,5 +105,10 @@ def collate_simplicial_models_topox(batch):
     # Second, batch structure matrices
     batched_data.connectivity = collate_connectivity_matrices(batch)
     # Third, batch output
-    batched_data.y = torch.cat([example.y for example in batch], dim=0)
+    if len(batch[0].y.shape) == 0:
+        # We directly create the tensor because we have scalars.
+        batched_data.y = torch.tensor([example.y for example in batch])
+    else:
+        # We concatenate the tensors.
+        batched_data.y = torch.cat([example.y for example in batch], dim=0)
     return batched_data

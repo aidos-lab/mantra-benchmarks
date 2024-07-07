@@ -130,21 +130,6 @@ class NameToClassTransform:
         return data
 
 
-class NameToClassSimplicialComplexTransform:
-    def __init__(self):
-        self.class_dict = {
-            "Klein bottle": 0,
-            "": 1,
-            "RP^2": 2,
-            "T^2": 3,
-            "S^2": 4,
-        }
-
-    def __call__(self, data):
-        data.other_features["y"] = torch.tensor([self.class_dict[data.name]])
-        return data
-
-
 class RandomNodeFeatures:
     def __init__(self, size):
         self.size = size
