@@ -22,7 +22,7 @@ from models.models import dataloader_lookup
 
 
 def get_setup(
-    config: ConfigExperimentRun,
+    config: ConfigExperimentRun, use_logger: bool = True
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup[config.transforms]
@@ -63,14 +63,16 @@ def get_setup(
         learning_rate=config.learning_rate,
         imbalance=imbalance,
     )
-
-    logger = get_wandb_logger(
-        task_name=config.task_type.name,
-        model_name=config.conf_model.type.name,
-        node_features=config.transforms.name,
-        run_id=run_id,
-        project_id=config.logging.wandb_project_id,
-    )
+    if use_logger:
+        logger = get_wandb_logger(
+            task_name=config.task_type.name,
+            model_name=config.conf_model.type.name,
+            node_features=config.transforms.name,
+            run_id=run_id,
+            project_id=config.logging.wandb_project_id,
+        )
+    else:
+        logger = True
 
     trainer = L.Trainer(
         logger=logger,
@@ -100,10 +102,14 @@ def run_configuration(
 
 
 def benchmark_configuration(
-    config: ConfigExperimentRun, save_checkpoint_path: str
+    config: ConfigExperimentRun,
+    save_checkpoint_path: str,
+    use_logger: bool = False,
 ) -> List[Dict[str, float]]:
-    dm, lit_model, trainer, logger = get_setup(config)
+    dm, lit_model, trainer, logger = get_setup(config, use_logger=use_logger)
 
     output = trainer.test(lit_model, dm, save_checkpoint_path)
-    logger.experiment.finish()
+
+    if use_logger:
+        logger.experiment.finish()
     return output

@@ -71,7 +71,13 @@ if __name__ == "__main__":
         "--config",
         type=str,
         default="./config.yaml",
-        help="Path to .yaml configuration for experiment if running 'single mode.",
+        help="Path to .yaml configuration for experiment if running 'single' mode. ",
+    )
+    parser.add_argument(
+        "--Configs",
+        type=str,
+        default="./configs",
+        help="Path to folder containing all configurations if running 'all' mode.",
     )
     parser.add_argument(
         "--checkpoints",
@@ -87,6 +93,9 @@ if __name__ == "__main__":
         checkpoint_path = config.get_checkpoint_path(args_dict["checkpoints"])
         test(config=config, checkpoint_path=checkpoint_path)
     elif args_dict["mode"] == "all":
-        test_all(checkpoint_dir=args_dict["checkpoints"])
+        test_all(
+            checkpoint_dir=args_dict["checkpoints"],
+            config_dir=args_dict["Configs"],
+        )
     else:
         ValueError("Unknown mode")
