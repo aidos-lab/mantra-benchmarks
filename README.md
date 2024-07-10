@@ -33,6 +33,13 @@ for running all experiments.
 $ python ./experiments/run.py --mode "<single/all>" --checkpoints "<checkpoints/to/be/benchmarked>"
 ```
 
+4. Result processing and table generation.
+
+```s
+$ python ./experiments/process_results.py
+```
+
+
 ## Results
 
 Results can be inspected in [notebooks/interpret_results.ipynb](./notebooks/interpret_results.ipynb)
