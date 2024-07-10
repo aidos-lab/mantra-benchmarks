@@ -55,8 +55,8 @@ def per_transform(
 
     Parameters:
     tasks (List[TaskType]): List of task types to process.
-    model_types_cartesian (List[List[ModelType]]): Cartesian product of model types to process.
-    transform_types_cartesian (List[List[TransformType]]): Cartesian product of transform types to process.
+    model_types_cartesian (List[List[ModelType]]): Model types to process.
+    transform_types_cartesian (List[List[TransformType]]): Transform types to process.
     result_csv_prefix (str): Prefix for the result CSV file paths.
 
     Returns:
