@@ -36,7 +36,9 @@ $ python ./experiments/run.py --mode "<single/all>" --checkpoints "<checkpoints/
 4. Result processing and table generation.
 
 ```s
-$ python ./experiments/process_results.py
+$ python ./experiments/generate_tables.py
+# optional
+$ pandoc results.md -o results.pdf -V geometry:margin=0.1in -V geometry:a3paper
 ```
 
 
