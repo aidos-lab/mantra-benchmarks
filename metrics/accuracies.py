@@ -9,10 +9,10 @@ def compute_orientability_accuracies(
 ):
     benchmarks = []
     for metrics_ in metrics:
-        y_hat = torch.sigmoid(y_hat)
+        y_hat_ = torch.sigmoid(y_hat)
         metric = metrics_.metric.to(y_hat.device)
         benchmarks.append(
-            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat, y)}
+            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat_, y)}
         )
     return benchmarks
 
