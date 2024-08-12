@@ -85,3 +85,10 @@ def get_task_lookup(transforms: List[Callable]) -> Dict[TaskType, Task]:
     }
 
     return res
+
+
+class_transforms_lookup: Dict[TaskType, List[Callable]] = {
+    TaskType.BETTI_NUMBERS: betti_numbers_transforms,
+    TaskType.ORIENTABILITY: orientability_transforms,
+    TaskType.NAME: name_transforms,
+}
