@@ -10,6 +10,19 @@ import yaml
 import json
 import os
 import shutil
+import argparse
+
+parser = argparse.ArgumentParser(
+    description="Argument parser for experiment configurations."
+)
+parser.add_argument(
+    "--max_epochs",
+    type=int,
+    default=10,
+    help="Maximum number of epochs.",
+)
+args = parser.parse_args()
+max_epochs: int = args.max_epochs
 
 tasks = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
 
@@ -101,11 +114,11 @@ for model in models:
             model_config = get_model_config(model, out_channels, dim_features)
             model_config_cls = model_cfg_lookup[model]
             trainer_config = TrainerConfig(
-                accelerator="auto", max_epochs=10, log_every_n_steps=1
+                accelerator="auto", max_epochs=max_epochs, log_every_n_steps=1
             )
             config = ConfigExperimentRun(
                 task_type=task,
-                seed=1234,
+                seed=1234, # any seed, will be overwritten during actual run
                 transforms=feature,
                 use_stratified=(
                     False if task == TaskType.BETTI_NUMBERS else True
