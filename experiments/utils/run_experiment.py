@@ -36,19 +36,12 @@ def get_setup(
         dataloader_builder=dataloader_lookup[config.conf_model.type],
     )
 
-    imbalance_statistics = dm.class_imbalance_statistics()
-    name_imbalance = imbalance_statistics["name"][1]
-    orientability_imbalace = imbalance_statistics["orientable"][1]
-
-    if config.task_type == TaskType.BETTI_NUMBERS:
-        # betti numbers is linear regression, so no imbalance necessary
-        imbalance = [1]
-    elif config.task_type == TaskType.NAME:
-        imbalance = name_imbalance
-    elif config.task_type == TaskType.ORIENTABILITY:
-        imbalance = orientability_imbalace
-
-    print(imbalance)
+    # ignore imbalance when working with betti numbers
+    imbalance = (
+        dm.class_imbalance_statistics()[1]
+        if config.task_type != TaskType.BETTI_NUMBERS
+        else [1]
+    )
 
     model = model_lookup[config.conf_model.type](config.conf_model)
     metrics = task_lookup[config.task_type].get_metrics()

@@ -57,12 +57,17 @@ class SimplicialDS(InMemoryDataset):
             os.path.join(root, "raw_simplicial"),
             manifold,
             version,
-            transform,
-            pre_transform,
-            pre_filter,
+            None,
+            None,
+            None,
         )
 
-        super().__init__(root)
+        super().__init__(
+            root,
+            transform=transform,
+            pre_transform=pre_transform,
+            pre_filter=pre_filter,
+        )
         self.load(self._get_processed_path(task_type, mode))
 
     @property
@@ -96,18 +101,18 @@ class SimplicialDS(InMemoryDataset):
         return f_names
 
     def process(self):
+        print("(preparing train/val/test split)")
         indices = range(self.raw_simplicial_ds.len())
 
         for task_type in TaskType:
-            print(task_type)
             # apply class transform
             class_transform = Compose(class_transforms_lookup[task_type])
-            data_list = [
+            data_list_processed = [
                 class_transform(self.raw_simplicial_ds.get(idx))
                 for idx in indices
             ]
             # train test split
-            stratified = torch.vstack([data.y for data in data_list])
+            stratified = torch.vstack([data.y for data in data_list_processed])
             train_val_indices, test_indices = train_test_split(
                 indices,
                 test_size=self.split_config.split[2],
@@ -133,6 +138,7 @@ class SimplicialDS(InMemoryDataset):
             )
 
             # save splits
+            data_list = [self.raw_simplicial_ds.get(idx) for idx in indices]
             train_data_list = [data_list[idx] for idx in train_indices]
             val_data_list = [data_list[idx] for idx in val_indices]
             test_data_list = [data_list[idx] for idx in test_indices]

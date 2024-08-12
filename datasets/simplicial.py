@@ -57,7 +57,7 @@ class SimplicialDataModule(LightningDataModule):
             seed=self.seed,
             use_stratified=self.use_stratified,
             task_type=self.task_type,
-            mode="train",
+            mode=mode,
             transform=self.transform,
         )
 
@@ -74,7 +74,9 @@ class SimplicialDataModule(LightningDataModule):
         return self.dataloader_builder(self.val_ds, batch_size=self.batch_size)
 
     def test_dataloader(self):
-        return self.dataloader_builder(self.val_ds, batch_size=self.batch_size)
+        return self.dataloader_builder(
+            self.test_ds, batch_size=self.batch_size
+        )
 
 
 if __name__ == "__main__":
