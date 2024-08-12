@@ -12,6 +12,7 @@ import os
 import shutil
 import argparse
 
+# ARGS ------------------------------------------------------------------------
 parser = argparse.ArgumentParser(
     description="Argument parser for experiment configurations."
 )
@@ -23,7 +24,9 @@ parser.add_argument(
 )
 args = parser.parse_args()
 max_epochs: int = args.max_epochs
+# -----------------------------------------------------------------------------
 
+# CONFIGS ---------------------------------------------------------------------
 tasks = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
 
 graph_features = [
@@ -67,8 +70,10 @@ out_channels_dict = {
     TaskType.NAME: 5,
     TaskType.BETTI_NUMBERS: 3,
 }
+# -----------------------------------------------------------------------------
 
 
+# UTILS -----------------------------------------------------------------------
 def get_feature_types(model: ModelType):
     if model in graph_models:
         return graph_features
@@ -103,6 +108,9 @@ def manage_directory(path: str):
     os.makedirs(path)
 
 
+# -----------------------------------------------------------------------------
+
+# GENERATE --------------------------------------------------------------------
 manage_directory("./configs")
 
 for model in models:
@@ -118,7 +126,7 @@ for model in models:
             )
             config = ConfigExperimentRun(
                 task_type=task,
-                seed=1234, # any seed, will be overwritten during actual run
+                seed=1234,  # any seed, will be overwritten during actual run
                 transforms=feature,
                 use_stratified=(
                     False if task == TaskType.BETTI_NUMBERS else True
@@ -135,3 +143,4 @@ for model in models:
             yaml_file_path = f"./configs/{model.name.lower()}_{task.name.lower()}_{feature.name.lower()}.yaml"
             with open(yaml_file_path, "w") as file:
                 file.write(yaml_string)
+# -----------------------------------------------------------------------------
