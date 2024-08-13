@@ -22,8 +22,18 @@ parser.add_argument(
     default=10,
     help="Maximum number of epochs.",
 )
+
+parser.add_argument(
+    "--lr",
+    type=float,
+    default=0.01,
+    help="Maximum number of epochs.",
+)
+
 args = parser.parse_args()
 max_epochs: int = args.max_epochs
+lr: float = args.lr
+
 # -----------------------------------------------------------------------------
 
 # CONFIGS ---------------------------------------------------------------------
@@ -131,7 +141,7 @@ for model in models:
                 use_stratified=(
                     False if task == TaskType.BETTI_NUMBERS else True
                 ),
-                learning_rate=0.01,
+                learning_rate=lr,
                 trainer_config=trainer_config,
                 conf_model=model_config,
             )
