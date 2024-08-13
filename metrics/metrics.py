@@ -75,6 +75,14 @@ def get_orientability_metrics():
             NamedMetric(
                 torchmetrics.classification.F1Score(task="binary"), "F1Score"
             ),
+            NamedMetric(
+                torchmetrics.classification.MulticlassAccuracy(
+                    num_classes=2,
+                    average="macro",
+                ),
+                "BalancedAccuracy",
+            ),
+            NamedMetric(GeneralAccuracy(), "Accuracy"),
             NamedMetric(MatthewsCorrCoeff(), "MCC"),
         ]
     )

@@ -19,6 +19,8 @@ import uuid
 from datasets.transforms import transforms_lookup
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
+from typing import List
+from .imbalance_handling import sorted_imbalance_weights
 
 
 def get_setup(
@@ -32,20 +34,21 @@ def get_setup(
         data_dir="./data",
         transform=task_lookup[config.task_type].transforms,
         use_stratified=config.use_stratified,
+        task_type=config.task_type,
         seed=config.seed,
         dataloader_builder=dataloader_lookup[config.conf_model.type],
     )
 
     # ignore imbalance when working with betti numbers
-    imbalance = (
-        dm.class_imbalance_statistics()[1]
-        if config.task_type != TaskType.BETTI_NUMBERS
-        else [1]
-    )
+    imbalance = [1]
+    if config.task_type != TaskType.BETTI_NUMBERS:
+        imbalance = sorted_imbalance_weights(
+            dm.class_imbalance_statistics(), config.task_type
+        )
+        print("[INFO] Using imbalance weights for weighted loss: ", imbalance)
 
     model = model_lookup[config.conf_model.type](config.conf_model)
     metrics = task_lookup[config.task_type].get_metrics()
-
     lit_model = BaseModel(
         model=model,
         training_accuracy=metrics.train,

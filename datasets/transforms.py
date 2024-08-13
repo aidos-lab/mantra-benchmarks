@@ -9,6 +9,14 @@ from datasets.utils import (
 )
 from enum import Enum
 
+NAME_TO_CLASS = {
+    "Klein bottle": 0,
+    "": 1,
+    "RP^2": 2,
+    "T^2": 3,
+    "S^2": 4,
+}
+
 
 class SetNumNodesTransform:
     def __call__(self, data):
@@ -116,13 +124,7 @@ class SimplicialComplexStructureMatricesTransform:
 
 class NameToClassTransform:
     def __init__(self):
-        self.class_dict = {
-            "Klein bottle": 0,
-            "": 1,
-            "RP^2": 2,
-            "T^2": 3,
-            "S^2": 4,
-        }
+        self.class_dict = NAME_TO_CLASS
 
     def __call__(self, data):
         # data.y = F.one_hot(torch.tensor(self.class_dict[data.name]),num_classes=5)

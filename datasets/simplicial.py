@@ -1,16 +1,15 @@
 from typing import Callable
-
 from lightning import LightningDataModule
 from torch_geometric.loader import DataLoader as DataLoaderGeometric
 from torch_geometric.transforms import Compose
 from collections import Counter
-from typing import List, Dict
+from typing import List
 from .simplicial_ds import SimplicialDS
 from metrics.tasks import TaskType
 
 
-def unique_counts(input_list: List[str]):
-    return Counter(input_list).keys(), Counter(input_list).values()
+def unique_counts(input_list: List[str]) -> Counter:
+    return Counter(input_list)
 
 
 class SimplicialDataModule(LightningDataModule):
@@ -37,7 +36,7 @@ class SimplicialDataModule(LightningDataModule):
     def prepare_data(self) -> None:
         SimplicialDS(root=self.data_dir)
 
-    def class_imbalance_statistics(self) -> Dict | None:
+    def class_imbalance_statistics(self) -> Counter:
         dataset = SimplicialDS(root=self.data_dir, task_type=self.task_type)
 
         statistics = None
@@ -47,7 +46,6 @@ class SimplicialDataModule(LightningDataModule):
             statistics = unique_counts(dataset.orientable.tolist())
         else:
             raise NotImplementedError()
-
         return statistics
 
     def setup(self, stage=None):
