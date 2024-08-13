@@ -15,6 +15,8 @@ $ poetry install
 
 ## Usage
 
+- see [train.sh](./train.sh), [test.sh](./test.sh), [generate_configs.sh](./generate_configs.sh)
+
 1. Generate experiment configurations: `python generate_configs.py`
 2. Run experiments:
 
