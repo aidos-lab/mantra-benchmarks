@@ -73,7 +73,7 @@ def get_orientability_metrics():
     metrics = MetricTrainValTest(
         [
             NamedMetric(
-                torchmetrics.classification.F1Score(task="binary"), "F1Score"
+                torchmetrics.classification.BinaryAUROC(), "Binary_AUROC"
             ),
             NamedMetric(
                 torchmetrics.classification.MulticlassAccuracy(
@@ -98,6 +98,12 @@ def get_name_metrics(num_classes=5):
                     average="weighted",
                 ),
                 "Accuracy",
+            ),
+            NamedMetric(
+                torchmetrics.classification.AUROC(
+                    num_classes=num_classes, task="multiclass"
+                ),
+                "AUROC",
             ),
             NamedMetric(
                 torchmetrics.classification.MulticlassAccuracy(
@@ -127,7 +133,7 @@ def get_betti_numbers_metrics():
     betti_2_metrics = [
         NamedMetric(GeneralAccuracy(), "Accuracy"),
         NamedMetric(MatthewsCorrCoeff(), "MCC"),
-        # NamedMetric(torchmetrics.classification.BinaryF1Score(), "F1"),
+        NamedMetric(torchmetrics.classification.BinaryAUROC(), "BinaryAUROC"),
         NamedMetric(
             BettiNumbersMultiClassAccuracy(num_classes=2),
             "BalancedAccuracy",
@@ -145,6 +151,6 @@ def get_betti_numbers_metrics():
     )
 
     metrics = MetricTrainValTest(
-        train=collection_train, val=collection_train, test=collection
+        train=collection_train, val=collection, test=collection
     )
     return metrics
