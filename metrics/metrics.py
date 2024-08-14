@@ -9,6 +9,7 @@ from metrics.custom_metrics.betti_numbers_acc import (
     BettiNumbersMultiClassAccuracy,
 )
 from metrics.custom_metrics.mcc import MatthewsCorrCoeff
+from metrics.custom_metrics.auroc import AUROC
 
 
 class NamedMetric:
@@ -124,6 +125,7 @@ def get_betti_numbers_metrics():
     betti_0_metrics = [NamedMetric(GeneralAccuracy(), "Accuracy")]
     betti_1_metrics = [
         NamedMetric(GeneralAccuracy(), "Accuracy"),
+        NamedMetric(AUROC(num_classes=7), "AUROC"),
         NamedMetric(
             BettiNumbersMultiClassAccuracy(num_classes=7),
             "BalancedAccuracy",
