@@ -13,6 +13,17 @@ $ poetry install
 3. Install toponetx dependency
 4. `pip install -e ./mantra/`
 
+### Docker
+
+Depending on your setup, you may need to run the docker commands via `sudo`. The docker setup is not perfect but works.
+
+0. Install Docker on your device. On Ubuntu, for instance, refer to [official_installation_instructions](./https://docs.docker.com/engine/install/ubuntu/)
+1. Edit the variables `USER_NAME` to `GROUP_ID` in the [Dockerfile](./containerization/Dockerfile) 
+2. `cd ./containerization`
+3. `docker compose up --build -d`. Check that container is running via `docker ps`
+4. `docker exec -it mantra_container /bin/bash`
+5. When inside the container, run `source /deps/venv/bin/activate` to source the ready virtual environment
+
 ## Usage
 
 - see [train.sh](./train.sh), [test.sh](./test.sh), [generate_configs.sh](./generate_configs.sh)

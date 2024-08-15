@@ -2,7 +2,7 @@
 raw_data
 data
 **/__pycache__
-/lightning_logs/
+/code/lightning_logs/
 k-simplex*
 RandomWalks*
 results
