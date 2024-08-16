@@ -94,6 +94,7 @@ class BaseModel(L.LightningModule):
             x_hat,
             y,
             step,
+            sync_dist=True
         )
         for accuracy in accuracies:
             self.log(
@@ -102,6 +103,7 @@ class BaseModel(L.LightningModule):
                 on_step=False,
                 on_epoch=True,
                 batch_size=batch_len,
+                sync_dist=True
             )
 
     def test_step(self, batch, batch_idx):
