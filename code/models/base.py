@@ -93,8 +93,7 @@ class BaseModel(L.LightningModule):
             acc_fun,
             x_hat,
             y,
-            step,
-            sync_dist=True
+            step
         )
         for accuracy in accuracies:
             self.log(
