@@ -17,6 +17,10 @@ class AUROC(Metric):
         )
 
     def update(self, preds: Tensor, target: Tensor) -> None:
+        preds = torch.min(
+            torch.max(preds, torch.tensor(0.0)),
+            torch.tensor(self.num_classes - 1),
+        ).long()
         y_hat = torch.nn.functional.one_hot(preds, self.num_classes).float()
         self.auroc.update(preds=y_hat, target=target)
 
