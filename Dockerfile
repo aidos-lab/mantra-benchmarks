@@ -35,8 +35,8 @@ RUN git config --global --add safe.directory /deps/mantra && git config --global
 
 # set up virtual environment
 RUN python3 -m venv /deps/venv && . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry 
-RUN poetry install 
-RUN pip install -e /deps/mantra/ /deps/TopoModelX/
+RUN . /deps/venv/bin/activate && poetry install 
+RUN . /deps/venv/bin/activate && pip install -e /deps/mantra/ /deps/TopoModelX/
 
 # Set the default user to the new user
 USER $USER_NAME
