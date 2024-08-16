@@ -11,6 +11,7 @@ services:
       stack: 67108864
     volumes:
       - "./code:/code"
+      - "./data:/data"
     deploy:
       resources:
         reservations:

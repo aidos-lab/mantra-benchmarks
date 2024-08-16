@@ -14,7 +14,9 @@ def print_info(config: ConfigExperimentRun):
 
 
 def run_configs_folder(
-    args_dict: Dict[str, Any], checkpoint_folder: Optional[str] = None
+    args_dict: Dict[str, Any],
+    checkpoint_folder: Optional[str] = None,
+    data_dir: str = "./data",
 ):
     config_dir = "./configs"
     files = os.listdir(config_dir)
@@ -35,7 +37,9 @@ def run_configs_folder(
                 print("[INFO] No checkpoint folder.")
 
             config.logging.wandb_project_id = args_dict["wandb"]
-            run_configuration(config, save_checkpoint_path=checkpoint_path)
+            run_configuration(
+                config, save_checkpoint_path=checkpoint_path, data_dir=data_dir
+            )
 
 
 if __name__ == "__main__":
@@ -55,6 +59,12 @@ if __name__ == "__main__":
         help="Path to .yaml configuration for experiment if running 'single mode.",
     )
     parser.add_argument(
+        "--data",
+        type=str,
+        default="./data",
+        help="Directory where data shall be stored in.",
+    )
+    parser.add_argument(
         "--checkpoints",
         type=str,
         default=None,
@@ -66,6 +76,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     args_dict = vars(args)
+    data_dir: str = args.data
 
     if args_dict["mode"] == "all":
         run_configs_folder(
@@ -80,5 +91,7 @@ if __name__ == "__main__":
         config_path = None
         if args_dict["checkpoints"]:
             config_path = config.get_checkpoint_path(args_dict["checkpoints"])
-        run_configuration(config, save_checkpoint_path=config_path)
+        run_configuration(
+            config, save_checkpoint_path=config_path, data_dir=data_dir
+        )
         exit(0)

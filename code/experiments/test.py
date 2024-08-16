@@ -11,20 +11,28 @@ import argparse
 from experiments.utils.result_collection import ResultCollection
 
 
-def test(config: ConfigExperimentRun, checkpoint_path: str):
+def test(
+    config: ConfigExperimentRun, checkpoint_path: str, data_dir: str = "./data"
+):
     """
     Runs the benchmark for one specific configuration and trained weights.
     """
 
     print("[INFO] Testing with config", config)
     print("[INFO] Testing with checkpoint path:", checkpoint_path)
+    print("[INFO] Testing with data path:", data_dir)
 
     benchmark_configuration(
-        config=config, save_checkpoint_path=checkpoint_path
+        config=config, save_checkpoint_path=checkpoint_path, data_dir=data_dir
     )
 
 
-def test_all(checkpoint_dir: str, config_dir: str = "./configs", n_runs=5):
+def test_all(
+    checkpoint_dir: str,
+    config_dir: str = "./configs",
+    n_runs=5,
+    data_dir: str = "./data",
+):
     """
     Tests all configurations in a config directory. Assumes that for every run and every config there is a
     corresponding checkpoint in checkpoint_dir given.
@@ -46,7 +54,9 @@ def test_all(checkpoint_dir: str, config_dir: str = "./configs", n_runs=5):
 
             # run benchmark
             out = benchmark_configuration(
-                config=config, save_checkpoint_path=checkpoint_path
+                config=config,
+                save_checkpoint_path=checkpoint_path,
+                data_dir=data_dir,
             )
 
             # add benchmarking results
@@ -80,6 +90,12 @@ if __name__ == "__main__":
         help="Path to folder containing all configurations if running 'all' mode.",
     )
     parser.add_argument(
+        "--data",
+        type=str,
+        default="./data",
+        help="Folder where data is stored in.",
+    )
+    parser.add_argument(
         "--checkpoints",
         type=str,
         help="Path where the model checkpoints are stored.",
@@ -87,15 +103,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     args_dict = vars(args)
+    data_dir = args.data
 
     if args_dict["mode"] == "single":
         config = load_config(args_dict["config"])
         checkpoint_path = config.get_checkpoint_path(args_dict["checkpoints"])
-        test(config=config, checkpoint_path=checkpoint_path)
+        test(config=config, checkpoint_path=checkpoint_path, data_dir=data_dir)
     elif args_dict["mode"] == "all":
         test_all(
             checkpoint_dir=args_dict["checkpoints"],
             config_dir=args_dict["Configs"],
+            data_dir=data_dir,
         )
     else:
         ValueError("Unknown mode")

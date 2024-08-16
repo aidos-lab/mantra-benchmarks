@@ -24,6 +24,13 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--config_dir",
+    type=str,
+    default="./configs",
+    help="Directory where config files shall be stored",
+)
+
+parser.add_argument(
     "--lr",
     type=float,
     default=0.01,
@@ -33,7 +40,7 @@ parser.add_argument(
 args = parser.parse_args()
 max_epochs: int = args.max_epochs
 lr: float = args.lr
-
+config_dir: str = args.config_dir
 # -----------------------------------------------------------------------------
 
 # CONFIGS ---------------------------------------------------------------------
@@ -121,7 +128,7 @@ def manage_directory(path: str):
 # -----------------------------------------------------------------------------
 
 # GENERATE --------------------------------------------------------------------
-manage_directory("./configs")
+manage_directory(config_dir)
 
 for model in models:
     features = get_feature_types(model)
@@ -150,7 +157,10 @@ for model in models:
 
             python_dict = json.loads(json_string)
             yaml_string = yaml.dump(python_dict)
-            yaml_file_path = f"./configs/{model.name.lower()}_{task.name.lower()}_{feature.name.lower()}.yaml"
+            yaml_file_path = os.path.join(
+                config_dir,
+                f"{model.name.lower()}_{task.name.lower()}_{feature.name.lower()}.yaml",
+            )
             with open(yaml_file_path, "w") as file:
                 file.write(yaml_string)
 # -----------------------------------------------------------------------------

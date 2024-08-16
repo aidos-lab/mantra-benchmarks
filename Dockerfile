@@ -31,7 +31,7 @@ WORKDIR /deps
 COPY dependencies /deps/
 COPY pyproject.toml /deps/
 COPY .git /.git
-RUN git config --global --add safe.directory /deps/mantra && git config --global --add safe.directory /deps/TopoModelX
+RUN git config --global --add safe.directory /deps/mantra && git config --global --add safe.directory /deps/TopoModelX && git config --global --add safe.directory /
 
 # set up virtual environment
 RUN python3 -m venv /deps/venv && . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry 
