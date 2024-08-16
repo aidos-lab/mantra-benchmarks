@@ -67,6 +67,7 @@ class BaseModel(L.LightningModule):
             batch_size=batch_len,
             on_step=False,
             on_epoch=True,
+            sync_dist=True
         )
         self.log_accuracies(x_hat, batch.y, batch_len, step)
         return loss
