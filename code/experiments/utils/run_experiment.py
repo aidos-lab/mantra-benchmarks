@@ -21,17 +21,20 @@ from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
 from typing import List
 from .imbalance_handling import sorted_imbalance_weights
+import os
 
 
 def get_setup(
-    config: ConfigExperimentRun, use_logger: bool = True
+    config: ConfigExperimentRun,
+    use_logger: bool = True,
+    data_dir: str = "./data",
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup[config.transforms]
     task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
 
     dm = SimplicialDataModule(
-        data_dir="./data",
+        data_dir=data_dir,
         transform=task_lookup[config.task_type].transforms,
         use_stratified=config.use_stratified,
         task_type=config.task_type,
@@ -60,7 +63,10 @@ def get_setup(
         imbalance=imbalance,
     )
     if use_logger:
+        print(data_dir)
+        print("AASDDFASDFAS")
         logger = get_wandb_logger(
+            save_dir=os.path.join(data_dir, "lightning_logs"),
             task_name=config.task_type.name,
             model_name=config.conf_model.type.name,
             node_features=config.transforms.name,
@@ -76,15 +82,18 @@ def get_setup(
         max_epochs=config.trainer_config.max_epochs,
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
+        default_root_dir=data_dir,
     )
 
     return dm, lit_model, trainer, logger
 
 
 def run_configuration(
-    config: ConfigExperimentRun, save_checkpoint_path: Optional[str] = None
+    config: ConfigExperimentRun,
+    save_checkpoint_path: Optional[str] = None,
+    data_dir: str = "./data",
 ):
-    dm, lit_model, trainer, logger = get_setup(config)
+    dm, lit_model, trainer, logger = get_setup(config, data_dir=data_dir)
 
     # run
     trainer.fit(lit_model, dm)
@@ -101,8 +110,11 @@ def benchmark_configuration(
     config: ConfigExperimentRun,
     save_checkpoint_path: str,
     use_logger: bool = False,
+    data_dir: str = "./data",
 ) -> List[Dict[str, float]]:
-    dm, lit_model, trainer, logger = get_setup(config, use_logger=use_logger)
+    dm, lit_model, trainer, logger = get_setup(
+        config, use_logger=use_logger, data_dir=data_dir
+    )
 
     output = trainer.test(lit_model, dm, save_checkpoint_path)
 

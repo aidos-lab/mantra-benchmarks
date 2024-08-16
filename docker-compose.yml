@@ -1,0 +1,19 @@
+name: "mantra-benchmarks"
+services:
+  mantra_service:
+    image: mantra_img:0
+    container_name: mantra_container
+    build: .
+    ipc: host
+    tty: true
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    volumes:
+      - "./code:/code"
+      - "./data:/data"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
