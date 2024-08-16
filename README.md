@@ -2,16 +2,23 @@
 
 ## Setup
 
-0. Clone with submodules. After cloning, run `git submodule update --init --recursive`
+Either via Docker or a standard setup. Start with:
+
+```s
+git submodule update --init --recursive
+```
+
+### Standard setup
+
 1. Setup python version 3.10.13. E.g. with `pyenv install 3.10.13` and `pyenv local 3.10.13`. Set up a virtual environment, e.g. via `python3 -m venv ./venv` and `source ./venv/bin/activate`,
 2. Install dependencies via poetry
 ```s
-$ pip install --upgrade pip
+$ python -m pip install --upgrade pip
 $ pip install poetry
 $ poetry install
 ```
-3. Install toponetx dependency
-4. `pip install -e ./mantra/`
+3. `pip install -e ./dependencies/TopoModelX/`
+4. `pip install -e ./dependencies/mantra/`
 
 ### Docker
 
@@ -28,7 +35,8 @@ Depending on your setup, you may need to run the docker commands via `sudo`. The
 
 - see [train.sh](./train.sh), [test.sh](./test.sh), [generate_configs.sh](./generate_configs.sh)
 
-1. Generate experiment configurations: `python generate_configs.py`
+0. Change in code directory.
+1. Generate experiment configurations: `./generate_configs.sh`
 2. Run experiments:
 
 ```s
