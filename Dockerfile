@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:2.1.0-cuda12.1-cudnn8-devel
+FROM nvidia/cuda:11.6.1-devel-ubuntu20.04
 
 # Add the current user to the image, to use the same user as the host. run the command "id" to find out your ids.
 ARG USER_NAME=<username>
@@ -9,42 +9,40 @@ ARG GROUP_ID=<gid>
 # fix for tzdata asking for user input
 ARG DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC
 
-# Update the system and install required packages
-RUN apt-get update && apt-get install -y sudo git apt-utils htop make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+# Update the system and install required packages. Adding ppa:deadsnakes/ppa for python3.10
+RUN apt-get update && apt-get install -y sudo git apt-utils htop \
+    software-properties-common \
+    apt-transport-https \
+    ca-certificates \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update
 
-RUN groupadd --gid $GROUP_ID $GROUP_NAME
-RUN useradd --uid $USER_ID --gid $GROUP_ID --shell /bin/bash --create-home $USER_NAME
+# set python3.10 as running python
+RUN apt-get install -y python3.10 python3.10-venv python3.10-dev && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
 
-# don't require password with sudo, for convenience
-# not the safest thing to do, but hopefully okay inside the container
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# file permissions
+RUN groupadd --gid $GROUP_ID $GROUP_NAME && \
+    useradd --uid $USER_ID --gid $GROUP_ID --shell /bin/bash --create-home $USER_NAME && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
+    usermod -aG sudo $USER_NAME
 
-# Add the new user to the sudo group
-RUN usermod -aG sudo $USER_NAME
-
+# copy submodule dependencies
 WORKDIR /deps
 COPY dependencies /deps/
 COPY pyproject.toml /deps/
 COPY .git /.git
-RUN git config --global --add safe.directory /deps/mantra
-RUN git config --global --add safe.directory /deps/TopoModelX
+RUN git config --global --add safe.directory /deps/mantra && git config --global --add safe.directory /deps/TopoModelX
 
-RUN git clone https://github.com/pyenv/pyenv /.pyenv
-
-ENV HOME  /
-ENV PYENV_ROOT $HOME/.pyenv
-ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-
-RUN pyenv install 3.10.13
-RUN pyenv global 3.10.13
-RUN pyenv rehash
-RUN python -m venv /deps/venv
-RUN . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry && poetry install && pip install -e /deps/mantra/ /deps/TopoModelX/
-
+# set up virtual environment
+RUN python3 -m venv /deps/venv && . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry 
+RUN poetry install 
+RUN pip install -e /deps/mantra/ /deps/TopoModelX/
 
 # Set the default user to the new user
 USER $USER_NAME
 WORKDIR /code
 
-# Start the container with a bash shell
+RUN echo "source /deps/venv/bin/activate" >> ~/.bashrc
+
+# Start the container with a bash shell and source venv
 CMD ["/bin/bash"]

@@ -10,7 +10,7 @@ services:
       memlock: -1
       stack: 67108864
     volumes:
-      - './code:/code'
+      - "./code:/code"
     deploy:
       resources:
         reservations:
