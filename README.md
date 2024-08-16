@@ -22,7 +22,7 @@ $ poetry install
 
 ### Docker
 
-Depending on your setup, you may need to run the docker commands via `sudo`. The docker setup is not perfect but works.
+Depending on your setup, you may need to run the docker commands via `sudo`. 
 
 0. Install Docker on your device. On Ubuntu, for instance, refer to [official_installation_instructions](./https://docs.docker.com/engine/install/ubuntu/)
 1. Edit the variables `USER_NAME` to `GROUP_ID` in the [Dockerfile](./containerization/Dockerfile) 
