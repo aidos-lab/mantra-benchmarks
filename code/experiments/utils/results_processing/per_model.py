@@ -4,7 +4,12 @@ from metrics.tasks import TaskType
 from models.models import ModelType
 from datasets.transforms import TransformType
 import numpy as np
-from .utils import get_matching_indeces, get_metric_col_names, get_result_path, format_res_val
+from .utils import (
+    get_matching_indeces,
+    get_metric_col_names,
+    get_result_path,
+    format_res_val,
+)
 
 
 def reduce(
@@ -40,8 +45,10 @@ def reduce(
                     get_matching_indeces(df, model_type, transform_type)
                 ]
                 metric_results.append(filtered_results[metric].max())
-            row[metric[5:]] = format_res_val(np.max(metric_results), np.std(metric_results))
-        
+            row[metric[5:]] = format_res_val(
+                np.max(metric_results), np.std(metric_results)
+            )
+
         new_row_df = pd.DataFrame([row])
         concat_df = (
             [df_results, new_row_df] if len(df_results) > 0 else [new_row_df]

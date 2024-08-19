@@ -4,7 +4,12 @@ from metrics.tasks import TaskType
 from models.models import ModelType
 from datasets.transforms import TransformType
 import numpy as np
-from .utils import get_matching_indeces, get_metric_col_names, get_result_path, format_res_val
+from .utils import (
+    get_matching_indeces,
+    get_metric_col_names,
+    get_result_path,
+    format_res_val,
+)
 
 
 def reduce(
@@ -83,7 +88,10 @@ def per_task(
                 )
 
             if metric != "test_loss":
-                row = {"Metric": metric, "Mean": format_res_val(np.mean(res_for_metric))}
+                row = {
+                    "Metric": metric,
+                    "Mean": format_res_val(np.mean(res_for_metric)),
+                }
                 new_row_df = pd.DataFrame([row])
                 concat_df = (
                     [df_results, new_row_df]

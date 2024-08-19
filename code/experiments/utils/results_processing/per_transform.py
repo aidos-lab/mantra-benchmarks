@@ -4,7 +4,12 @@ from metrics.tasks import TaskType
 from models.models import ModelType
 from datasets.transforms import TransformType
 import numpy as np
-from .utils import get_matching_indeces, get_metric_col_names, get_result_path, format_res_val
+from .utils import (
+    get_matching_indeces,
+    get_metric_col_names,
+    get_result_path,
+    format_res_val,
+)
 
 
 def reduce(
@@ -37,7 +42,9 @@ def reduce(
             ]
             results.append(filtered_results[metric].max())
 
-        row[transform_type.name.lower()] = format_res_val(np.max(results), np.std(results))
+        row[transform_type.name.lower()] = format_res_val(
+            np.max(results), np.std(results)
+        )
 
     return row
 

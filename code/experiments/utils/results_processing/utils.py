@@ -4,13 +4,13 @@ from metrics.tasks import TaskType
 from models.models import ModelType
 from datasets.transforms import TransformType
 
-def format_res_val(
-    value: float, std: Optional[float] = None
-):
+
+def format_res_val(value: float, std: Optional[float] = None):
     if std is None:
         return f"{value:.2f}"
-    else: 
-        return f"{value:.2f} ({std:.2f} SD)"    
+    else:
+        return f"{value:.2f} ({std:.2f} SD)"
+
 
 def get_matching_indeces(
     df: pd.DataFrame, model_type: ModelType, transform_type: TransformType
