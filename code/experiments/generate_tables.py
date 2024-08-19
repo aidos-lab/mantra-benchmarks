@@ -98,7 +98,7 @@ def process_betti(result_csv_prefix: str):
 
 
 def process():
-    results_csv_prefix = "ignore_temp_"
+    results_csv_prefix = "results_"
 
     res_betti = process_betti(results_csv_prefix)
     res_name_or = process_name_orientability(results_csv_prefix)
