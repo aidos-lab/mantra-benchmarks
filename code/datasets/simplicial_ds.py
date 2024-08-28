@@ -118,7 +118,9 @@ class SimplicialDS(InMemoryDataset):
                 test_size=self.split_config.split[2],
                 shuffle=True,
                 stratify=(
-                    stratified if self.split_config.use_stratified else None
+                    stratified.numpy()
+                    if self.split_config.use_stratified
+                    else None
                 ),
                 random_state=self.split_config.seed,
             )

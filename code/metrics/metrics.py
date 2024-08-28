@@ -10,6 +10,7 @@ from metrics.custom_metrics.betti_numbers_acc import (
 )
 from metrics.custom_metrics.mcc import MatthewsCorrCoeff
 from metrics.custom_metrics.auroc import AUROC
+from datasets.dataset_types import DatasetType
 
 
 class NamedMetric:
@@ -70,7 +71,7 @@ class MetricTrainValTest:
         self.test = self.train if test is None else test
 
 
-def get_orientability_metrics():
+def get_orientability_metrics(ds_type: DatasetType):
     metrics = MetricTrainValTest(
         [
             NamedMetric(
@@ -90,7 +91,16 @@ def get_orientability_metrics():
     return metrics
 
 
-def get_name_metrics(num_classes=5):
+def get_name_metrics(ds_type: DatasetType):
+    if ds_type == DatasetType.FULL_2D:
+        num_classes = 5
+    elif ds_type == DatasetType.NO_NAMELESS_2D:
+        num_classes = 4
+    elif ds_type == DatasetType.FULL_3D:
+        raise ValueError("name task not allowed on 3 manifolds")
+    else:
+        raise ValueError("Unknown dataset type")
+
     metrics = MetricTrainValTest(
         [
             NamedMetric(
@@ -118,7 +128,7 @@ def get_name_metrics(num_classes=5):
     return metrics
 
 
-def get_betti_numbers_metrics():
+def get_betti_numbers_metrics(ds_type: DatasetType):
 
     accuracy_only = [NamedMetric(GeneralAccuracy(), "Accuracy")]
 

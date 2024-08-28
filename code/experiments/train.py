@@ -7,6 +7,7 @@ from experiments.utils.run_experiment import run_configuration
 import os
 import argparse
 from typing import Dict, Any, Optional
+from experiments.utils.result_collection import ResultCollection
 
 
 def print_info(config: ConfigExperimentRun):
@@ -20,6 +21,8 @@ def run_configs_folder(
 ):
     config_dir = "./configs"
     files = os.listdir(config_dir)
+    results = ResultCollection()
+
     for file in files:
         for i in range(5):
             config_file = os.path.join(config_dir, file)
@@ -37,9 +40,12 @@ def run_configs_folder(
                 print("[INFO] No checkpoint folder.")
 
             config.logging.wandb_project_id = args_dict["wandb"]
-            run_configuration(
+            outp = run_configuration(
                 config, save_checkpoint_path=checkpoint_path, data_dir=data_dir
             )
+            results.add(data=outp[0], config=config)
+            results.save(".ignore_temp_train")
+    results.save("results")
 
 
 if __name__ == "__main__":

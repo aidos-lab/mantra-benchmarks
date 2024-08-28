@@ -9,13 +9,7 @@ from datasets.utils import (
 )
 from enum import Enum
 
-NAME_TO_CLASS = {
-    "Klein bottle": 0,
-    "": 1,
-    "RP^2": 2,
-    "T^2": 3,
-    "S^2": 4,
-}
+NAME_TO_CLASS = {"Klein bottle": 0, "RP^2": 1, "T^2": 2, "S^2": 3, "": 4}
 
 
 class SetNumNodesTransform:

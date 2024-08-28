@@ -23,7 +23,10 @@ def compute_name_accuracies(metrics: List[NamedMetric], y_hat, y, name: str):
         y_hat = torch.sigmoid(y_hat)
         metric = metrics_.metric.to(y_hat.device)
         benchmarks.append(
-            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat, y)}
+            {
+                "name": f"{name}_{metrics_.name}",
+                "value": metric(y_hat, y),
+            }
         )
     return benchmarks
 

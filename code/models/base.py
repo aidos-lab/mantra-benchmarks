@@ -28,8 +28,10 @@ class BaseModel(L.LightningModule):
         self.accuracies_fn = accuracies_fn
         self.model = model
         self.learning_rate = learning_rate
-        self.imbalance = np.array(list(imbalance))
-        self.imbalance = self.imbalance / np.sum(self.imbalance)
+        self.imbalance = imbalance
+        if imbalance is not None:
+            self.imbalance = np.array(list(self.imbalance))
+            self.imbalance = self.imbalance / np.sum(self.imbalance)
 
     def forward(self, batch):
         x = self.model(batch)
@@ -53,12 +55,17 @@ class BaseModel(L.LightningModule):
         x_hat = self(batch)
         # Squeeze x_hat to match the shape of y
         x_hat = x_hat.squeeze()
+        imbalance = (
+            torch.tensor(
+                self.imbalance, device=self.device, dtype=torch.float32
+            )
+            if self.imbalance is not None
+            else None
+        )
         loss = self.loss_fn(
             x_hat,
             batch.y,
-            weight=torch.tensor(
-                self.imbalance, device=self.device, dtype=torch.float32
-            ),
+            weight=imbalance,
         )
         self.log(
             f"{step}_loss",

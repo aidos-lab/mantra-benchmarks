@@ -43,15 +43,19 @@ def get_setup(
     )
 
     # ignore imbalance when working with betti numbers
-    imbalance = [1]
-    if config.task_type != TaskType.BETTI_NUMBERS:
+    if (
+        config.use_imbalance_weighting
+        and config.task_type != TaskType.BETTI_NUMBERS
+    ):
         imbalance = sorted_imbalance_weights(
             dm.class_imbalance_statistics(), config.task_type
         )
         print("[INFO] Using imbalance weights for weighted loss: ", imbalance)
+    else:
+        imbalance = None
 
     model = model_lookup[config.conf_model.type](config.conf_model)
-    metrics = task_lookup[config.task_type].get_metrics()
+    metrics = task_lookup[config.task_type].get_metrics(config.ds_type)
     lit_model = BaseModel(
         model=model,
         training_accuracy=metrics.train,
@@ -63,8 +67,6 @@ def get_setup(
         imbalance=imbalance,
     )
     if use_logger:
-        print(data_dir)
-        print("AASDDFASDFAS")
         logger = get_wandb_logger(
             save_dir=os.path.join(data_dir, "lightning_logs"),
             task_name=config.task_type.name,
@@ -97,13 +99,14 @@ def run_configuration(
 
     # run
     trainer.fit(lit_model, dm)
+    outp = trainer.test(lit_model, dm)
     logger.experiment.finish()
 
     if save_checkpoint_path:
         print(f"[INFO] Saving checkpoint here {save_checkpoint_path}")
         trainer.save_checkpoint(save_checkpoint_path)
 
-    return trainer
+    return outp
 
 
 def benchmark_configuration(
