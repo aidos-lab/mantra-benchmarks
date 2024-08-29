@@ -1,10 +1,11 @@
-from typing import List, Callable, Dict, Tuple
+from typing import List, Callable, Dict
 from enum import Enum
 
 from datasets.transforms import (
     orientability_transforms,
     name_transforms,
-    betti_numbers_transforms,
+    betti_numbers_transforms_2manifold,
+    betti_numbers_transforms_3manifold,
 )
 
 from .accuracies import (
@@ -24,8 +25,9 @@ from .metrics import (
     MetricTrainValTest,
 )
 
-from enum import Enum, auto
+from enum import Enum
 from torch_geometric.transforms import Compose
+from datasets.dataset_types import DatasetType
 
 
 class Task:
@@ -62,9 +64,16 @@ class OrientabilityTask(Task):
 
 
 class BettiNumbersTask(Task):
-    def __init__(self, transforms: List[Callable]) -> None:
+    def __init__(
+        self, transforms: List[Callable], ds_type: DatasetType
+    ) -> None:
+        betti_tr = (
+            betti_numbers_transforms_3manifold
+            if ds_type == DatasetType.FULL_3D
+            else betti_numbers_transforms_2manifold
+        )
         super().__init__(
-            transforms=Compose(transforms + betti_numbers_transforms),
+            transforms=Compose(transforms + betti_tr),
             loss_fn=betti_loss_fn,
             metrics=get_betti_numbers_metrics,
             accuracies=compute_betti_numbers_accuracies,
@@ -77,18 +86,24 @@ class TaskType(Enum):
     BETTI_NUMBERS = "betti_numbers"
 
 
-def get_task_lookup(transforms: List[Callable]) -> Dict[TaskType, Task]:
+def get_task_lookup(
+    transforms: List[Callable], ds_type: DatasetType
+) -> Dict[TaskType, Task]:
     res: Dict[TaskType, Task] = {
         TaskType.NAME: NameTask(transforms),
         TaskType.ORIENTABILITY: OrientabilityTask(transforms),
-        TaskType.BETTI_NUMBERS: BettiNumbersTask(transforms),
+        TaskType.BETTI_NUMBERS: BettiNumbersTask(transforms, ds_type=ds_type),
     }
 
     return res
 
 
-class_transforms_lookup: Dict[TaskType, List[Callable]] = {
-    TaskType.BETTI_NUMBERS: betti_numbers_transforms,
+class_transforms_lookup_2manifold: Dict[TaskType, List[Callable]] = {
+    TaskType.BETTI_NUMBERS: betti_numbers_transforms_2manifold,
     TaskType.ORIENTABILITY: orientability_transforms,
     TaskType.NAME: name_transforms,
+}
+
+class_transforms_lookup_3manifold: Dict[TaskType, List[Callable]] = {
+    TaskType.BETTI_NUMBERS: betti_numbers_transforms_3manifold,
 }

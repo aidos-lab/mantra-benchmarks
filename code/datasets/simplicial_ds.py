@@ -1,4 +1,8 @@
-from metrics.tasks import TaskType, class_transforms_lookup
+from metrics.tasks import (
+    TaskType,
+    class_transforms_lookup_2manifold,
+    class_transforms_lookup_3manifold,
+)
 import torch
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -61,10 +65,10 @@ class SimplicialDS(InMemoryDataset):
             None,
             pre_filter=pre_filter,
         )
-
         super().__init__(
             root, transform=transform, pre_transform=pre_transform
         )
+
         self.load(self._get_processed_path(task_type, mode))
 
     @property
@@ -90,11 +94,17 @@ class SimplicialDS(InMemoryDataset):
 
     @property
     def processed_file_names(self):
-        f_names = [
-            self._data_filename(task_type, mode)
-            for task_type in TaskType
-            for mode in ["train", "test", "val"]
-        ]
+        if self.manifold == "2":
+            f_names = [
+                self._data_filename(task_type, mode)
+                for task_type in TaskType
+                for mode in ["train", "test", "val"]
+            ]
+        else:
+            f_names = [
+                self._data_filename(TaskType.BETTI_NUMBERS, mode)
+                for mode in ["train", "test", "val"]
+            ]
         return f_names
 
     def process(self):
@@ -103,11 +113,19 @@ class SimplicialDS(InMemoryDataset):
 
         for task_type in TaskType:
 
-            # no name classification on 3 manifolds
-            if self.manifold == "3" and task_type == TaskType.NAME:
+            # no name and orientability classification on 3 manifolds
+            if self.manifold == "3" and (
+                task_type == TaskType.NAME
+                or task_type == TaskType.ORIENTABILITY
+            ):
                 continue
 
             # apply class transform
+            class_transforms_lookup = (
+                class_transforms_lookup_3manifold
+                if self.manifold == "3"
+                else class_transforms_lookup_2manifold
+            )
             class_transform = Compose(class_transforms_lookup[task_type])
             data_list_processed = [
                 class_transform(self.raw_simplicial_ds.get(idx))

@@ -50,6 +50,7 @@ class SimplicialDataModule(LightningDataModule):
             pre_filter = filter_nameless
         else:
             raise ValueError(f"Unknown dataset type {self.ds_type}")
+
         return SimplicialDS(
             root=os.path.join(self.data_dir, self.ds_type.name.lower()),
             manifold=manifold,

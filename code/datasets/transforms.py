@@ -24,9 +24,15 @@ class OrientableToClassTransform:
         return data
 
 
-class BettiToY:
+class BettiToY2:
     def __call__(self, data):
         data.y = torch.tensor(data.betti_numbers, dtype=torch.float).view(1, 3)
+        return data
+
+
+class BettiToY3:
+    def __call__(self, data):
+        data.y = torch.tensor(data.betti_numbers, dtype=torch.float).view(1, 4)
         return data
 
 
@@ -42,6 +48,7 @@ class TriangulationToFaceTransform:
         data.face = torch.tensor(data.triangulation).T - 1
         data.num_nodes = data.face.max() + 1
         data.triangulation = None
+        print(data, "m")
         return data
 
 
@@ -174,8 +181,12 @@ orientability_transforms = [
 name_transforms = [
     NameToClassTransform(),
 ]
-betti_numbers_transforms = [
-    BettiToY(),
+betti_numbers_transforms_2manifold = [
+    BettiToY2(),
+]
+
+betti_numbers_transforms_3manifold = [
+    BettiToY3(),
 ]
 
 degree_transform_sc = [
