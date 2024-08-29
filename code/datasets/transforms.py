@@ -20,7 +20,6 @@ class SetNumNodesTransform:
 
 class OrientableToClassTransform:
     def __call__(self, data):
-        print(data)
         data.y = data.orientable.long()
         return data
 
