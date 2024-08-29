@@ -54,10 +54,7 @@ class SimplicialDS(InMemoryDataset):
         self.split = mode
         self.split_config = SplitConfig(split, seed, use_stratified)
         self.raw_simplicial_ds = SimplicialDataset(
-            os.path.join(
-                root,
-                "raw_simplicial"
-            ),
+            os.path.join(root, "raw_simplicial"),
             manifold,
             version,
             None,
@@ -105,7 +102,7 @@ class SimplicialDS(InMemoryDataset):
         indices = range(self.raw_simplicial_ds.len())
 
         for task_type in TaskType:
-            
+
             # no name classification on 3 manifolds
             if self.manifold == "3" and task_type == TaskType.NAME:
                 continue
@@ -116,7 +113,7 @@ class SimplicialDS(InMemoryDataset):
                 class_transform(self.raw_simplicial_ds.get(idx))
                 for idx in indices
             ]
-            
+
             # train test split
             stratified = torch.vstack([data.y for data in data_list_processed])
             train_val_indices, test_indices = train_test_split(
