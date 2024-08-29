@@ -34,6 +34,7 @@ def get_setup(
     task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
 
     dm = SimplicialDataModule(
+        ds_type=config.ds_type,
         data_dir=data_dir,
         transform=task_lookup[config.task_type].transforms,
         use_stratified=config.use_stratified,

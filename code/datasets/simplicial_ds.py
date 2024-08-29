@@ -53,20 +53,23 @@ class SimplicialDS(InMemoryDataset):
         self.task_type = task_type
         self.split = mode
         self.split_config = SplitConfig(split, seed, use_stratified)
+        is_full = pre_filter is None
         self.raw_simplicial_ds = SimplicialDataset(
-            os.path.join(root, "raw_simplicial"),
+            os.path.join(
+                root,
+                "raw_simplicial",
+                f"manifold_{manifold}",
+                f"is_full_{is_full}",
+            ),
             manifold,
             version,
             None,
             None,
-            None,
+            pre_filter=pre_filter,
         )
 
         super().__init__(
-            root,
-            transform=transform,
-            pre_transform=pre_transform,
-            pre_filter=pre_filter,
+            root, transform=transform, pre_transform=pre_transform
         )
         self.load(self._get_processed_path(task_type, mode))
 
