@@ -5,7 +5,9 @@ from torch_geometric.transforms import FaceToEdge, OneHotDegree
 from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
-    get_complex_connectivity, create_or_empty_signals_on_data, get_triangles_from_simplicial_complex,
+    get_complex_connectivity,
+    create_or_empty_signals_on_data,
+    get_triangles_from_simplicial_complex,
 )
 from enum import Enum
 
@@ -65,14 +67,11 @@ class BarycentricSubdivisionTransform:
         self.recursive_calls = recursive_calls
 
     def __call__(self, data):
-        data.sc = recursive_barycentric_subdivision(data.sc, self.recursive_calls)
-        data = create_or_empty_signals_on_data(data)
-        return data
-
-
-class UpdateTriangulationFromSimplicialComplexTransform:
-    def __call__(self, data):
+        data.sc = recursive_barycentric_subdivision(
+            data.sc, self.recursive_calls
+        )
         data.triangulation = get_triangles_from_simplicial_complex(data)
+        data = create_or_empty_signals_on_data(data)
         return data
 
 

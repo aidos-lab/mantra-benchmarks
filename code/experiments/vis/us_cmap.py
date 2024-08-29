@@ -39,9 +39,9 @@ def scale_white_amount(rgb, percent):
 def register_name(new_name, color):
     try:
         # just a relabeling of the name
-        matplotlib.colors.ColorConverter.colors[new_name] = (
-            matplotlib.colors.ColorConverter.colors[color]
-        )
+        matplotlib.colors.ColorConverter.colors[
+            new_name
+        ] = matplotlib.colors.ColorConverter.colors[color]
     except KeyError:
         if type(color) is str:
             color = get_rgba(color)
@@ -66,9 +66,9 @@ for name, values in cdict.items():
     list_cmap.append(rgba)
     matplotlib.colors.ColorConverter.colors[name] = rgba
     for step in steps:
-        matplotlib.colors.ColorConverter.colors[f"{name}!{step * 100:.0f}"] = (
-            scale_white_amount(values, step)
-        )
+        matplotlib.colors.ColorConverter.colors[
+            f"{name}!{step * 100:.0f}"
+        ] = scale_white_amount(values, step)
 
 matplotlib.cm.register_cmap(
     name="US", cmap=matplotlib.colors.ListedColormap(list_cmap)

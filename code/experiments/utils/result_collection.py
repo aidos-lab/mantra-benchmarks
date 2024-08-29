@@ -5,7 +5,6 @@ import pandas as pd
 
 
 class Result:
-
     def __init__(
         self, data: Dict[str, float], config: ConfigExperimentRun
     ) -> None:
