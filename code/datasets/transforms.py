@@ -213,6 +213,35 @@ class TransformType(Enum):
     random_simplices_features = "random_simplices_features"
 
 
+class TriangleToFace:
+    '''
+    Transforms tetrahedra to faces. 
+    Expects a triangulation of shape [4,N] and 
+    returns the faces of shape [3,M].
+
+    NOTE: It will contain duplicate triangles with different ordering. 
+    Hence the result is not a "minimal" triangulation. When subsequently 
+    converting the triangles to edges, this will not pose a problem as 
+    the FaceToEdge transform by default creates undirected edges. 
+    '''
+    def __init__(self, remove_triangulation: bool = True) -> None:
+        self.remove_triangulation = remove_triangulation
+
+    def __call__(self, data):
+        idx = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
+        if hasattr(data, "triangulation"):
+            assert data.triangulation is not None
+            face = torch.cat([data.triangulation[i] for i in idx], dim=1)
+
+            # Remove duplicate triangles in 
+            data.face = torch.unique(face,dim=1)
+
+            if self.remove_triangulation:
+                data.triangulation = None
+
+        return data
+
+
 transforms_lookup = {
     TransformType.degree_transform: degree_transform,
     TransformType.degree_transform_onehot: degree_transform_onehot,
