@@ -43,7 +43,7 @@ class DegreeTransform:
         return data
 
 
-class TriangulationToFaceTransform:
+class TriangulationToZeroIndexTransform:
     def __call__(self, data):
         data.face = torch.tensor(data.triangulation).T - 1
         data.num_nodes = data.face.max() + 1
@@ -158,19 +158,19 @@ class RandomSimplicesFeatures:
 
 
 random_node_features = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     RandomNodeFeatures(size=8),
 ]
 
 degree_transform_onehot = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     OneHotDegree(max_degree=9),
 ]
 
 degree_transform = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     DegreeTransform(),
 ]
@@ -213,7 +213,7 @@ class TransformType(Enum):
     random_simplices_features = "random_simplices_features"
 
 
-class TriangleToFace:
+class TriangulationToFaceTransform:
     '''
     Transforms tetrahedra to faces. 
     Expects a triangulation of shape [4,N] and 
