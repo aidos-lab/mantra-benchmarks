@@ -48,7 +48,6 @@ class TriangulationToZeroIndexTransform:
         data.face = torch.tensor(data.triangulation).T - 1
         data.num_nodes = data.face.max() + 1
         data.triangulation = None
-        print(data, "m")
         return data
 
 

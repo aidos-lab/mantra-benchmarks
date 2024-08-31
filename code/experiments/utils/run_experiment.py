@@ -31,7 +31,9 @@ def get_setup(
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup[config.transforms]
-    task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
+    task_lookup: Dict[TaskType, Task] = get_task_lookup(
+        transforms, ds_type=config.ds_type
+    )
 
     dm = SimplicialDataModule(
         ds_type=config.ds_type,
