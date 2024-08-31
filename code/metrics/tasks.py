@@ -106,4 +106,5 @@ class_transforms_lookup_2manifold: Dict[TaskType, List[Callable]] = {
 
 class_transforms_lookup_3manifold: Dict[TaskType, List[Callable]] = {
     TaskType.BETTI_NUMBERS: betti_numbers_transforms_3manifold,
+    TaskType.ORIENTABILITY: orientability_transforms
 }

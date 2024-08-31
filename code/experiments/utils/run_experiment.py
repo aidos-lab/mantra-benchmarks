@@ -30,7 +30,7 @@ def get_setup(
     data_dir: str = "./data",
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
-    transforms = transforms_lookup[config.transforms]
+    transforms = transforms_lookup(config.transforms, config.ds_type)
     task_lookup: Dict[TaskType, Task] = get_task_lookup(
         transforms, ds_type=config.ds_type
     )

@@ -39,10 +39,11 @@ def compute_betti_numbers_accuracies(
 ):
 
     metrics_list = metrics.as_list()
+
     assert y_hat.shape[1] == len(metrics_list)
 
     res = []
-    for dim in range(3):
+    for dim in range(len(metrics_list)):
         # dim is for the type of betti number. e.g. dim=0 refers to betti number $b_0$
         metrics_for_dim = metrics_list[dim]
 

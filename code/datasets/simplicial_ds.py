@@ -102,7 +102,8 @@ class SimplicialDS(InMemoryDataset):
             ]
         else:
             f_names = [
-                self._data_filename(TaskType.BETTI_NUMBERS, mode)
+                self._data_filename(task_type, mode)
+                for task_type in [TaskType.BETTI_NUMBERS, TaskType.ORIENTABILITY]
                 for mode in ["train", "test", "val"]
             ]
         return f_names
@@ -113,10 +114,9 @@ class SimplicialDS(InMemoryDataset):
 
         for task_type in TaskType:
 
-            # no name and orientability classification on 3 manifolds
+            # no name classification on 3 manifolds
             if self.manifold == "3" and (
                 task_type == TaskType.NAME
-                or task_type == TaskType.ORIENTABILITY
             ):
                 continue
 

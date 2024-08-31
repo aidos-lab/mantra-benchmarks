@@ -64,7 +64,7 @@ dataset_types = [
 
 # TASKS #####
 tasks_mantra2 = [TaskType.ORIENTABILITY, TaskType.NAME, TaskType.BETTI_NUMBERS]
-tasks_mantra3 = [TaskType.BETTI_NUMBERS]
+tasks_mantra3 = [TaskType.BETTI_NUMBERS, TaskType.ORIENTABILITY]
 # ###########
 
 # TRANSFORMS
@@ -116,6 +116,7 @@ out_channels_dict_mantra2_no_nameless = {
     TaskType.BETTI_NUMBERS: 3,
 }
 out_channels_dict_mantra3 = {
+    TaskType.ORIENTABILITY: 1,
     TaskType.BETTI_NUMBERS: 4,
 }
 # ###########
