@@ -18,8 +18,8 @@ def run_configs_folder(
     args_dict: Dict[str, Any],
     checkpoint_folder: Optional[str] = None,
     data_dir: str = "./data",
+    config_dir: str = "./configs",
 ):
-    config_dir = "./configs"
     files = os.listdir(config_dir)
     results = ResultCollection()
 
@@ -65,6 +65,12 @@ if __name__ == "__main__":
         help="Path to .yaml configuration for experiment if running 'single mode.",
     )
     parser.add_argument(
+        "--Configs",
+        type=str,
+        default="./configs",
+        help="Path to .yaml configuration folder if running 'all' mode.",
+    )
+    parser.add_argument(
         "--data",
         type=str,
         default="./data",
@@ -86,7 +92,9 @@ if __name__ == "__main__":
 
     if args_dict["mode"] == "all":
         run_configs_folder(
-            args_dict, checkpoint_folder=args_dict["checkpoints"]
+            args_dict,
+            checkpoint_folder=args_dict["checkpoints"],
+            config_dir=args_dict["Configs"],
         )
         exit(0)
 
