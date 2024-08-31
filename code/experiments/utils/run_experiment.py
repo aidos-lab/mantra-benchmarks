@@ -13,7 +13,7 @@ from metrics.tasks import TaskType
 from typing import Dict, Optional, Tuple, List
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
-from experiments.utils.loggers import get_wandb_logger
+from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 import lightning as L
 import uuid
 from datasets.transforms import transforms_lookup
@@ -88,7 +88,18 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
+        devices=3,
     )
+
+    if use_logger and trainer.global_rank == 0:
+        update_wandb_logger(
+            logger,
+            task_name=config.task_type.name,
+            model_name=config.conf_model.type.name,
+            node_features=config.transforms.name,
+            run_id=run_id,
+            project_id=config.logging.wandb_project_id,
+        )
 
     return dm, lit_model, trainer, logger
 
