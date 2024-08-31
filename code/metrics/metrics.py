@@ -43,7 +43,7 @@ class BettiNumbersMetricCollection:
         betti_0: List[NamedMetric],
         betti_1: List[NamedMetric],
         betti_2: List[NamedMetric],
-        betti_3: Optional[List[NamedMetric]] = None
+        betti_3: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.betti_0 = betti_0
         self.betti_1 = betti_1
@@ -53,13 +53,9 @@ class BettiNumbersMetricCollection:
     def as_list(self):
         if self.betti_3 is None:
             return [self.betti_0, self.betti_1, self.betti_2]
-        else: 
-            return [
-                self.betti_0,
-                self.betti_1,
-                self.betti_2,
-                self.betti_3
-            ]
+        else:
+            return [self.betti_0, self.betti_1, self.betti_2, self.betti_3]
+
 
 class MetricTrainValTest:
     """
@@ -154,7 +150,9 @@ def get_betti_numbers_metrics(ds_type: DatasetType):
         betti_2_metrics = [
             NamedMetric(GeneralAccuracy(), "Accuracy"),
             NamedMetric(MatthewsCorrCoeff(), "MCC"),
-            NamedMetric(torchmetrics.classification.BinaryAUROC(), "BinaryAUROC"),
+            NamedMetric(
+                torchmetrics.classification.BinaryAUROC(), "BinaryAUROC"
+            ),
             NamedMetric(
                 BettiNumbersMultiClassAccuracy(num_classes=2),
                 "BalancedAccuracy",

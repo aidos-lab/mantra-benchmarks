@@ -10,6 +10,7 @@ from datasets.utils import (
 from enum import Enum
 from datasets.dataset_types import DatasetType
 from typing import List, Callable
+
 NAME_TO_CLASS = {"Klein bottle": 0, "RP^2": 1, "T^2": 2, "S^2": 3, "": 4}
 
 
@@ -21,7 +22,7 @@ class SetNumNodesTransform:
 
 class OrientableToClassTransform:
     def __call__(self, data):
-        data.orientable = torch.tensor(data.betti_numbers)[...,-1]
+        data.orientable = torch.tensor(data.betti_numbers)[..., -1]
         data.y = data.orientable.long()
         return data
 
@@ -52,6 +53,7 @@ class TriangulationToZeroIndexTransform:
         data.triangulation = None
         return data
 
+
 class TriangulationToFaceTransform:
     """
     Transforms tetrahedra to faces.
@@ -71,7 +73,9 @@ class TriangulationToFaceTransform:
         idx = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
         if hasattr(data, "triangulation"):
             assert data.triangulation is not None
-            face = torch.cat([torch.tensor(data.triangulation)[i] for i in idx], dim=1)
+            face = torch.cat(
+                [torch.tensor(data.triangulation)[i] for i in idx], dim=1
+            )
 
             # Remove duplicate triangles in
             data.face = torch.unique(face, dim=1)
@@ -80,6 +84,7 @@ class TriangulationToFaceTransform:
                 data.triangulation = None
 
         return data
+
 
 class SimplicialComplexTransform:
     def __call__(self, data):
@@ -242,8 +247,9 @@ class TransformType(Enum):
     random_simplices_features = "random_simplices_features"
 
 
-
-def transforms_lookup(tr_type: TransformType, ds_type: DatasetType) -> List[Callable]:
+def transforms_lookup(
+    tr_type: TransformType, ds_type: DatasetType
+) -> List[Callable]:
     _transforms_lookup = {
         TransformType.degree_transform: degree_transform,
         TransformType.degree_transform_onehot: degree_transform_onehot,
@@ -253,7 +259,10 @@ def transforms_lookup(tr_type: TransformType, ds_type: DatasetType) -> List[Call
     }
 
     tr = _transforms_lookup[tr_type]
-    if tr_type != TransformType.degree_transform_sc and tr_type != TransformType.random_simplices_features:
+    if (
+        tr_type != TransformType.degree_transform_sc
+        and tr_type != TransformType.random_simplices_features
+    ):
         tr[0] = TriangulationToFaceTransform()
-    
+
     return tr
