@@ -112,7 +112,7 @@ if __name__ == "__main__":
         "--barycentric_subdivisions",
         type=int,
         help="Maximum number of barycentric subdivisions to perform for test evaluation.",
-        default=0,
+        default=3,
     )
 
     args = parser.parse_args()
