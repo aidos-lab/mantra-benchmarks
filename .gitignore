@@ -8,6 +8,7 @@ RandomWalks*
 results
 wandb
 configs
+dependencies
 *.lock
 *.vscode
 
