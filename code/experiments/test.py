@@ -68,7 +68,8 @@ def test_all(
             )
 
             # add benchmarking results
-            results.add(data=out[0][0], config=config)
+            results.add(data=[out[idx][0] for idx in range(number_of_barycentric_subdivisions + 1)],
+                        config=config) # TODO: Make sure that the behaviour associated to this call is updated accordingly
             results.save(".ignore_temp")
 
     results.save("results")
