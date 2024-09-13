@@ -34,7 +34,6 @@ class BaseModel(L.LightningModule):
             self.imbalance = self.imbalance / np.sum(self.imbalance)
         self.test_barycentric_subdivisions = 0
 
-
     def forward(self, batch):
         x = self.model(batch)
         return x
