@@ -7,6 +7,7 @@ from experiments.utils.run_experiment import run_configuration
 import os
 import argparse
 from typing import Dict, Any, Optional
+from experiments.utils.result_collection import ResultCollection
 
 
 def print_info(config: ConfigExperimentRun):
@@ -17,9 +18,11 @@ def run_configs_folder(
     args_dict: Dict[str, Any],
     checkpoint_folder: Optional[str] = None,
     data_dir: str = "./data",
+    config_dir: str = "./configs",
 ):
-    config_dir = "./configs"
     files = os.listdir(config_dir)
+    results = ResultCollection()
+
     for file in files:
         for i in range(5):
             config_file = os.path.join(config_dir, file)
@@ -37,9 +40,12 @@ def run_configs_folder(
                 print("[INFO] No checkpoint folder.")
 
             config.logging.wandb_project_id = args_dict["wandb"]
-            run_configuration(
+            outp = run_configuration(
                 config, save_checkpoint_path=checkpoint_path, data_dir=data_dir
             )
+            results.add(data=outp[0], config=config)
+            results.save(".ignore_temp_train")
+    results.save("results")
 
 
 if __name__ == "__main__":
@@ -57,6 +63,12 @@ if __name__ == "__main__":
         type=str,
         default="./config.yaml",
         help="Path to .yaml configuration for experiment if running 'single mode.",
+    )
+    parser.add_argument(
+        "--Configs",
+        type=str,
+        default="./configs",
+        help="Path to .yaml configuration folder if running 'all' mode.",
     )
     parser.add_argument(
         "--data",
@@ -80,7 +92,9 @@ if __name__ == "__main__":
 
     if args_dict["mode"] == "all":
         run_configs_folder(
-            args_dict, checkpoint_folder=args_dict["checkpoints"]
+            args_dict,
+            checkpoint_folder=args_dict["checkpoints"],
+            config_dir=args_dict["Configs"],
         )
         exit(0)
 

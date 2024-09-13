@@ -6,6 +6,7 @@ from pydantic import Discriminator, Field
 from pydantic_settings import BaseSettings
 from models.models import ModelConfig
 from datasets.transforms import TransformType
+from datasets.dataset_types import DatasetType
 from metrics.tasks import TaskType
 from models.models import ModelType
 import yaml
@@ -34,19 +35,26 @@ class WandbConfig(BaseSettings):
 
 class ConfigExperimentRun(BaseSettings):
     seed: int = 10
+    ds_type: DatasetType = DatasetType.FULL_2D
     transforms: TransformType = TransformType.degree_transform_onehot
     use_stratified: bool = True
     logging: WandbConfig = WandbConfig()
     task_type: TaskType = TaskType.BETTI_NUMBERS
     learning_rate: float = 1e-3
+    use_imbalance_weighting: bool = False
     trainer_config: TrainerConfig = TrainerConfig()
     conf_model: ModelConfig = Field(
         discriminator=Discriminator(get_discriminator_value)
     )
 
+    def get_identifier(self):
+        identifier = f"{self.ds_type.name.lower()}_{self.transforms.name.lower()}_{self.task_type.name.lower()}_{self.conf_model.type.name.lower()}_seed_{self.seed}"
+        return identifier
+
     def get_checkpoint_path(self, base_folder: str, run: Optional[int] = 0):
-        identifier = f"{self.transforms.name.lower()}_{self.task_type.name.lower()}_{self.conf_model.type.name.lower()}_seed_{self.seed}_run_{run}.ckpt"
-        return os.path.join(base_folder, identifier)
+        identifier = self.get_identifier()
+        fname = f"{identifier}_run_{run}.ckpt"
+        return os.path.join(base_folder, fname)
 
 
 def load_config(config_fpath: str) -> ConfigExperimentRun:

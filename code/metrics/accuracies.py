@@ -9,7 +9,7 @@ def compute_orientability_accuracies(
 ):
     benchmarks = []
     for metrics_ in metrics:
-        y_hat_ = torch.sigmoid(y_hat).long()
+        y_hat_ = torch.sigmoid(y_hat).round().long()
         metric = metrics_.metric.to(y_hat.device)
         benchmarks.append(
             {"name": f"{name}_{metrics_.name}", "value": metric(y_hat_, y)}
@@ -23,7 +23,10 @@ def compute_name_accuracies(metrics: List[NamedMetric], y_hat, y, name: str):
         y_hat = torch.sigmoid(y_hat)
         metric = metrics_.metric.to(y_hat.device)
         benchmarks.append(
-            {"name": f"{name}_{metrics_.name}", "value": metric(y_hat, y)}
+            {
+                "name": f"{name}_{metrics_.name}",
+                "value": metric(y_hat, y),
+            }
         )
     return benchmarks
 
@@ -36,10 +39,11 @@ def compute_betti_numbers_accuracies(
 ):
 
     metrics_list = metrics.as_list()
+
     assert y_hat.shape[1] == len(metrics_list)
 
     res = []
-    for dim in range(3):
+    for dim in range(len(metrics_list)):
         # dim is for the type of betti number. e.g. dim=0 refers to betti number $b_0$
         metrics_for_dim = metrics_list[dim]
 

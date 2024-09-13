@@ -10,6 +10,9 @@ from datasets.utils import (
     get_triangles_from_simplicial_complex,
 )
 from enum import Enum
+from datasets.dataset_types import DatasetType
+from typing import List, Callable
+
 
 from math_utils import recursive_barycentric_subdivision
 
@@ -30,13 +33,20 @@ class SetNumNodesTransform:
 
 class OrientableToClassTransform:
     def __call__(self, data):
+        data.orientable = torch.tensor(data.betti_numbers)[..., -1]
         data.y = data.orientable.long()
         return data
 
 
-class BettiToY:
+class BettiToY2:
     def __call__(self, data):
         data.y = torch.tensor(data.betti_numbers, dtype=torch.float).view(1, 3)
+        return data
+
+
+class BettiToY3:
+    def __call__(self, data):
+        data.y = torch.tensor(data.betti_numbers, dtype=torch.float).view(1, 4)
         return data
 
 
@@ -47,11 +57,43 @@ class DegreeTransform:
         return data
 
 
-class TriangulationToFaceTransform:
+class TriangulationToZeroIndexTransform:
     def __call__(self, data):
         data.face = torch.tensor(data.triangulation).T - 1
         data.num_nodes = data.face.max() + 1
         data.triangulation = None
+        return data
+
+
+class TriangulationToFaceTransform:
+    """
+    Transforms tetrahedra to faces.
+    Expects a triangulation of shape [4,N] and
+    returns the faces of shape [3,M].
+
+    NOTE: It will contain duplicate triangles with different ordering.
+    Hence the result is not a "minimal" triangulation. When subsequently
+    converting the triangles to edges, this will not pose a problem as
+    the FaceToEdge transform by default creates undirected edges.
+    """
+
+    def __init__(self, remove_triangulation: bool = True) -> None:
+        self.remove_triangulation = remove_triangulation
+
+    def __call__(self, data):
+        idx = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
+        if hasattr(data, "triangulation"):
+            assert data.triangulation is not None
+            face = torch.cat(
+                [torch.tensor(data.triangulation)[i] for i in idx], dim=1
+            )
+
+            # Remove duplicate triangles in
+            data.face = torch.unique(face, dim=1)
+
+            if self.remove_triangulation:
+                data.triangulation = None
+
         return data
 
 
@@ -174,19 +216,19 @@ class RandomSimplicesFeatures:
 
 
 random_node_features = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     RandomNodeFeatures(size=8),
 ]
 
 degree_transform_onehot = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     OneHotDegree(max_degree=9),
 ]
 
 degree_transform = [
-    TriangulationToFaceTransform(),
+    TriangulationToZeroIndexTransform(),
     FaceToEdge(remove_faces=False),
     DegreeTransform(),
 ]
@@ -197,8 +239,12 @@ orientability_transforms = [
 name_transforms = [
     NameToClassTransform(),
 ]
-betti_numbers_transforms = [
-    BettiToY(),
+betti_numbers_transforms_2manifold = [
+    BettiToY2(),
+]
+
+betti_numbers_transforms_3manifold = [
+    BettiToY3(),
 ]
 
 degree_transform_sc = [
@@ -225,10 +271,22 @@ class TransformType(Enum):
     random_simplices_features = "random_simplices_features"
 
 
-transforms_lookup = {
-    TransformType.degree_transform: degree_transform,
-    TransformType.degree_transform_onehot: degree_transform_onehot,
-    TransformType.random_node_features: random_node_features,
-    TransformType.degree_transform_sc: degree_transform_sc,
-    TransformType.random_simplices_features: random_simplices_features,
-}
+def transforms_lookup(
+    tr_type: TransformType, ds_type: DatasetType
+) -> List[Callable]:
+    _transforms_lookup = {
+        TransformType.degree_transform: degree_transform,
+        TransformType.degree_transform_onehot: degree_transform_onehot,
+        TransformType.random_node_features: random_node_features,
+        TransformType.degree_transform_sc: degree_transform_sc,
+        TransformType.random_simplices_features: random_simplices_features,
+    }
+
+    tr = _transforms_lookup[tr_type]
+    if (
+        tr_type != TransformType.degree_transform_sc
+        and tr_type != TransformType.random_simplices_features
+    ):
+        tr[0] = TriangulationToFaceTransform()
+
+    return tr

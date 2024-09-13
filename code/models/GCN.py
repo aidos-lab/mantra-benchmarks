@@ -20,8 +20,6 @@ class GCNConfig(BaseModel):
 class GCN(nn.Module):
     def __init__(self, config: GCNConfig):
         super().__init__()
-        print("===================")
-        print(config)
 
         self.conv_input = GCNConv(
             config.num_node_features, config.hidden_channels

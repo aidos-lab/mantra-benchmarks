@@ -13,7 +13,7 @@ from metrics.tasks import TaskType
 from typing import Dict, Optional, Tuple, List
 from datasets.simplicial import SimplicialDataModule
 from models.base import BaseModel
-from experiments.utils.loggers import get_wandb_logger
+from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 import lightning as L
 import uuid
 from datasets.transforms import (
@@ -33,8 +33,10 @@ def get_data_module(
     data_dir: str = "./data",
     number_of_barycentric_subdivisions: int = 0,
 ) -> SimplicialDataModule:
-    transforms = transforms_lookup[config.transforms]
-    task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
+    transforms = transforms_lookup(config.transforms, config.ds_type)
+    task_lookup: Dict[TaskType, Task] = get_task_lookup(
+        transforms, ds_type=config.ds_type
+    )
 
     dataset_transforms = task_lookup[config.task_type].transforms
     if number_of_barycentric_subdivisions > 0:
@@ -48,6 +50,7 @@ def get_data_module(
         )
 
     dm = SimplicialDataModule(
+        ds_type=config.ds_type,
         data_dir=data_dir,
         transform=dataset_transforms,
         use_stratified=config.use_stratified,
@@ -68,15 +71,19 @@ def get_setup(
     task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
     dm = get_data_module(config, data_dir)
     # ignore imbalance when working with betti numbers
-    imbalance = [1]
-    if config.task_type != TaskType.BETTI_NUMBERS:
+    if (
+        config.use_imbalance_weighting
+        and config.task_type != TaskType.BETTI_NUMBERS
+    ):
         imbalance = sorted_imbalance_weights(
             dm.class_imbalance_statistics(), config.task_type
         )
         print("[INFO] Using imbalance weights for weighted loss: ", imbalance)
+    else:
+        imbalance = None
 
     model = model_lookup[config.conf_model.type](config.conf_model)
-    metrics = task_lookup[config.task_type].get_metrics()
+    metrics = task_lookup[config.task_type].get_metrics(config.ds_type)
     lit_model = BaseModel(
         model=model,
         training_accuracy=metrics.train,
@@ -88,8 +95,6 @@ def get_setup(
         imbalance=imbalance,
     )
     if use_logger:
-        print(data_dir)
-        print("AASDDFASDFAS")
         logger = get_wandb_logger(
             save_dir=os.path.join(data_dir, "lightning_logs"),
             task_name=config.task_type.name,
@@ -108,7 +113,18 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
+        devices=3,
     )
+
+    if use_logger and trainer.global_rank == 0:
+        update_wandb_logger(
+            logger,
+            task_name=config.task_type.name,
+            model_name=config.conf_model.type.name,
+            node_features=config.transforms.name,
+            run_id=run_id,
+            project_id=config.logging.wandb_project_id,
+        )
 
     return dm, lit_model, trainer, logger
 
@@ -122,13 +138,14 @@ def run_configuration(
 
     # run
     trainer.fit(lit_model, dm)
+    outp = trainer.test(lit_model, dm)
     logger.experiment.finish()
 
     if save_checkpoint_path:
         print(f"[INFO] Saving checkpoint here {save_checkpoint_path}")
         trainer.save_checkpoint(save_checkpoint_path)
 
-    return trainer
+    return outp
 
 
 def benchmark_configuration(
