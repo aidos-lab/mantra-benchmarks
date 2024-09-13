@@ -14,7 +14,6 @@ import os
 
 
 class SplitConfig:
-
     def __init__(
         self,
         split: Tuple[float, float, float],

@@ -6,12 +6,23 @@ from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
     get_complex_connectivity,
+    create_or_empty_signals_on_data,
+    get_triangles_from_simplicial_complex,
 )
 from enum import Enum
 from datasets.dataset_types import DatasetType
 from typing import List, Callable
 
-NAME_TO_CLASS = {"Klein bottle": 0, "RP^2": 1, "T^2": 2, "S^2": 3, "": 4}
+
+from math_utils import recursive_barycentric_subdivision
+
+NAME_TO_CLASS = {
+    "Klein bottle": 0,
+    "": 1,
+    "RP^2": 2,
+    "T^2": 3,
+    "S^2": 4,
+}
 
 
 class SetNumNodesTransform:
@@ -90,6 +101,19 @@ class SimplicialComplexTransform:
     def __call__(self, data):
         data.sc = SimplicialComplex(data.triangulation)
         create_signals_on_data_if_needed(data)
+        return data
+
+
+class BarycentricSubdivisionTransform:
+    def __init__(self, recursive_calls=1):
+        self.recursive_calls = recursive_calls
+
+    def __call__(self, data):
+        data.sc = recursive_barycentric_subdivision(
+            data.sc, self.recursive_calls
+        )
+        data.triangulation = get_triangles_from_simplicial_complex(data)
+        data = create_or_empty_signals_on_data(data)
         return data
 
 

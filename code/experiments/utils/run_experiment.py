@@ -16,12 +16,49 @@ from models.base import BaseModel
 from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 import lightning as L
 import uuid
-from datasets.transforms import transforms_lookup
+from datasets.transforms import (
+    transforms_lookup,
+    BarycentricSubdivisionTransform,
+)
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
 from typing import List
 from .imbalance_handling import sorted_imbalance_weights
 import os
+from torch_geometric.transforms import Compose
+
+
+def get_data_module(
+    config: ConfigExperimentRun,
+    data_dir: str = "./data",
+    number_of_barycentric_subdivisions: int = 0,
+) -> SimplicialDataModule:
+    transforms = transforms_lookup(config.transforms, config.ds_type)
+    task_lookup: Dict[TaskType, Task] = get_task_lookup(
+        transforms, ds_type=config.ds_type
+    )
+
+    dataset_transforms = task_lookup[config.task_type].transforms
+    if number_of_barycentric_subdivisions > 0:
+        dataset_transforms = Compose(
+            [
+                BarycentricSubdivisionTransform(
+                    number_of_barycentric_subdivisions
+                ),
+                dataset_transforms,
+            ]
+        )
+
+    dm = SimplicialDataModule(
+        ds_type=config.ds_type,
+        data_dir=data_dir,
+        transform=dataset_transforms,
+        use_stratified=config.use_stratified,
+        task_type=config.task_type,
+        seed=config.seed,
+        dataloader_builder=dataloader_lookup[config.conf_model.type],
+    )
+    return dm
 
 
 def get_setup(
@@ -30,21 +67,9 @@ def get_setup(
     data_dir: str = "./data",
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
-    transforms = transforms_lookup(config.transforms, config.ds_type)
-    task_lookup: Dict[TaskType, Task] = get_task_lookup(
-        transforms, ds_type=config.ds_type
-    )
-
-    dm = SimplicialDataModule(
-        ds_type=config.ds_type,
-        data_dir=data_dir,
-        transform=task_lookup[config.task_type].transforms,
-        use_stratified=config.use_stratified,
-        task_type=config.task_type,
-        seed=config.seed,
-        dataloader_builder=dataloader_lookup[config.conf_model.type],
-    )
-
+    transforms = transforms_lookup[config.transforms]
+    task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
+    dm = get_data_module(config, data_dir)
     # ignore imbalance when working with betti numbers
     if (
         config.use_imbalance_weighting
@@ -128,13 +153,21 @@ def benchmark_configuration(
     save_checkpoint_path: str,
     use_logger: bool = False,
     data_dir: str = "./data",
+    number_of_barycentric_subdivisions: int = 0,
 ) -> List[Dict[str, float]]:
     dm, lit_model, trainer, logger = get_setup(
         config, use_logger=use_logger, data_dir=data_dir
     )
-
-    output = trainer.test(lit_model, dm, save_checkpoint_path)
-
+    # Each index of outputs represents the test on the dataset after applying
+    # index barycentric subdivisions. The evaluation is always performed on the
+    # original test dataset.
+    outputs = [trainer.test(lit_model, dm, save_checkpoint_path)]
+    for i in range(1, number_of_barycentric_subdivisions + 1):
+        dm_bs = get_data_module(
+            config, data_dir, number_of_barycentric_subdivisions
+        )
+        lit_model.set_test_barycentric_subdivisions(i)
+        outputs.append(trainer.test(lit_model, dm_bs, save_checkpoint_path))
     if use_logger:
         logger.experiment.finish()
-    return output
+    return outputs
