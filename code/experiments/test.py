@@ -67,9 +67,20 @@ def test_all(
                 number_of_barycentric_subdivisions=number_of_barycentric_subdivisions,
             )
 
+            # Modify output metric keys to contemplate the number of barycentric subdivisions
+            out_processed = (
+                dict()
+            )  # The dict will contain the processed metrics for all barycentric subdivisions.
+            # We assume that we always use one test dataloader when testing.
+            for idx in range(
+                number_of_barycentric_subdivisions + 1
+            ):  # Each metric is repeated for each
+                # barycentric subdivision
+                for key in out[idx][0].keys():
+                    out_processed[f"{key}_bs_{idx}"] = out[idx][0][key]
+
             # add benchmarking results
-            results.add(data=[out[idx][0] for idx in range(number_of_barycentric_subdivisions + 1)],
-                        config=config) # TODO: Make sure that the behaviour associated to this call is updated accordingly
+            results.add(data=out_processed, config=config)
             results.save(".ignore_temp")
 
     results.save("results")
