@@ -27,6 +27,7 @@ def run_configs_folder(
         for i in range(5):
             config_file = os.path.join(config_dir, file)
             config = load_config(config_file)
+            
             print("[INFO] Using configuration file:", config_file)
             print_info(config)
 
@@ -35,9 +36,15 @@ def run_configs_folder(
                 checkpoint_path = config.get_checkpoint_path(
                     checkpoint_folder, f"{i}"
                 )
-                print("[INFO] Using checkpoint folder:", checkpoint_path)
+                
+                # avoid duplicate training
+                if os.path.exists(checkpoint_path):
+                    print(f"[INFO] Checkpoint {checkpoint_path} already exists. Skipping training.")
+                    continue
+
+                print("[INFO] Using checkpoint:", checkpoint_path)
             else:
-                print("[INFO] No checkpoint folder.")
+                print("[INFO] No checkpoint folder specified. Model weights will not be saved.")
 
             config.logging.wandb_project_id = args_dict["wandb"]
             outp = run_configuration(
