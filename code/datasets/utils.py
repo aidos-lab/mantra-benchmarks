@@ -1,15 +1,30 @@
 import numpy as np
 import torch
-from toponetx import (
-    compute_bunch_normalized_matrices,
-    compute_x_laplacian_normalized_matrix,
-)
 
 
 def create_signals_on_data_if_needed(data):
     if not hasattr(data, "x") or data.x is None:
         data.x = {}
     return data
+
+
+def create_or_empty_signals_on_data(data):
+    data.x = {}
+    return data
+
+
+def get_triangles_from_simplicial_complex(data):
+    try:
+        sc = data.sc
+    except AttributeError:
+        raise AttributeError(
+            "Simplicial complex not found in data. Did you apply the SimplicialComplex transform"
+            "before trying to get triangulations?"
+        )
+    triangles = []
+    for triangle in sc.skeleton(2):
+        triangles.append(list(triangle))
+    return triangles
 
 
 def generate_zero_sparse_connectivity(m, n):

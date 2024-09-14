@@ -5,7 +5,6 @@ import pandas as pd
 
 
 class Result:
-
     def __init__(
         self, data: Dict[str, float], config: ConfigExperimentRun
     ) -> None:
@@ -40,7 +39,8 @@ class ResultCollection:
                 result["type_model"] = x.config.conf_model.type.name.lower()
                 result["transform"] = x.config.transforms.name.lower()
                 result["ds_type"] = x.config.ds_type.name.lower()
-                data.append(x.data)
+                data.append(result)
+
 
             df = pd.DataFrame(data)
             df.to_csv(t_file, index=False)

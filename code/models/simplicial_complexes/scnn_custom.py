@@ -309,9 +309,12 @@ class SCCNNLayer(torch.nn.Module):
         x_0, x_1, x_2 = x_all
 
         if self.sc_order == 2:
-            laplacian_0, laplacian_down_1, laplacian_up_1, laplacian_2 = (
-                laplacian_all
-            )
+            (
+                laplacian_0,
+                laplacian_down_1,
+                laplacian_up_1,
+                laplacian_2,
+            ) = laplacian_all
         elif self.sc_order > 2:
             (
                 laplacian_0,
