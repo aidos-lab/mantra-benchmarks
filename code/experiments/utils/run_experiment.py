@@ -88,7 +88,8 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
-        devices=3,
+        # devices=[0,1,5],
+        # strategy='ddp_find_unused_parameters_true'
     )
 
     if use_logger and trainer.global_rank == 0:
