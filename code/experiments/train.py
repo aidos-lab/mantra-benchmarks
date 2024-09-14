@@ -102,6 +102,7 @@ if __name__ == "__main__":
             args_dict,
             checkpoint_folder=args_dict["checkpoints"],
             config_dir=args_dict["Configs"],
+            data_dir=data_dir
         )
         exit(0)
 
