@@ -70,7 +70,7 @@ def test_all(
             # each metric is repeated for every barycentric subdivision
             for idx in range(number_of_barycentric_subdivisions + 1):
                 results.add(
-                    data=out[idx][0],
+                    data=out[idx],
                     config=config,
                     barycentric_subdivision_idx=idx,
                 )

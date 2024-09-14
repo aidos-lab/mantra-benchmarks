@@ -22,10 +22,12 @@ from datasets.transforms import (
 )
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
-from typing import List
+from typing import List, Dict
 from .imbalance_handling import sorted_imbalance_weights
 import os
 from torch_geometric.transforms import Compose
+from lightning import LightningDataModule, LightningModule
+from collections import ChainMap
 
 
 def get_data_module(
@@ -115,7 +117,7 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
-        # devices=[0, 1, 2, 3],
+        # devices=[0, 1, 2],
         # strategy='ddp_find_unused_parameters_true'
     )
 
@@ -151,6 +153,22 @@ def run_configuration(
     return outp
 
 
+def retrieve_benchmarks(
+    trainer: L.Trainer,
+    model: LightningModule,
+    dm: LightningDataModule,
+    save_path: str,
+) -> Dict:
+    out_test = trainer.test(model, dm, save_path)[0]
+    out_train = trainer.validate(model, dm.train_dataloader(), save_path)[0]
+    out_train = {
+        key.replace("validation", "train"): item
+        for key, item in out_train.items()
+    }
+    out = dict(ChainMap(out_test, out_train))
+    return out
+
+
 def benchmark_configuration(
     config: ConfigExperimentRun,
     save_checkpoint_path: str,
@@ -164,13 +182,19 @@ def benchmark_configuration(
     # Each index of outputs represents the test on the dataset after applying
     # index barycentric subdivisions. The evaluation is always performed on the
     # original test dataset.
-    outputs = [trainer.test(lit_model, dm, save_checkpoint_path)]
+    outputs = [
+        retrieve_benchmarks(trainer, lit_model, dm, save_checkpoint_path)
+    ]
     for i in range(1, number_of_barycentric_subdivisions + 1):
         dm_bs = get_data_module(
             config, data_dir, number_of_barycentric_subdivisions
         )
         lit_model.set_test_barycentric_subdivisions(i)
-        outputs.append(trainer.test(lit_model, dm_bs, save_checkpoint_path))
+        outputs.append(
+            retrieve_benchmarks(
+                trainer, lit_model, dm_bs, save_checkpoint_path
+            )
+        )
     if use_logger:
         logger.experiment.finish()
     return outputs
