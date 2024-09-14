@@ -190,10 +190,10 @@ manage_directory(config_dir)
 for ds_type in dataset_types:
     tasks = get_tasks(ds_type)
     for model in models:
-        
+
         if ds_type == DatasetType.FULL_3D and model in simplicial_models:
             continue
-        
+
         features = get_feature_types(model)
         for feature in features:
             for task in tasks:
