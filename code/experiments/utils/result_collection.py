@@ -6,11 +6,15 @@ import pandas as pd
 
 class Result:
     def __init__(
-        self, data: Dict[str, float], config: ConfigExperimentRun
+        self,
+        data: Dict[str, float],
+        config: ConfigExperimentRun,
+        barycentric_subdivision_idx: int = 0,
     ) -> None:
         self.data = data
         self.config = config
         self.ds_type = config.ds_type
+        self.barycentric_subdivision_idx = barycentric_subdivision_idx
 
 
 class ResultCollection:
@@ -23,9 +27,18 @@ class ResultCollection:
             TaskType.ORIENTABILITY: [],
         }
 
-    def add(self, data: Dict[str, float], config: ConfigExperimentRun):
+    def add(
+        self,
+        data: Dict[str, float],
+        config: ConfigExperimentRun,
+        barycentric_subdivision_idx: int = 0,
+    ):
         self.collection[config.task_type].append(
-            Result(data=data, config=config)
+            Result(
+                data=data,
+                config=config,
+                barycentric_subdivision_idx=barycentric_subdivision_idx,
+            )
         )
 
     def save(self, t_file_prefix: str = "res"):
@@ -39,6 +52,9 @@ class ResultCollection:
                 result["type_model"] = x.config.conf_model.type.name.lower()
                 result["transform"] = x.config.transforms.name.lower()
                 result["ds_type"] = x.config.ds_type.name.lower()
+                result["barycentric_subdivision_idx"] = (
+                    x.barycentric_subdivision_idx
+                )
                 data.append(result)
 
             df = pd.DataFrame(data)

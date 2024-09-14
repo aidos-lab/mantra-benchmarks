@@ -173,14 +173,33 @@ def get_betti_numbers_metrics(ds_type: DatasetType):
             train=collection_train, val=collection, test=collection
         )
     else:
-        collection = BettiNumbersMetricCollection(
+        collection_train = BettiNumbersMetricCollection(
             betti_0=accuracy_only,
             betti_1=accuracy_only,
             betti_2=accuracy_only,
             betti_3=accuracy_only,
         )
+
+        binary_metrics = [
+            NamedMetric(GeneralAccuracy(), "Accuracy"),
+            NamedMetric(MatthewsCorrCoeff(), "MCC"),
+            NamedMetric(
+                torchmetrics.classification.BinaryAUROC(), "BinaryAUROC"
+            ),
+            NamedMetric(
+                BettiNumbersMultiClassAccuracy(num_classes=2),
+                "BalancedAccuracy",
+            ),
+        ]
+
+        collection = BettiNumbersMetricCollection(
+            betti_0=accuracy_only,
+            betti_1=binary_metrics,
+            betti_2=binary_metrics,
+            betti_3=binary_metrics,
+        )
         metrics = MetricTrainValTest(
-            train=collection, val=collection, test=collection
+            train=collection_train, val=collection, test=collection
         )
 
     return metrics

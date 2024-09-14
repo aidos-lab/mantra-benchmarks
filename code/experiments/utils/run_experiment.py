@@ -67,8 +67,10 @@ def get_setup(
     data_dir: str = "./data",
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
-    transforms = transforms_lookup[config.transforms]
-    task_lookup: Dict[TaskType, Task] = get_task_lookup(transforms)
+    transforms = transforms_lookup(config.transforms, config.ds_type)
+    task_lookup: Dict[TaskType, Task] = get_task_lookup(
+        transforms, ds_type=config.ds_type
+    )
     dm = get_data_module(config, data_dir)
     # ignore imbalance when working with betti numbers
     if (
@@ -113,7 +115,7 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
-        # devices=[0,1,5],
+        # devices=[0, 1, 2, 3],
         # strategy='ddp_find_unused_parameters_true'
     )
 
