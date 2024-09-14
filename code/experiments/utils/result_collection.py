@@ -41,6 +41,5 @@ class ResultCollection:
                 result["ds_type"] = x.config.ds_type.name.lower()
                 data.append(result)
 
-
             df = pd.DataFrame(data)
             df.to_csv(t_file, index=False)
