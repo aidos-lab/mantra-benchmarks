@@ -6,7 +6,7 @@ from experiments.utils.configs import load_config, ConfigExperimentRun
 from experiments.utils.run_experiment import run_configuration
 import os
 import argparse
-from typing import Dict, Any, Optional
+from typing import Dict, Any, List, Optional, Lists
 from experiments.utils.result_collection import ResultCollection
 
 
@@ -19,6 +19,7 @@ def run_configs_folder(
     checkpoint_folder: Optional[str] = None,
     data_dir: str = "./data",
     config_dir: str = "./configs",
+    devices=None,
 ):
     files = os.listdir(config_dir)
     results = ResultCollection()
@@ -52,7 +53,10 @@ def run_configs_folder(
 
             config.logging.wandb_project_id = args_dict["wandb"]
             outp = run_configuration(
-                config, save_checkpoint_path=checkpoint_path, data_dir=data_dir
+                config,
+                save_checkpoint_path=checkpoint_path,
+                data_dir=data_dir,
+                devices=devices,
             )
             results.add(data=outp[0], config=config)
             results.save(".ignore_temp_train")
@@ -96,10 +100,18 @@ if __name__ == "__main__":
     parser.add_argument(
         "--wandb", type=str, default="mantra-dev", help="Wandb project id."
     )
+    parser.add_argument(
+        "--devices",
+        nargs="+",
+        type=int,
+        help="List of GPU IDs to use.",
+        default=[0],
+    )
 
     args = parser.parse_args()
     args_dict = vars(args)
     data_dir: str = args.data
+    devices: List[int] = args.devices
 
     if args_dict["mode"] == "all":
         run_configs_folder(
@@ -107,6 +119,7 @@ if __name__ == "__main__":
             checkpoint_folder=args_dict["checkpoints"],
             config_dir=args_dict["Configs"],
             data_dir=data_dir,
+            devices=devices,
         )
         exit(0)
 
@@ -118,6 +131,9 @@ if __name__ == "__main__":
         if args_dict["checkpoints"]:
             config_path = config.get_checkpoint_path(args_dict["checkpoints"])
         run_configuration(
-            config, save_checkpoint_path=config_path, data_dir=data_dir
+            config,
+            save_checkpoint_path=config_path,
+            data_dir=data_dir,
+            devices=devices,
         )
         exit(0)

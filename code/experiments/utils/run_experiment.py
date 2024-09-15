@@ -67,6 +67,7 @@ def get_setup(
     config: ConfigExperimentRun,
     use_logger: bool = True,
     data_dir: str = "./data",
+    devices=None,
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup(config.transforms, config.ds_type)
@@ -117,7 +118,7 @@ def get_setup(
         log_every_n_steps=config.trainer_config.log_every_n_steps,
         fast_dev_run=False,
         default_root_dir=data_dir,
-        # devices=[0, 1, 2],
+        devices=devices,
         # strategy='ddp_find_unused_parameters_true'
     )
 
@@ -138,8 +139,11 @@ def run_configuration(
     config: ConfigExperimentRun,
     save_checkpoint_path: Optional[str] = None,
     data_dir: str = "./data",
+    devices=None,
 ):
-    dm, lit_model, trainer, logger = get_setup(config, data_dir=data_dir)
+    dm, lit_model, trainer, logger = get_setup(
+        config, data_dir=data_dir, devices=devices
+    )
 
     # run
     trainer.fit(lit_model, dm)
@@ -175,9 +179,10 @@ def benchmark_configuration(
     use_logger: bool = False,
     data_dir: str = "./data",
     number_of_barycentric_subdivisions: int = 0,
+    devices=None,
 ) -> List[Dict[str, float]]:
     dm, lit_model, trainer, logger = get_setup(
-        config, use_logger=use_logger, data_dir=data_dir
+        config, use_logger=use_logger, data_dir=data_dir, devices=devices
     )
     # Each index of outputs represents the test on the dataset after applying
     # index barycentric subdivisions. The evaluation is always performed on the
