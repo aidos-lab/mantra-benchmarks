@@ -50,15 +50,27 @@ def test_all(
     """
 
     files = os.listdir(config_dir)
+
     results = ResultCollection()
+    results.load(".ignore_temp")
 
     # get the benchmarks:
     for file in files:
-        for run in range(n_runs):
 
-            # load config and weights
-            config_file = os.path.join(config_dir, file)
-            config = load_config(config_file)
+        # load config
+        config_file = os.path.join(config_dir, file)
+        config = load_config(config_file)
+        n_existing = results.exists(config, number_of_barycentric_subdivisions)
+
+        if n_existing == n_runs:
+            print(
+                f"[INFO] Skipping testing {config} with n_bary_subdv {number_of_barycentric_subdivisions} because sufficient existing entries were found."
+            )
+            continue
+
+        for run in range(n_existing, n_runs):
+
+            # load weights
             checkpoint_path = config.get_checkpoint_path(
                 checkpoint_dir, run=run
             )

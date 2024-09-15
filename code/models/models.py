@@ -33,18 +33,6 @@ model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.TransfConv: TransfConv,
 }
 
-model_cfg_lookup: Dict[ModelType, BaseModel] = {
-    ModelType.GAT: GATConfig,
-    ModelType.GCN: GCNConfig,
-    ModelType.MLP: MLPConfig,
-    ModelType.TAG: TAGConfig,
-    ModelType.SAN: SANConfig,
-    ModelType.SCCN: SCCNConfig,
-    ModelType.SCCNN: SCCNNConfig,
-    ModelType.SCN: SCNConfig,
-    ModelType.TransfConv: TransfConvConfig,
-}
-
 ModelConfig = Union[
     Annotated[MLPConfig, Tag(ModelType.MLP)],
     Annotated[GATConfig, Tag(ModelType.GAT)],
@@ -56,6 +44,18 @@ ModelConfig = Union[
     Annotated[SCCNNConfig, Tag(ModelType.SCCNN)],
     Annotated[SCNConfig, Tag(ModelType.SCN)],
 ]
+
+model_cfg_lookup: Dict[ModelType, ModelConfig] = {
+    ModelType.GAT: GATConfig,
+    ModelType.GCN: GCNConfig,
+    ModelType.MLP: MLPConfig,
+    ModelType.TAG: TAGConfig,
+    ModelType.SAN: SANConfig,
+    ModelType.SCCN: SCCNConfig,
+    ModelType.SCCNN: SCCNNConfig,
+    ModelType.SCN: SCNConfig,
+    ModelType.TransfConv: TransfConvConfig,
+}
 
 dataloader_lookup: Dict[ModelType, Callable] = {
     ModelType.GAT: DataLoader,

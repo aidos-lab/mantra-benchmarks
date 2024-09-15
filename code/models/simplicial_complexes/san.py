@@ -9,10 +9,10 @@ from topomodelx.nn.simplicial.san import SAN as SANBack
 
 class SANConfig(BaseModel):
     type: ModelType = ModelType.SAN
-    in_channels: tuple[int, ...]
+    in_channels: tuple[int, ...] = (1, 2, 1)
     in_channels_backbone: int = 64
     hidden_channels: int = 64
-    out_channels: int
+    out_channels: int = 3
     n_filters: int = 2
     order_harmonic: int = 5
     epsilon_harmonic: float = 1e-1

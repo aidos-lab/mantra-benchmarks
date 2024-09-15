@@ -10,9 +10,9 @@ from models.simplicial_complexes.scnn_custom import SCCNNCustom
 
 class SCCNNConfig(BaseModel):
     type: ModelType = ModelType.SCCNN
-    in_channels: tuple[int, ...]
+    in_channels: tuple[int, ...] = (1, 2, 1)
     hidden_channels_all: tuple[int, ...] = (64, 64, 64)
-    out_channels: int
+    out_channels: int = 3
     conv_order: int = 1
     sc_order: int = 3
     aggr_norm: bool = False

@@ -8,9 +8,9 @@ from pydantic import BaseModel
 
 class SCCNConfig(BaseModel):
     type: ModelType = ModelType.SCCN
-    in_channels: tuple[int, ...]
+    in_channels: tuple[int, ...] = (1, 2, 1)
     channels: int = 64
-    out_channels: int
+    out_channels: int = 3
     max_rank: int = 2
     n_layers: int = 2
     update_func: str = "sigmoid"

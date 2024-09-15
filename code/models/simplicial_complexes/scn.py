@@ -9,8 +9,8 @@ from topomodelx.nn.simplicial.scn2 import SCN2
 
 class SCNConfig(BaseModel):
     type: ModelType = ModelType.SCN
-    in_channels: tuple[int, ...]
-    out_channels: int
+    in_channels: tuple[int, ...] = (1, 2, 1)
+    out_channels: int = 3
     n_layers: int = 2
 
 
