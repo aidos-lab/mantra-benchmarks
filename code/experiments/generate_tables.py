@@ -14,6 +14,7 @@ from experiments.utils.results_processing.per_model import per_model
 from experiments.utils.results_processing.per_transform import per_transform
 from experiments.utils.results_processing.utils import read_result_csv
 
+
 def process_name_orientability(results: Dict[TaskType, pd.DataFrame]):
     tasks = [TaskType.NAME, TaskType.ORIENTABILITY]
     models = [
@@ -34,21 +35,21 @@ def process_name_orientability(results: Dict[TaskType, pd.DataFrame]):
         tasks=tasks,
         model_types_cartesian=[models],
         transform_types_cartesian=[transforms],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_model_res = per_model(
         tasks=tasks,
         model_types_cartesian=[models],
         transform_types_cartesian=[transforms],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_transform_res = per_transform(
         tasks=tasks,
         model_types_cartesian=[models],
         transform_types_cartesian=[transforms],
-        result_dataframes=results
+        result_dataframes=results,
     )
     return per_task_res, per_model_res, per_transform_res
 
@@ -77,21 +78,21 @@ def process_betti(results: Dict[TaskType, pd.DataFrame]):
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_model_res = per_model(
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_transform_res = per_transform(
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     return per_task_res, per_model_res, per_transform_res
@@ -99,7 +100,7 @@ def process_betti(results: Dict[TaskType, pd.DataFrame]):
 
 def process():
     results_csv_prefix = "results_"
-    results =read_result_csv(results_csv_prefix)
+    results = read_result_csv(results_csv_prefix)
 
     res_betti = process_betti(results)
     res_name_or = process_name_orientability(results)
