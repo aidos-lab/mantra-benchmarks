@@ -18,7 +18,8 @@ import lightning as L
 import uuid
 from datasets.transforms import (
     transforms_lookup,
-    BarycentricSubdivisionTransform, SimplicialComplexTransform,
+    BarycentricSubdivisionTransform,
+    SimplicialComplexTransform,
 )
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
