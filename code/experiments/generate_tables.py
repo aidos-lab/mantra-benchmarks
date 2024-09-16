@@ -39,21 +39,21 @@ def process_full2manifolds(results: Dict[TaskType, pd.DataFrame]):
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_model_res = per_model(
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     per_transform_res = per_transform(
         tasks=tasks,
         model_types_cartesian=[models, models_2],
         transform_types_cartesian=[transforms, transforms_2],
-        result_dataframes=results
+        result_dataframes=results,
     )
 
     return per_task_res, per_model_res, per_transform_res
