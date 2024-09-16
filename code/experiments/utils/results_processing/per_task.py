@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import pandas as pd
 from metrics.tasks import TaskType
 from models.models import ModelType
@@ -49,7 +49,7 @@ def per_task(
     tasks: List[TaskType],
     model_types_cartesian: List[List[ModelType]],
     transform_types_cartesian: List[List[TransformType]],
-    result_csv_prefix: str = "./ignore_temp_",
+    result_dataframes: Dict[TaskType, pd.DataFrame],
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Process results for each task by calculating the mean of the maximum metric values across different model and transform types.
@@ -58,7 +58,7 @@ def per_task(
     tasks (List[TaskType]): List of tasks to evaluate.
     model_types_cartesian (List[List[ModelType]]): List of lists containing model types for each cartesian product.
     transform_types_cartesian (List[List[TransformType]]): List of lists containing transform types for each cartesian product.
-    result_csv_prefix (str): Prefix for the result CSV files.
+    result_dataframes (Dict[TaskType, pd.DataFrame]): Dataframes per task.
 
     Returns:
     DataFrame: DataFrame containing processed results.
@@ -69,9 +69,9 @@ def per_task(
     assert n_cartesian == len(transform_types_cartesian)
 
     for task_type in tasks:
-        result_path = get_result_path(result_csv_prefix, task_type)
-        df = pd.read_csv(result_path)
-
+        df = result_dataframes[task_type]
+        assert df is not None 
+        
         metric_col_names = get_metric_col_names(df, task_type)
 
         cols_result = ["Metric", "Mean"]

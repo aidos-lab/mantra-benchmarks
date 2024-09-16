@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 import pandas as pd
 from metrics.tasks import TaskType
 from models.models import ModelType
@@ -53,7 +53,7 @@ def per_transform(
     tasks: List[TaskType],
     model_types_cartesian: List[List[ModelType]],
     transform_types_cartesian: List[List[TransformType]],
-    result_csv_prefix: str = "./ignore_temp_",
+    result_dataframes: Dict[TaskType, pd.DataFrame],
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Generate results per transform type for each task type by processing model and transform type combinations.
@@ -62,7 +62,7 @@ def per_transform(
     tasks (List[TaskType]): List of task types to process.
     model_types_cartesian (List[List[ModelType]]): Model types to process.
     transform_types_cartesian (List[List[TransformType]]): Transform types to process.
-    result_csv_prefix (str): Prefix for the result CSV file paths.
+    result_dataframes (Dict[TaskType, pd.DataFrame]): Dataframes per task.
 
     Returns:
     List[Tuple[str, DataFrame]]: List of tuples containing task type names and their corresponding result dataframes.
@@ -76,8 +76,7 @@ def per_transform(
     n_cartesian = len(model_types_cartesian)
     results = []
     for task_type in tasks:
-        result_path = get_result_path(result_csv_prefix, task_type)
-        df = pd.read_csv(result_path)
+        df = result_dataframes[task_type]
         metric_cols = get_metric_col_names(df, task_type)
 
         res_cols = ["Metric"] + [

@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional
+from typing import List, Tuple, Optional, Dict
 import pandas as pd
 from metrics.tasks import TaskType
 from models.models import ModelType
@@ -11,6 +11,16 @@ def format_res_val(value: float, std: Optional[float] = None):
     else:
         return f"{value:.2f} ({std:.2f} SD)"
 
+
+def read_result_csv(
+    path_prefix: str = ".ignore_"
+) -> Dict[TaskType, pd.DataFrame]:
+    res_dict = {}
+    for task_type in TaskType:
+        res_path = get_result_path(path_prefix, task_type)
+        df = pd.read_csv(res_path)
+        res_dict[task_type] = df 
+    return res_dict
 
 def get_matching_indeces(
     df: pd.DataFrame, model_type: ModelType, transform_type: TransformType
