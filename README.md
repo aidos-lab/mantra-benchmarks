@@ -58,7 +58,7 @@ $ python ./experiments/run.py --mode "<single/all>" --checkpoints "<checkpoints/
 ```s
 $ python ./experiments/generate_tables.py
 # optional
-$ pandoc results.md -o results.pdf -V geometry:margin=0.1in -V geometry:a3paper
+$ pandoc results_2fullmanifolds.md -o results_2fullmanifolds.pdf -V geometry:margin=0.1in -V geometry:a1paper
 ```
 
 

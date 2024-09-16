@@ -41,6 +41,7 @@ def reduce(
             ]
             max_ = filtered_results[metric].max()
             model_results.append(max_)
+
         metric_res_list.append(np.max(model_results))
     return metric_res_list
 

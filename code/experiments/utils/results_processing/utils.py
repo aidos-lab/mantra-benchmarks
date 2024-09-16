@@ -5,12 +5,27 @@ from models.models import ModelType
 from datasets.transforms import TransformType
 from datasets.dataset_types import DatasetType
 from experiments.utils.enum_utils import enum_from_str_id
+from enum import Enum
+import numpy as np
 
-def format_res_val(value: float, std: Optional[float] = None):
+
+def get_max_info(enums: List[Enum], results: np.ndarray) -> Enum:
+    return (
+        enums[np.argmax(results)].name.lower()
+        if np.std(results) > 0.01
+        else ""
+    )
+
+
+def format_res_val(value: float, std: Optional[float] = None, note: str = ""):
+    """
+    Performs rounding to two decimals
+    """
+    note_formatted = f"[{note}]" if note != "" else ""
     if std is None:
-        return f"{value:.2f}"
+        return f"{value:.2f} {note_formatted}"
     else:
-        return f"{value:.2f} ({std:.2f} SD)"
+        return f"{value:.2f} {note_formatted} ({std:.2f} SD)"
 
 
 def read_result_csv(
@@ -23,12 +38,13 @@ def read_result_csv(
         res_dict[task_type] = df
     return res_dict
 
-def filter_for_ds_type(
-    df: pd.DataFrame,
-    ds_type: DatasetType
-) -> pd.DataFrame:
-    filtered_df = df[df['ds_type'] == ds_type.name.lower()].dropna(axis=1, how='all')
+
+def filter_for_ds_type(df: pd.DataFrame, ds_type: DatasetType) -> pd.DataFrame:
+    filtered_df = df[df["ds_type"] == ds_type.name.lower()].dropna(
+        axis=1, how="all"
+    )
     return filtered_df
+
 
 def get_matching_indeces(
     df: pd.DataFrame, model_type: ModelType, transform_type: TransformType

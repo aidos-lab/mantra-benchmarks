@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python ./experiments/generate_tables.py
+python ./experiments/generate_tables.py \
+    --max_info

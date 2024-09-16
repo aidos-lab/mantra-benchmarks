@@ -9,6 +9,7 @@ from .utils import (
     get_metric_col_names,
     get_result_path,
     format_res_val,
+    get_max_info,
 )
 
 
@@ -18,6 +19,7 @@ def reduce(
     transform_types: List[TransformType],
     row: any,
     metric: str,
+    max_info: bool = False,
 ):
     """
     Reduce the dataframe by aggregating metric results for each transform type and model type.
@@ -42,8 +44,9 @@ def reduce(
             ]
             results.append(filtered_results[metric].max())
 
+        max_model = get_max_info(model_types, results) if max_info else ""
         row[transform_type.name.lower()] = format_res_val(
-            np.max(results), np.std(results)
+            np.max(results), np.std(results), note=max_model
         )
 
     return row
@@ -54,6 +57,7 @@ def per_transform(
     model_types_cartesian: List[List[ModelType]],
     transform_types_cartesian: List[List[TransformType]],
     result_dataframes: Dict[TaskType, pd.DataFrame],
+    max_info: bool = False,
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Generate results per transform type for each task type by processing model and transform type combinations.
@@ -94,6 +98,7 @@ def per_transform(
                     transform_types=transform_types_cartesian[i_cartesian],
                     row=row,
                     metric=metric,
+                    max_info=max_info,
                 )
             new_row_df = pd.DataFrame([row])
             concat_df = (
