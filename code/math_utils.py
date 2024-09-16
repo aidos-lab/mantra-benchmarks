@@ -34,7 +34,6 @@ def barycentric_subdivision(K: SimplicialComplex) -> SimplicialComplex:
                 [simplex_to_index[or_simplex] for or_simplex in simplex]
             )
     # Add the simplices to the new SimplicialComplex
-    print()
     Sd_K.add_simplices_from(all_simplices)
     return Sd_K, simplex_to_index
 
