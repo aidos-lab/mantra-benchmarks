@@ -6,7 +6,7 @@ from experiments.utils.configs import load_config, ConfigExperimentRun
 from experiments.utils.run_experiment import run_configuration
 import os
 import argparse
-from typing import Dict, Any, List, Optional, Lists
+from typing import Dict, Any, List, Optional
 from experiments.utils.result_collection import ResultCollection
 
 
