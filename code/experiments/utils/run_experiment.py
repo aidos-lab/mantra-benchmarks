@@ -18,7 +18,7 @@ import lightning as L
 import uuid
 from datasets.transforms import (
     transforms_lookup,
-    BarycentricSubdivisionTransform,
+    BarycentricSubdivisionTransform, SimplicialComplexTransform,
 )
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
@@ -44,6 +44,7 @@ def get_data_module(
     if number_of_barycentric_subdivisions > 0:
         dataset_transforms = Compose(
             [
+                SimplicialComplexTransform(),
                 BarycentricSubdivisionTransform(
                     number_of_barycentric_subdivisions
                 ),
