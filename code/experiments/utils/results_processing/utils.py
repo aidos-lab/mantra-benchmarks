@@ -6,6 +6,7 @@ from datasets.transforms import TransformType
 from datasets.dataset_types import DatasetType
 from experiments.utils.enum_utils import enum_from_str_id
 
+
 def format_res_val(value: float, std: Optional[float] = None):
     if std is None:
         return f"{value:.2f}"
@@ -23,12 +24,13 @@ def read_result_csv(
         res_dict[task_type] = df
     return res_dict
 
-def filter_for_ds_type(
-    df: pd.DataFrame,
-    ds_type: DatasetType
-) -> pd.DataFrame:
-    filtered_df = df[df['ds_type'] == ds_type.name.lower()].dropna(axis=1, how='all')
+
+def filter_for_ds_type(df: pd.DataFrame, ds_type: DatasetType) -> pd.DataFrame:
+    filtered_df = df[df["ds_type"] == ds_type.name.lower()].dropna(
+        axis=1, how="all"
+    )
     return filtered_df
+
 
 def get_matching_indeces(
     df: pd.DataFrame, model_type: ModelType, transform_type: TransformType

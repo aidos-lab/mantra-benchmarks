@@ -13,7 +13,11 @@ from experiments.utils.results_processing.utils import to_markdown_file
 from experiments.utils.results_processing.per_task import per_task
 from experiments.utils.results_processing.per_model import per_model
 from experiments.utils.results_processing.per_transform import per_transform
-from experiments.utils.results_processing.utils import read_result_csv, filter_for_ds_type
+from experiments.utils.results_processing.utils import (
+    read_result_csv,
+    filter_for_ds_type,
+)
+
 
 def process_full2manifolds(results: Dict[TaskType, pd.DataFrame]):
     tasks = [TaskType.BETTI_NUMBERS, TaskType.NAME, TaskType.ORIENTABILITY]
@@ -63,10 +67,14 @@ def process():
     results_csv_prefix = "results_"
     results = read_result_csv(results_csv_prefix)
 
-    results_2d_full = {task_type: filter_for_ds_type(res_task, DatasetType.FULL_2D) for task_type, res_task in results.items()}
+    results_2d_full = {
+        task_type: filter_for_ds_type(res_task, DatasetType.FULL_2D)
+        for task_type, res_task in results.items()
+    }
 
-    per_task_full2, per_model_full2, per_transform_full2 = process_full2manifolds(results_2d_full)
-
+    per_task_full2, per_model_full2, per_transform_full2 = (
+        process_full2manifolds(results_2d_full)
+    )
 
     mkd_str = "# Overview\n"
     mkd_str += to_markdown_file(per_task_full2)
