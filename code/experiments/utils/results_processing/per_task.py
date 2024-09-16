@@ -70,8 +70,8 @@ def per_task(
 
     for task_type in tasks:
         df = result_dataframes[task_type]
-        assert df is not None 
-        
+        assert df is not None
+
         metric_col_names = get_metric_col_names(df, task_type)
 
         cols_result = ["Metric", "Mean"]
