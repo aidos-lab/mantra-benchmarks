@@ -61,12 +61,10 @@ class SimplicialDS(InMemoryDataset):
             manifold,
             version,
             None,
-            None,
+            pre_transform=pre_transform,
             pre_filter=pre_filter,
         )
-        super().__init__(
-            root, transform=transform, pre_transform=pre_transform
-        )
+        super().__init__(root, transform=transform)
 
         self.load(self._get_processed_path(task_type, mode))
 

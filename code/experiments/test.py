@@ -10,6 +10,33 @@ import os
 import argparse
 from experiments.utils.result_collection import ResultCollection
 from typing import List
+from datasets.dataset_types import DatasetType
+
+
+def verify_config(
+    config: ConfigExperimentRun, number_of_barycentric_subdivisions: int
+):
+    """
+    Verifies that it is intended to run the configuration.
+    Returns false if the dataset type is != NO_NAMELESS_2D and the number
+    of barycentric subdivisions is > 0.
+    """
+    is_verified = not (
+        number_of_barycentric_subdivisions > 0
+        and config.ds_type != DatasetType.NO_NAMELESS_2D
+    )
+    if not is_verified:
+        print(
+            f"[INFO] {config.ds_type} dataset type is not intended to run with {number_of_barycentric_subdivisions} number of barycentric subdivisions. Thus, skipping evaluation."
+        )  # noqa
+
+    bary_too_large = number_of_barycentric_subdivisions > 1
+    if bary_too_large:
+        print(
+            "[INFO] Number of barycentric subdivisions can currently not be > 1."
+        )
+
+    return is_verified and not bary_too_large
 
 
 def test(
@@ -26,6 +53,9 @@ def test(
     print("[INFO] Testing with config", config)
     print("[INFO] Testing with checkpoint path:", checkpoint_path)
     print("[INFO] Testing with data path:", data_dir)
+
+    if not verify_config(config, number_of_barycentric_subdivisions):
+        return
 
     benchmark_configuration(
         config=config,
@@ -60,8 +90,11 @@ def test_all(
         # load config
         config_file = os.path.join(config_dir, file)
         config = load_config(config_file)
-        n_existing = results.exists(config, number_of_barycentric_subdivisions)
 
+        if not verify_config(config, number_of_barycentric_subdivisions):
+            continue
+
+        n_existing = results.exists(config, number_of_barycentric_subdivisions)
         if n_existing == n_runs:
             print(
                 f"[INFO] Skipping testing {config} with n_bary_subdv {number_of_barycentric_subdivisions} because sufficient existing entries were found."
@@ -156,6 +189,7 @@ if __name__ == "__main__":
     data_dir = args.data
     devices: List[int] = args.devices
     run: int = args.run
+    barycentric_subdivisions: int = args.barycentric_subdivisions
 
     if args_dict["mode"] == "single":
         config = load_config(args_dict["config"])
@@ -166,9 +200,7 @@ if __name__ == "__main__":
             config=config,
             checkpoint_path=checkpoint_path,
             data_dir=data_dir,
-            number_of_barycentric_subdivisions=args_dict[
-                "barycentric_subdivisions"
-            ],
+            number_of_barycentric_subdivisions=barycentric_subdivisions,
             devices=devices,
         )
     elif args_dict["mode"] == "all":
@@ -176,9 +208,7 @@ if __name__ == "__main__":
             checkpoint_dir=args_dict["checkpoints"],
             config_dir=args_dict["Configs"],
             data_dir=data_dir,
-            number_of_barycentric_subdivisions=args_dict[
-                "barycentric_subdivisions"
-            ],
+            number_of_barycentric_subdivisions=barycentric_subdivisions,
             devices=devices,
         )
     else:

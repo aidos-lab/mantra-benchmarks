@@ -32,25 +32,13 @@ class BaseModel(L.LightningModule):
         if imbalance is not None:
             self.imbalance = np.array(list(self.imbalance))
             self.imbalance = self.imbalance / np.sum(self.imbalance)
-        self.test_barycentric_subdivisions = 0
 
     def forward(self, batch):
         x = self.model(batch)
         return x
 
-    def set_test_barycentric_subdivisions(
-        self, number_of_barycentric_subdivisions: int
-    ):
-        self.test_barycentric_subdivisions = number_of_barycentric_subdivisions
-
     def get_log_name(self, log_type: str, step: str):
-        if step == "test":
-            if self.test_barycentric_subdivisions > 0:
-                loss_log_name = f"{step}_{log_type}_{self.test_barycentric_subdivisions}_bs"
-            else:
-                loss_log_name = f"{step}_{log_type}"
-        else:
-            loss_log_name = f"{step}_{log_type}"
+        loss_log_name = f"{step}_{log_type}"
         return loss_log_name
 
     def general_step(self, batch, batch_idx, step: str):
@@ -116,11 +104,6 @@ class BaseModel(L.LightningModule):
 
         accuracies = self.accuracies_fn(acc_fun, x_hat, y, step)
         for accuracy in accuracies:
-            if step == "test" and self.test_barycentric_subdivisions > 0:
-                accuracy["name"] = (
-                    accuracy["name"]
-                    + f"_{self.test_barycentric_subdivisions}_bs"
-                )
             self.log(
                 **accuracy,
                 prog_bar=True,

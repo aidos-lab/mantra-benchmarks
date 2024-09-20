@@ -8,10 +8,25 @@ from .simplicial_ds import SimplicialDS
 from metrics.tasks import TaskType
 from datasets.dataset_types import DatasetType, filter_nameless
 import os
+from datasets.transforms import (
+    BarycentricSubdivisionTransform,
+    SimplicialComplexTransform,
+)
 
 
 def unique_counts(input_list: List[str]) -> Counter:
     return Counter(input_list)
+
+
+def barycentric_subdivision_transform(
+    num_barycentric_subdivisions: int = 1,
+) -> Compose:
+    return Compose(
+        [
+            SimplicialComplexTransform(),
+            BarycentricSubdivisionTransform(num_barycentric_subdivisions),
+        ]
+    )
 
 
 class SimplicialDataModule(LightningDataModule):
@@ -25,6 +40,7 @@ class SimplicialDataModule(LightningDataModule):
         seed: int = 2024,
         dataloader_builder: Callable = DataLoaderGeometric,
         ds_type: DatasetType = DatasetType.FULL_2D,
+        num_barycentric_subdivisions: int = 0,
     ):
         super().__init__()
         self.ds_type = ds_type
@@ -37,6 +53,14 @@ class SimplicialDataModule(LightningDataModule):
         self.seed = seed
         self.dataloader_builder = dataloader_builder
         self.split = [0.6, 0.2, 0.2]
+        self.num_barycentric_subdivisions = num_barycentric_subdivisions
+
+    def get_ds_root_dir(self) -> str:
+        return os.path.join(
+            self.data_dir,
+            self.ds_type.name.lower(),
+            f"{self.num_barycentric_subdivisions}",
+        )
 
     def get_ds(self, mode: str = "train") -> SimplicialDS:
         if self.ds_type == DatasetType.FULL_2D:
@@ -51,8 +75,16 @@ class SimplicialDataModule(LightningDataModule):
         else:
             raise ValueError(f"Unknown dataset type {self.ds_type}")
 
+        barycentric_subdivision_pre_tr = (
+            barycentric_subdivision_transform(
+                self.num_barycentric_subdivisions
+            )
+            if self.num_barycentric_subdivisions > 0
+            else None
+        )
+
         return SimplicialDS(
-            root=os.path.join(self.data_dir, self.ds_type.name.lower()),
+            root=self.get_ds_root_dir(),
             manifold=manifold,
             split=self.split,
             seed=self.seed,
@@ -60,6 +92,7 @@ class SimplicialDataModule(LightningDataModule):
             use_stratified=self.use_stratified,
             task_type=self.task_type,
             transform=self.transform,
+            pre_transform=barycentric_subdivision_pre_tr,
             pre_filter=pre_filter,
         )
 

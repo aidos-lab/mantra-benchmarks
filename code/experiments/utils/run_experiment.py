@@ -16,11 +16,7 @@ from models.base import BaseModel
 from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 import lightning as L
 import uuid
-from datasets.transforms import (
-    transforms_lookup,
-    BarycentricSubdivisionTransform,
-    SimplicialComplexTransform,
-)
+from datasets.transforms import transforms_lookup
 from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
 from typing import List, Dict
@@ -42,16 +38,6 @@ def get_data_module(
     )
 
     dataset_transforms = task_lookup[config.task_type].transforms
-    if number_of_barycentric_subdivisions > 0:
-        dataset_transforms = Compose(
-            [
-                SimplicialComplexTransform(),
-                BarycentricSubdivisionTransform(
-                    number_of_barycentric_subdivisions
-                ),
-                dataset_transforms,
-            ]
-        )
 
     dm = SimplicialDataModule(
         ds_type=config.ds_type,
@@ -61,6 +47,7 @@ def get_data_module(
         task_type=config.task_type,
         seed=config.seed,
         dataloader_builder=dataloader_lookup[config.conf_model.type],
+        num_barycentric_subdivisions=number_of_barycentric_subdivisions,
     )
     return dm
 
@@ -164,15 +151,21 @@ def retrieve_benchmarks(
     model: LightningModule,
     dm: LightningDataModule,
     save_path: str,
+    test_on_train_set: bool = True,
 ) -> Dict:
     out_test = trainer.test(model, dm, save_path)[0]
-    out_train = trainer.validate(model, dm.train_dataloader(), save_path)[0]
-    out_train = {
-        key.replace("validation", "train"): item
-        for key, item in out_train.items()
-    }
-    out = dict(ChainMap(out_test, out_train))
-    return out
+    if test_on_train_set:
+        out_train = trainer.validate(model, dm.train_dataloader(), save_path)[
+            0
+        ]
+        out_train = {
+            key.replace("validation", "train"): item
+            for key, item in out_train.items()
+        }
+        out = dict(ChainMap(out_test, out_train))
+        return out
+    else:
+        return out_test
 
 
 def benchmark_configuration(
@@ -186,20 +179,26 @@ def benchmark_configuration(
     dm, lit_model, trainer, logger = get_setup(
         config, use_logger=use_logger, data_dir=data_dir, devices=devices
     )
-    # Each index of outputs represents the test on the dataset after applying
-    # index barycentric subdivisions. The evaluation is always performed on the
-    # original test dataset.
+
+    benchmark_on_train_set = number_of_barycentric_subdivisions == 0
     outputs = [
-        retrieve_benchmarks(trainer, lit_model, dm, save_checkpoint_path)
+        retrieve_benchmarks(
+            trainer,
+            lit_model,
+            dm,
+            save_checkpoint_path,
+            test_on_train_set=benchmark_on_train_set,
+        )
     ]
     for i in range(1, number_of_barycentric_subdivisions + 1):
-        dm_bs = get_data_module(
-            config, data_dir, number_of_barycentric_subdivisions
-        )
-        lit_model.set_test_barycentric_subdivisions(i)
+        dm_bs = get_data_module(config, data_dir, i)
         outputs.append(
             retrieve_benchmarks(
-                trainer, lit_model, dm_bs, save_checkpoint_path
+                trainer,
+                lit_model,
+                dm_bs,
+                save_checkpoint_path,
+                test_on_train_set=benchmark_on_train_set,
             )
         )
     if use_logger:
