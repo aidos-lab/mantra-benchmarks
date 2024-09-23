@@ -11,7 +11,7 @@ from datasets.utils import (
 )
 from enum import Enum
 from datasets.dataset_types import DatasetType
-from typing import List, Callable
+from typing import List, Callable, Dict
 
 
 from math_utils import recursive_barycentric_subdivision
@@ -263,6 +263,20 @@ class TransformType(Enum):
     random_node_features = "random_node_features"
     degree_transform_sc = "degree_transform_sc"
     random_simplices_features = "random_simplices_features"
+
+
+graphbased_transforms: Dict[str, List[TransformType]] = {
+    "degree": [
+        TransformType.degree_transform,
+        TransformType.degree_transform_onehot,
+    ],
+    "random": [TransformType.random_node_features],
+}
+
+simplicial_transforms: Dict[str, List[TransformType]] = {
+    "degree": [TransformType.degree_transform_sc],
+    "random": [TransformType.random_simplices_features],
+}
 
 
 def transforms_lookup(
