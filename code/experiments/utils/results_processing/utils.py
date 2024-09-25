@@ -21,14 +21,16 @@ def format_res_val(value: float, std: Optional[float] = None, note: str = ""):
     """
     Performs rounding to two decimals
     """
+    value_scaled = value * 100
+    std_scaled = std * 100
     note_formatted = f"[{note}]" if note != "" else ""
     if std is None:
-        return f"{value:.2f} {note_formatted}"
+        return f"{value_scaled:.2f} {note_formatted}"
     else:
         return (
-            f"${value:.2f}_"
+            f"${value_scaled:.2f}_"
             + "{\pm"
-            + f" {std:.2f}"
+            + f" {std_scaled:.2f}"
             + "}$"
             + f"{note_formatted}"
         )

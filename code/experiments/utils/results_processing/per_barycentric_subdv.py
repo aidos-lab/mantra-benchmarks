@@ -53,7 +53,7 @@ def per_barycentric_subdivision(
                     row[metric[5:]] = format_res_val(
                         np.mean(benchmarks),
                         np.std(benchmarks),
-                        note=f"max:{np.max(benchmarks):.2f}",
+                        note=f"max:{np.max(benchmarks) * 100:.2f}",
                     )
                 new_row_df = pd.DataFrame([row])
                 concat_df = (
