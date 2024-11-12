@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from typing import Dict, List, Literal, Tuple, Optional
 from torch_geometric.transforms import Compose
-from mantra import ManifoldTriangulations
+from mantra.datasets import ManifoldTriangulations
 from torch_geometric.data import InMemoryDataset
 import os
 
