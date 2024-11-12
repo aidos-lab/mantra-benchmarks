@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from typing import Dict, List, Literal, Tuple, Optional
 from torch_geometric.transforms import Compose
-from mantra.simplicial import SimplicialDataset
+from mantra import ManifoldTriangulations
 from torch_geometric.data import InMemoryDataset
 import os
 
@@ -30,7 +30,7 @@ Mode = Literal["train", "test", "val"]
 
 class SimplicialDS(InMemoryDataset):
     """
-    Wrapper of SimplicialDataset to extend it with train/test/val split functionality.
+    Wrapper of ManifoldTriangulations to extend it with train/test/val split functionality.
 
     train/test/val splits depend on the task type due to stratification, i.e. that
     a proper split shall maintain the same class imbalance in all splits.
@@ -56,7 +56,7 @@ class SimplicialDS(InMemoryDataset):
         self.task_type = task_type
         self.split = mode
         self.split_config = SplitConfig(split, seed, use_stratified)
-        self.raw_simplicial_ds = SimplicialDataset(
+        self.raw_simplicial_ds = ManifoldTriangulations(
             os.path.join(root, "raw_simplicial"),
             manifold,
             version,
