@@ -37,15 +37,16 @@ def sc_to_cell_complex_data(data):
             neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'up_laplacian_{dim}'])
         if f'down_laplacian_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.LOWER_HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'down_laplacian_{dim}'])
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f'down_laplacian_{dim}'])
         if f'hodge_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.HODGE_LAPLACIAN, dim)
             neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'hodge_{dim}'])
     other_features = dict()
     other_features["positional_encodings"] = data.pe
-    if "y" in other_features:
-        other_features["y"] = data.other_features["y"]
-    return CellComplexData(signals=signals, neighborhood_matrices=neighborhood_matrices, other_features=other_features)
+    y = getattr(data, 'y', None)
+    return CellComplexData(signals=signals, neighborhood_matrices=neighborhood_matrices, other_features=other_features,
+                           y=y)
 
 
 def collate_signals(
@@ -253,11 +254,15 @@ def collate_cell_complex(batch: list[CellComplexData]) -> CellComplexData:
     neighborhood_matrices = collate_neighborhood_matrices(batch)
     # Add signals_belonging to other_features.
     other_features["signals_belonging"] = signals_belonging
+    # Collate labels
+    # We only concatenate y's for not None labels.
+    y = concat_tensors([data.y for data in batch], dim=0) if batch[0].y is not None else None
     return CellComplexData(
         signals=signals,
         neighborhood_matrices=neighborhood_matrices,
         other_features=other_features,
         batch_size=len(batch),
+        y=y
     )
 
 

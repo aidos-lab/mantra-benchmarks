@@ -164,12 +164,6 @@ class SimplicialComplexTriangleCoadjacencyDegreeTransform:
         return data
 
 
-class OrientableToClassSimplicialComplexTransform:
-    def __call__(self, data):
-        data.other_features["y"] = data.orientable.long()
-        return data
-
-
 class SimplicialComplexStructureMatricesTransform:
     def __init__(self, scipy_format=False):
         self.scipy_format = scipy_format

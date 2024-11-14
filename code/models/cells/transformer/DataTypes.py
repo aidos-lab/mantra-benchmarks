@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
+from typing import Any, Optional
 
 import scipy
 import torch
@@ -59,6 +59,7 @@ class CellComplexData:
                 | list[Float[torch.Tensor, "..."]],
             ]
     ) = None
+    y: Optional[Any] = None
     batch_size: int = 1
     _dim = None
 
@@ -96,11 +97,13 @@ class CellComplexData:
             if self.other_features
             else None
         )
+        y = self.y.to(device)
         return CellComplexData(
             signals=signals,
             neighborhood_matrices=neighborhood_matrices,
             other_features=other_features,
             batch_size=self.batch_size,
+            y=y
         )
 
 
