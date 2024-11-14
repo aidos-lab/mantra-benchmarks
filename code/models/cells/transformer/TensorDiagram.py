@@ -29,7 +29,9 @@ class Interaction:
         in_dim, out_dim = interaction_str.split("->")
         # Check if both N and M are valid integers
         if not in_dim.isdigit() or not out_dim.isdigit():
-            raise ValueError("Invalid pair format. Both N and M should be integers.")
+            raise ValueError(
+                "Invalid pair format. Both N and M should be integers."
+            )
         return Interaction(int(in_dim), int(out_dim))
 
     def __hash__(self):
@@ -47,7 +49,9 @@ class TensorDiagram:
     """
 
     def __init__(self, tensor_diagram_string_representation: str):
-        self.tensor_diagram_string_representation = tensor_diagram_string_representation
+        self.tensor_diagram_string_representation = (
+            tensor_diagram_string_representation
+        )
         self._interactions = None
         self._considered_dimensions = None
         self.process()
@@ -59,7 +63,9 @@ class TensorDiagram:
         _interactions = []
         _considered_dimensions = set()
         # Remove any whitespace and split the string by commas
-        pairs = self.tensor_diagram_string_representation.replace(" ", "").split(",")
+        pairs = self.tensor_diagram_string_representation.replace(
+            " ", ""
+        ).split(",")
         for pair in pairs:
             interaction = Interaction.from_string(pair)
             _interactions.append(interaction)

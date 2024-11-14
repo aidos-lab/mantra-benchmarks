@@ -5,7 +5,9 @@ from jaxtyping import Float
 from torch import nn
 
 
-def drop_path(x: Float[torch.Tensor, "..."], p: float = 0.1, training: bool = False) -> Float[torch.Tensor, "..."]:
+def drop_path(
+    x: Float[torch.Tensor, "..."], p: float = 0.1, training: bool = False
+) -> Float[torch.Tensor, "..."]:
     """
     DropPath operation introducted in [1].
     Args:
@@ -40,7 +42,9 @@ class DropPath(nn.Module):
         self._p = p
 
     def __repr__(self) -> str:
-        return '{}(p={})'.format(self.__class__.__name__, self._p)
+        return "{}(p={})".format(self.__class__.__name__, self._p)
 
-    def forward(self, x: Float[torch.Tensor, "..."]) -> Float[torch.Tensor, "..."]:
+    def forward(
+        self, x: Float[torch.Tensor, "..."]
+    ) -> Float[torch.Tensor, "..."]:
         return drop_path(x, self._p, self.training)

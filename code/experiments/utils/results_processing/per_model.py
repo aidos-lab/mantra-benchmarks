@@ -15,12 +15,12 @@ from .utils import (
 
 
 def reduce(
-        df: pd.DataFrame,
-        model_types: List[ModelType],
-        transform_types: List[TransformType],
-        df_results: pd.DataFrame,
-        metric_columns,
-        max_info: bool = False,
+    df: pd.DataFrame,
+    model_types: List[ModelType],
+    transform_types: List[TransformType],
+    df_results: pd.DataFrame,
+    metric_columns,
+    max_info: bool = False,
 ):
     """
     Reduce the dataframe by aggregating metric results for each model type and transform type.
@@ -69,11 +69,11 @@ def reduce(
 
 
 def per_model(
-        tasks: List[TaskType],
-        model_types_cartesian: List[List[ModelType]],
-        transform_types_cartesian: List[List[TransformType]],
-        result_dataframes: Dict[TaskType, pd.DataFrame],
-        max_info: bool = False,
+    tasks: List[TaskType],
+    model_types_cartesian: List[List[ModelType]],
+    transform_types_cartesian: List[List[TransformType]],
+    result_dataframes: Dict[TaskType, pd.DataFrame],
+    max_info: bool = False,
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Generate results per model for each task type by processing model and transform type combinations.

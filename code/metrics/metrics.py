@@ -39,11 +39,11 @@ class BettiNumbersMetricCollection:
     betti_3: Optional[List[NamedMetric]]
 
     def __init__(
-            self,
-            betti_0: List[NamedMetric],
-            betti_1: List[NamedMetric],
-            betti_2: List[NamedMetric],
-            betti_3: Optional[List[NamedMetric]] = None,
+        self,
+        betti_0: List[NamedMetric],
+        betti_1: List[NamedMetric],
+        betti_2: List[NamedMetric],
+        betti_3: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.betti_0 = betti_0
         self.betti_1 = betti_1
@@ -67,10 +67,10 @@ class MetricTrainValTest:
     test: List[NamedMetric] | BettiNumbersMetricCollection
 
     def __init__(
-            self,
-            train: List[NamedMetric] | BettiNumbersMetricCollection,
-            val: Optional[List[NamedMetric]] = None,
-            test: Optional[List[NamedMetric]] = None,
+        self,
+        train: List[NamedMetric] | BettiNumbersMetricCollection,
+        val: Optional[List[NamedMetric]] = None,
+        test: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.train = train
         self.val = self.train if val is None else val

@@ -16,8 +16,8 @@ class TransfConvConfig(BaseModel):
 
 class TransfConv(nn.Module):
     def __init__(
-            self,
-            config: TransfConvConfig,
+        self,
+        config: TransfConvConfig,
     ):
         super().__init__()
         self.conv_input = TransformerConv(

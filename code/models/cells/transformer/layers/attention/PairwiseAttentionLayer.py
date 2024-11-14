@@ -17,7 +17,9 @@ from models.cells.transformer.layers.attention.SparseMultiHeadAttention import (
 )
 
 
-def _get_attending_cells(batch_mask: SparseMatrix) -> Float[torch.Tensor, "n_target"]:
+def _get_attending_cells(
+    batch_mask: SparseMatrix,
+) -> Float[torch.Tensor, "n_target"]:
     """
     Returns a tensor of size (n,) where n is the number of elements in the target sequence (rows of batch mask).
     The element i of the tensor is 1 if the element i of the target sequence is attending at least one element of the
@@ -35,7 +37,7 @@ def _get_attending_cells(batch_mask: SparseMatrix) -> Float[torch.Tensor, "n_tar
 
 
 def _correct_non_attending_outputs(
-        h: Float[torch.Tensor, "n_target dh nh"], batch_mask: SparseMatrix
+    h: Float[torch.Tensor, "n_target dh nh"], batch_mask: SparseMatrix
 ):
     """
     Corrects the outputs of the layer that are not attending anything.
@@ -50,16 +52,16 @@ def _correct_non_attending_outputs(
 
 class PairwiseAttentionLayer(nn.Module):
     def __init__(
-            self,
-            hidden_size: int,
-            num_heads: int,
-            attention_dropout: float = 0.0,
-            activation_dropout: float = 0.0,
-            mlp_embedding_dim_multiplier: int = 2,
-            drop_path_probability: float = 0.0,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
-            use_bias: bool = True,
-            attention_mask_type: MaskType = MaskType.NO_MASK,
+        self,
+        hidden_size: int,
+        num_heads: int,
+        attention_dropout: float = 0.0,
+        activation_dropout: float = 0.0,
+        mlp_embedding_dim_multiplier: int = 2,
+        drop_path_probability: float = 0.0,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        use_bias: bool = True,
+        attention_mask_type: MaskType = MaskType.NO_MASK,
     ):
         super().__init__()
         # Dropouts
@@ -78,10 +80,14 @@ class PairwiseAttentionLayer(nn.Module):
         )
         # Feedforward layers used in the pre-norm transformer layer.
         self.FFN1 = nn.Linear(
-            hidden_size, hidden_size * mlp_embedding_dim_multiplier, bias=use_bias
+            hidden_size,
+            hidden_size * mlp_embedding_dim_multiplier,
+            bias=use_bias,
         )
         self.FFN2 = nn.Linear(
-            hidden_size * mlp_embedding_dim_multiplier, hidden_size, bias=use_bias
+            hidden_size * mlp_embedding_dim_multiplier,
+            hidden_size,
+            bias=use_bias,
         )
         # Drop path layer to regularize attention.
         self.drop_path_probability = drop_path_probability
@@ -97,12 +103,12 @@ class PairwiseAttentionLayer(nn.Module):
         init_fn(self.FFN2.weight)
 
     def forward(
-            self,
-            h_target: Float[torch.Tensor, "n_target dh nh"],
-            h_source_normalized: Float[torch.Tensor, "n_source dh nh"],
-            h_target_normalized: Float[torch.Tensor, "n_target dh nh"],
-            batch_mask: Optional[SparseMatrix],
-            attention_mask: Optional[SparseMatrix],
+        self,
+        h_target: Float[torch.Tensor, "n_target dh nh"],
+        h_source_normalized: Float[torch.Tensor, "n_source dh nh"],
+        h_target_normalized: Float[torch.Tensor, "n_target dh nh"],
+        batch_mask: Optional[SparseMatrix],
+        attention_mask: Optional[SparseMatrix],
     ) -> Float[torch.Tensor, "n_target dh nh"]:
         """
         Performs a pairwise pre-norm transformer layer using batch and attention masks.
@@ -114,12 +120,17 @@ class PairwiseAttentionLayer(nn.Module):
         :return: Transformed signals. Shape (n_target, dh, nh)
         """
         h = self.MHA(
-            h_source_normalized, h_target_normalized, batch_mask, attention_mask
+            h_source_normalized,
+            h_target_normalized,
+            batch_mask,
+            attention_mask,
         )
         h = F.dropout(h, p=self.activation_dropout, training=self.training)
         if self.drop_path_probability > 0:
             h = self.drop_path(h)
-        h = h + h_target  # Residual connection with non-normalized target signals.
+        h = (
+            h + h_target
+        )  # Residual connection with non-normalized target signals.
         h2 = h
         h = self.layer_norm(h)
         h = F.relu(self.FFN1(h))

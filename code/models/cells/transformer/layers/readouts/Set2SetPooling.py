@@ -10,18 +10,21 @@ class Set2SetPooling(BaseReadout):
         super().__init__()
         self.num_iterations = num_iterations
         self.input_dim = input_dim
-        self.set2set = pyg_nn.Set2Set(in_channels=input_dim,
-                                      processing_steps=num_iterations)
+        self.set2set = pyg_nn.Set2Set(
+            in_channels=input_dim, processing_steps=num_iterations
+        )
 
     @property
     def output_dim(self):
         return self.num_iterations * self.input_dim
 
     def forward(
-            self,
-            x: dict[int, Float[torch.Tensor, "..."], ...],
-            x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]:
+        self,
+        x: dict[int, Float[torch.Tensor, "..."], ...],
+        x_belongings: dict[int, list[int]],
+    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
+        torch.Tensor, "..."
+    ]:
         # Concatenate all x tensors
         sorted_x_indices = sorted(list(x.keys()))
         x_concat = torch.cat([x[i] for i in sorted_x_indices], dim=0)

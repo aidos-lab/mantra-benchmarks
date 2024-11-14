@@ -24,9 +24,9 @@ def batch_connectivity_matrices(key, matrices, batch):
                     # but it does not have simplices of dimension matrix_dim
                     row_idx += example.shape(matrix_dim - 1)
             elif (
-                    key.startswith("down_laplacian")
-                    or key.startswith("up_laplacian")
-                    or key.startswith("hodge_laplacian")
+                key.startswith("down_laplacian")
+                or key.startswith("up_laplacian")
+                or key.startswith("hodge_laplacian")
             ) or key.startswith("adjacency"):
                 # We do not do nothing, as if the matrix is None, it is because there are no cells
                 # of that dimension in the cell complex so we do not need to add any row or column

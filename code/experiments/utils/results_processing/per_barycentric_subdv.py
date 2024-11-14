@@ -10,7 +10,7 @@ from .utils import get_matching_indeces, get_metric_col_names, format_res_val
 
 
 def per_barycentric_subdivision(
-        result_dataframes: Dict[TaskType, pd.DataFrame]
+    result_dataframes: Dict[TaskType, pd.DataFrame]
 ):
     model_families = [
         {"models": simplicial_models, "name": "simplicial"},

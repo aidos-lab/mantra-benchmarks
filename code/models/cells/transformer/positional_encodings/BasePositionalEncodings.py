@@ -8,9 +8,9 @@ from toponetx import SimplicialComplex, CellComplex
 class BasePositionalEncodings(ABC):
     @abstractmethod
     def generate_positional_encodings(
-            self,
-            t_complex: CellComplex | SimplicialComplex,
-            length_positional_encodings: int,
+        self,
+        t_complex: CellComplex | SimplicialComplex,
+        length_positional_encodings: int,
     ) -> dict[int, Float[torch.Tensor, "n_dim length_positional_encodings"]]:
         """
         Returns a dict with positional encodings for each of the dimensions of the complex.

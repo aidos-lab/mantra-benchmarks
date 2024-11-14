@@ -56,13 +56,13 @@ class SAN(nn.Module):
             config.n_layers,
         )
         self.input_0_proj_needed = (
-                config.in_channels[0] != config.in_channels_backbone
+            config.in_channels[0] != config.in_channels_backbone
         )
         self.input_1_proj_needed = (
-                config.in_channels[1] != config.in_channels_backbone
+            config.in_channels[1] != config.in_channels_backbone
         )
         self.input_2_proj_needed = (
-                config.in_channels[2] != config.in_channels_backbone
+            config.in_channels[2] != config.in_channels_backbone
         )
         if self.input_0_proj_needed:
             self.input_projection_0 = nn.Linear(

@@ -15,11 +15,11 @@ from models.cells.transformer.layers.input_preprocessing.BaseInputPreprocessing 
 
 class SumPositionalEncoding(BaseInputPreprocessing):
     def __init__(
-            self,
-            dim_features: int,
-            dim_positional_encoding: int,
-            hidden_dim: int,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        self,
+        dim_features: int,
+        dim_positional_encoding: int,
+        hidden_dim: int,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
     ):
         super().__init__()
         self.linear_features = nn.Linear(dim_features, hidden_dim)
@@ -34,12 +34,14 @@ class SumPositionalEncoding(BaseInputPreprocessing):
         init_fn(self.linear_positional.weight)
 
     def forward(
-            self,
-            x: Float[torch.Tensor, "..."],
-            positional_encoding: Optional[Float[torch.Tensor, "..."]],
+        self,
+        x: Float[torch.Tensor, "..."],
+        positional_encoding: Optional[Float[torch.Tensor, "..."]],
     ):
         if positional_encoding is None:
             raise ValueError(
                 "Positional encoding is required for SumPositionalEncoding"
             )
-        return self.linear_features(x) + self.linear_positional(positional_encoding)
+        return self.linear_features(x) + self.linear_positional(
+            positional_encoding
+        )

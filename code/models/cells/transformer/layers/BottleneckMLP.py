@@ -1,16 +1,19 @@
 from torch import nn
 
-from models.cells.transformer.WeightInitialization import WeightInitialization, get_initialization_function
+from models.cells.transformer.WeightInitialization import (
+    WeightInitialization,
+    get_initialization_function,
+)
 
 
 class BottleneckMLP(nn.Module):
     def __init__(
-            self,
-            in_features: int,
-            out_features: int,
-            num_hidden_layers: int = 2,
-            dropout: float = 0.0,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        self,
+        in_features: int,
+        out_features: int,
+        num_hidden_layers: int = 2,
+        dropout: float = 0.0,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
     ):
         super().__init__()
         # Parameters

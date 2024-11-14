@@ -63,7 +63,7 @@ class OrientabilityTask(Task):
 
 class BettiNumbersTask(Task):
     def __init__(
-            self, transforms: List[Callable], ds_type: DatasetType
+        self, transforms: List[Callable], ds_type: DatasetType
     ) -> None:
         betti_tr = (
             betti_numbers_transforms_3manifold
@@ -85,7 +85,7 @@ class TaskType(Enum):
 
 
 def get_task_lookup(
-        transforms: List[Callable], ds_type: DatasetType
+    transforms: List[Callable], ds_type: DatasetType
 ) -> Dict[TaskType, Task]:
     res: Dict[TaskType, Task] = {
         TaskType.NAME: NameTask(transforms),

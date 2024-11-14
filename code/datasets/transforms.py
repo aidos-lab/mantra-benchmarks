@@ -15,8 +15,10 @@ from datasets.utils import (
     get_triangles_from_simplicial_complex,
 )
 from math_utils import recursive_barycentric_subdivision
-from models.cells.transformer.positional_encodings.PositionalEncodings import get_positional_encodings, \
-    PositionalEncodingsType
+from models.cells.transformer.positional_encodings.PositionalEncodings import (
+    get_positional_encodings,
+    PositionalEncodingsType,
+)
 
 NAME_TO_CLASS = {"Klein bottle": 0, "RP^2": 1, "T^2": 2, "S^2": 3, "": 4}
 
@@ -170,7 +172,9 @@ class SimplicialComplexStructureMatricesTransform:
         self.scipy_format = scipy_format
 
     def __call__(self, data):
-        data.connectivity = get_complex_connectivity(data.sc, data.sc.dim, self.scipy_format)
+        data.connectivity = get_complex_connectivity(
+            data.sc, data.sc.dim, self.scipy_format
+        )
         return data
 
 
@@ -182,7 +186,7 @@ class SimplicialComplexHodgeLapEigPETransform:
         data.pe = get_positional_encodings(
             t_complex=data.sc,
             pe_type=PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS,
-            length_positional_encodings=self.length_pe
+            length_positional_encodings=self.length_pe,
         )
         return data
 
@@ -292,7 +296,7 @@ simplicial_transforms: Dict[str, List[TransformType]] = {
 
 
 def transforms_lookup(
-        tr_type: TransformType, ds_type: DatasetType
+    tr_type: TransformType, ds_type: DatasetType
 ) -> List[Callable]:
     _transforms_lookup = {
         TransformType.degree_transform: degree_transform,
@@ -304,8 +308,8 @@ def transforms_lookup(
 
     tr = _transforms_lookup[tr_type]
     if (
-            tr_type != TransformType.degree_transform_sc
-            and tr_type != TransformType.random_simplices_features
+        tr_type != TransformType.degree_transform_sc
+        and tr_type != TransformType.random_simplices_features
     ):
         tr[0] = TriangulationToFaceTransform()
 

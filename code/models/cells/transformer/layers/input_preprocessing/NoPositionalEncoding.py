@@ -13,10 +13,10 @@ from models.cells.transformer.layers.input_preprocessing.BaseInputPreprocessing 
 
 class NoPositionalEncoding(BaseInputPreprocessing):
     def __init__(
-            self,
-            dim_features: int,
-            hidden_dim: int,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        self,
+        dim_features: int,
+        hidden_dim: int,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
     ):
         super().__init__()
         self.linear_features = nn.Linear(dim_features, hidden_dim)
@@ -28,8 +28,8 @@ class NoPositionalEncoding(BaseInputPreprocessing):
         init_fn(self.linear_features.weight)
 
     def forward(
-            self,
-            x: Float[torch.Tensor, "..."],
-            positional_encoding: Float[torch.Tensor, "..."],
+        self,
+        x: Float[torch.Tensor, "..."],
+        positional_encoding: Float[torch.Tensor, "..."],
     ):
         return self.linear_features(x)

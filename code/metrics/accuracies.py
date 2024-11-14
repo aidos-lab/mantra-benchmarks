@@ -7,7 +7,7 @@ from .metrics import BettiNumbersMetricCollection, NamedMetric
 
 
 def compute_orientability_accuracies(
-        metrics: List[NamedMetric], y_hat, y, name: str
+    metrics: List[NamedMetric], y_hat, y, name: str
 ):
     benchmarks = []
     for metrics_ in metrics:
@@ -34,10 +34,10 @@ def compute_name_accuracies(metrics: List[NamedMetric], y_hat, y, name: str):
 
 
 def compute_betti_numbers_accuracies(
-        metrics: BettiNumbersMetricCollection,
-        y_hat: torch.Tensor,
-        y: torch.Tensor,
-        name: str,
+    metrics: BettiNumbersMetricCollection,
+    y_hat: torch.Tensor,
+    y: torch.Tensor,
+    name: str,
 ):
     metrics_list = metrics.as_list()
 
@@ -56,7 +56,7 @@ def compute_betti_numbers_accuracies(
             res.append(
                 {
                     "name": name
-                            + f"_betti_{dim}_{metrics_for_dim[metric_idx].name}",
+                    + f"_betti_{dim}_{metrics_for_dim[metric_idx].name}",
                     "value": metric(
                         torch.max(y_hat[:, dim], torch.tensor(0.0))
                         .round()

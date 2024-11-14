@@ -10,10 +10,12 @@ class NoReadout(BaseReadout):
         self.only_faces = only_faces
 
     def forward(
-            self,
-            x: dict[int, Float[torch.Tensor, "..."], ...],
-            x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]:
+        self,
+        x: dict[int, Float[torch.Tensor, "..."], ...],
+        x_belongings: dict[int, list[int]],
+    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
+        torch.Tensor, "..."
+    ]:
         if self.only_faces:
             return x[2]
         return x

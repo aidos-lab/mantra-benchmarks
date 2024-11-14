@@ -33,8 +33,8 @@ class NeighborhoodMatrixType:
 
 
 def _other_features_to_device(
-        feature: torch.Tensor | list[torch.Tensor] | dict[Any, torch.Tensor],
-        device: torch.device,
+    feature: torch.Tensor | list[torch.Tensor] | dict[Any, torch.Tensor],
+    device: torch.device,
 ) -> torch.Tensor | list[torch.Tensor] | dict[Any, torch.Tensor]:
     if isinstance(feature, torch.Tensor):
         return feature.to(device)
@@ -48,16 +48,17 @@ def _other_features_to_device(
 class CellComplexData:
     signals: dict[int, Float[torch.Tensor, "..."]]
     neighborhood_matrices: (
-            None | dict[NeighborhoodMatrixType, scipy.sparse.spmatrix | SparseMatrix]
+        None
+        | dict[NeighborhoodMatrixType, scipy.sparse.spmatrix | SparseMatrix]
     ) = None
     other_features: (
-            None
-            | dict[
-                Any,
-                Float[torch.Tensor, "..."]
-                | dict[Any, Float[torch.Tensor, "..."]]
-                | list[Float[torch.Tensor, "..."]],
-            ]
+        None
+        | dict[
+            Any,
+            Float[torch.Tensor, "..."]
+            | dict[Any, Float[torch.Tensor, "..."]]
+            | list[Float[torch.Tensor, "..."]],
+        ]
     ) = None
     y: Optional[Any] = None
     batch_size: int = 1
@@ -77,7 +78,9 @@ class CellComplexData:
         :return: The data in the specified device.
         """
         # First, we move the signals to the device.
-        signals = {key: value.to(device) for key, value in self.signals.items()}
+        signals = {
+            key: value.to(device) for key, value in self.signals.items()
+        }
         if self.neighborhood_matrices is not None:
             neighborhood_matrices = {
                 key: (
@@ -103,7 +106,7 @@ class CellComplexData:
             neighborhood_matrices=neighborhood_matrices,
             other_features=other_features,
             batch_size=self.batch_size,
-            y=y
+            y=y,
         )
 
 

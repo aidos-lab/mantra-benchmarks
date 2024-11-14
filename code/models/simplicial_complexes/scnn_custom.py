@@ -29,14 +29,14 @@ class SCCNNCustom(torch.nn.Module):
     """
 
     def __init__(
-            self,
-            in_channels_all,
-            hidden_channels_all,
-            conv_order,
-            sc_order,
-            aggr_norm=False,
-            update_func=None,
-            n_layers=2,
+        self,
+        in_channels_all,
+        hidden_channels_all,
+        conv_order,
+        sc_order,
+        aggr_norm=False,
+        update_func=None,
+        n_layers=2,
     ):
         super().__init__()
         # first layer
@@ -115,14 +115,14 @@ class SCCNNLayer(torch.nn.Module):
     """
 
     def __init__(
-            self,
-            in_channels,
-            out_channels,
-            conv_order,
-            sc_order,
-            aggr_norm: bool = False,
-            update_func=None,
-            initialization: str = "xavier_normal",
+        self,
+        in_channels,
+        out_channels,
+        conv_order,
+        sc_order,
+        aggr_norm: bool = False,
+        update_func=None,
+        initialization: str = "xavier_normal",
     ) -> None:
         super().__init__()
 

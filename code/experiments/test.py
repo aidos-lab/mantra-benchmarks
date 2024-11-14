@@ -14,7 +14,7 @@ from datasets.dataset_types import DatasetType
 
 
 def verify_config(
-        config: ConfigExperimentRun, number_of_barycentric_subdivisions: int
+    config: ConfigExperimentRun, number_of_barycentric_subdivisions: int
 ):
     """
     Verifies that it is intended to run the configuration.
@@ -22,8 +22,8 @@ def verify_config(
     of barycentric subdivisions is > 0.
     """
     is_verified = not (
-            number_of_barycentric_subdivisions > 0
-            and config.ds_type != DatasetType.NO_NAMELESS_2D
+        number_of_barycentric_subdivisions > 0
+        and config.ds_type != DatasetType.NO_NAMELESS_2D
     )
     if not is_verified:
         print(
@@ -40,11 +40,11 @@ def verify_config(
 
 
 def test(
-        config: ConfigExperimentRun,
-        checkpoint_path: str,
-        data_dir: str = "./data",
-        number_of_barycentric_subdivisions: int = 0,
-        devices=None,
+    config: ConfigExperimentRun,
+    checkpoint_path: str,
+    data_dir: str = "./data",
+    number_of_barycentric_subdivisions: int = 0,
+    devices=None,
 ):
     """
     Runs the benchmark for one specific configuration and trained weights.
@@ -67,12 +67,12 @@ def test(
 
 
 def test_all(
-        checkpoint_dir: str,
-        config_dir: str = "./configs",
-        n_runs=5,
-        data_dir: str = "./data",
-        number_of_barycentric_subdivisions: int = 0,
-        devices=None,
+    checkpoint_dir: str,
+    config_dir: str = "./configs",
+    n_runs=5,
+    data_dir: str = "./data",
+    number_of_barycentric_subdivisions: int = 0,
+    devices=None,
 ):
     """
     Tests all configurations in a config directory. Assumes that for every run and every config there is a

@@ -16,16 +16,16 @@ from models.cells.transformer.layers.attention.PairwiseAttentionLayer import (
 
 class PointCloudAttentionLayer(nn.Module):
     def __init__(
-            self,
-            hidden_size: int,
-            num_heads: int,
-            use_bias: bool = True,
-            attention_dropout: float = 0.0,
-            activation_dropout: float = 0.0,
-            drop_path_probability: float = 0.0,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
-            transformer_mlp_embedding_dim_multiplier: int = 2,
-            attention_mask_type: MaskType = MaskType.NO_MASK,
+        self,
+        hidden_size: int,
+        num_heads: int,
+        use_bias: bool = True,
+        attention_dropout: float = 0.0,
+        activation_dropout: float = 0.0,
+        drop_path_probability: float = 0.0,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        transformer_mlp_embedding_dim_multiplier: int = 2,
+        attention_mask_type: MaskType = MaskType.NO_MASK,
     ):
         super().__init__()
         # Parameters of the layer
@@ -48,10 +48,10 @@ class PointCloudAttentionLayer(nn.Module):
         )
 
     def forward(
-            self,
-            x: Float[torch.Tensor, "..."],
-            batch_mask: SparseMatrix,
-            attention_mask: SparseMatrix,
+        self,
+        x: Float[torch.Tensor, "..."],
+        batch_mask: SparseMatrix,
+        attention_mask: SparseMatrix,
     ):
         # First, we get normalized signals for the concatenation of signals x.
         normalized_x = self.layer_norm(x)
@@ -66,9 +66,9 @@ class PointCloudAttentionLayer(nn.Module):
 
     @staticmethod
     def _get_joint_mask(
-            masks: dict[Interaction, SparseMatrix],
-            dims: list[int],
-            n_samples: dict[int, int],
+        masks: dict[Interaction, SparseMatrix],
+        dims: list[int],
+        n_samples: dict[int, int],
     ) -> SparseMatrix:
         # We iterate over all the pairs of dimensions to get the joint batch mask.
         indices_to_concat = []
@@ -95,13 +95,15 @@ class PointCloudAttentionLayer(nn.Module):
         indices = torch.cat(indices_to_concat, dim=1)
         values = torch.cat(values_to_concat, dim=0)
         total_samples = sum(n_samples.values())
-        return dglsp.spmatrix(indices, values, shape=(total_samples, total_samples))
+        return dglsp.spmatrix(
+            indices, values, shape=(total_samples, total_samples)
+        )
 
     @staticmethod
     def get_joint_signals_and_batch_and_attention_matrices(
-            x: dict[int, Float[torch.Tensor, "..."]],
-            batch_masks: dict[Interaction, SparseMatrix],
-            attention_masks: dict[Interaction, SparseMatrix],
+        x: dict[int, Float[torch.Tensor, "..."]],
+        batch_masks: dict[Interaction, SparseMatrix],
+        attention_masks: dict[Interaction, SparseMatrix],
     ) -> tuple[Float[torch.Tensor, "..."], SparseMatrix, SparseMatrix]:
         # First, we get dimensions that we will concatenate from x
         dims = list(x.keys())
@@ -122,8 +124,8 @@ class PointCloudAttentionLayer(nn.Module):
 
     @staticmethod
     def disentangle_signals(
-            reference_disentangled_x: dict[int, Float[torch.Tensor, "..."]],
-            x: Float[torch.Tensor, "..."],
+        reference_disentangled_x: dict[int, Float[torch.Tensor, "..."]],
+        x: Float[torch.Tensor, "..."],
     ) -> dict[int, Float[torch.Tensor, "..."]]:
         """
         Disentangles the signals of the concatenated tensor x into signals arranged as reference_disentangled_x.
@@ -138,12 +140,14 @@ class PointCloudAttentionLayer(nn.Module):
         # that when converting keys() to list we obtain the same list as the one we obtained in
         # get_joint_signals_and_batch_and_attention_matrices when we first entangled reference_disentangled_x
         dims = list(reference_disentangled_x.keys())
-        n_samples = {dim: reference_disentangled_x[dim].shape[0] for dim in dims}
+        n_samples = {
+            dim: reference_disentangled_x[dim].shape[0] for dim in dims
+        }
         # We disentangle the signals by splitting the tensor x into the signals of the different dimensions.
         disentangled_x = dict()
         start = 0
         for dim in dims:
             n_samples_dim = n_samples[dim]
-            disentangled_x[dim] = x[start: start + n_samples_dim]
+            disentangled_x[dim] = x[start : start + n_samples_dim]
             start += n_samples_dim
         return disentangled_x

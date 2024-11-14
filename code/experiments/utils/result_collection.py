@@ -14,10 +14,10 @@ from models.model_types import ModelType
 
 class Result:
     def __init__(
-            self,
-            data: Dict[str, float],
-            config: ConfigExperimentRun,
-            barycentric_subdivision_idx: int = 0,
+        self,
+        data: Dict[str, float],
+        config: ConfigExperimentRun,
+        barycentric_subdivision_idx: int = 0,
     ) -> None:
         self.data = data
         self.config = config
@@ -36,10 +36,10 @@ class ResultCollection:
         }
 
     def add(
-            self,
-            data: Dict[str, float],
-            config: ConfigExperimentRun,
-            barycentric_subdivision_idx: int = 0,
+        self,
+        data: Dict[str, float],
+        config: ConfigExperimentRun,
+        barycentric_subdivision_idx: int = 0,
     ):
         self.collection[config.task_type].append(
             Result(
@@ -60,9 +60,9 @@ class ResultCollection:
                 result["type_model"] = x.config.conf_model.type.name.lower()
                 result["transform"] = x.config.transforms.name.lower()
                 result["ds_type"] = x.config.ds_type.name.lower()
-                result["barycentric_subdivision_idx"] = (
-                    x.barycentric_subdivision_idx
-                )
+                result[
+                    "barycentric_subdivision_idx"
+                ] = x.barycentric_subdivision_idx
                 data.append(result)
 
             df = pd.DataFrame(data)
@@ -118,7 +118,7 @@ class ResultCollection:
             self.collection[task_type] = entries_per_task
 
     def exists(
-            self, config: ConfigExperimentRun, barycentric_subdivision_idx
+        self, config: ConfigExperimentRun, barycentric_subdivision_idx
     ) -> int:
         """
         Returns the number of matching entries in the result collection.

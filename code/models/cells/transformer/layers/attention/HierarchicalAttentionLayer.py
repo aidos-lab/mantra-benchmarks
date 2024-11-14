@@ -15,17 +15,17 @@ from models.cells.transformer.layers.attention.PairwiseAttentionLayer import (
 
 class HierarchicalAttentionLayer(nn.Module):
     def __init__(
-            self,
-            hidden_size: int,
-            num_heads: int,
-            use_bias: bool = True,
-            attention_dropout: float = 0.0,
-            activation_dropout: float = 0.0,
-            drop_path_probability: float = 0.0,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
-            tensor_diagram: Optional[TensorDiagram] = None,
-            transformer_mlp_embedding_dim_multiplier: int = 2,
-            attention_mask_type: MaskType = MaskType.NO_MASK,
+        self,
+        hidden_size: int,
+        num_heads: int,
+        use_bias: bool = True,
+        attention_dropout: float = 0.0,
+        activation_dropout: float = 0.0,
+        drop_path_probability: float = 0.0,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        tensor_diagram: Optional[TensorDiagram] = None,
+        transformer_mlp_embedding_dim_multiplier: int = 2,
+        attention_mask_type: MaskType = MaskType.NO_MASK,
     ):
         super().__init__()
         # Parameters of the layer
@@ -59,10 +59,10 @@ class HierarchicalAttentionLayer(nn.Module):
         )
 
     def forward(
-            self,
-            x: dict[int, Float[torch.Tensor, "..."]],
-            batch_masks: dict[Interaction, SparseMatrix],
-            attention_masks: dict[Interaction, SparseMatrix],
+        self,
+        x: dict[int, Float[torch.Tensor, "..."]],
+        batch_masks: dict[Interaction, SparseMatrix],
+        attention_masks: dict[Interaction, SparseMatrix],
     ) -> dict[int, Float[torch.Tensor, "..."]]:
         """
         Performs a transformer layer using batch and attention masks following a tensor diagram that considers the

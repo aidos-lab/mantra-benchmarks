@@ -8,7 +8,7 @@ from dgl.sparse import SparseMatrix
 
 
 def scipy_sparse_matrix_to_dgl_sparse(
-        scipy_sparse_matrix: scipy.sparse.spmatrix,
+    scipy_sparse_matrix: scipy.sparse.spmatrix,
 ) -> dglsp.SparseMatrix:
     scipy_sparse_matrix = scipy_sparse_matrix.tocoo()
     rows = scipy_sparse_matrix.row
@@ -25,18 +25,20 @@ def scipy_sparse_matrix_to_dgl_sparse(
 
 
 def dict_of_tensors_to_device(
-        tensor_dict: dict[Any, torch.Tensor], device: torch.device
+    tensor_dict: dict[Any, torch.Tensor], device: torch.device
 ) -> dict[Any, torch.Tensor]:
     return {key: value.to(device) for key, value in tensor_dict.items()}
 
 
 def list_of_tensors_to_device(
-        tensor_list: list[torch.Tensor], device: torch.device
+    tensor_list: list[torch.Tensor], device: torch.device
 ) -> list[torch.Tensor]:
     return [x.to(device) for x in tensor_list]
 
 
-def generate_repeated_sparse_matrix(S: SparseMatrix, times: int) -> SparseMatrix:
+def generate_repeated_sparse_matrix(
+    S: SparseMatrix, times: int
+) -> SparseMatrix:
     """
     Allows to generate a sparse matrix with multiple repeated coefficients. Useful
     for summing a sparse matrix to another one with more than one channel.

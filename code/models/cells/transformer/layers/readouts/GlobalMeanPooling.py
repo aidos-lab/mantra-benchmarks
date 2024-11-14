@@ -7,13 +7,17 @@ from models.cells.transformer.layers.readouts.BaseReadout import BaseReadout
 
 class GlobalMeanPooling(BaseReadout):
     def forward(
-            self,
-            x: dict[int, Float[torch.Tensor, "..."], ...],
-            x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]:
+        self,
+        x: dict[int, Float[torch.Tensor, "..."], ...],
+        x_belongings: dict[int, list[int]],
+    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
+        torch.Tensor, "..."
+    ]:
         readout_result = dict()
         for key in x.keys():
-            readout_result[key] = pyg_nn.global_mean_pool(x[key], x_belongings[key])
+            readout_result[key] = pyg_nn.global_mean_pool(
+                x[key], x_belongings[key]
+            )
         return readout_result
 
     @property

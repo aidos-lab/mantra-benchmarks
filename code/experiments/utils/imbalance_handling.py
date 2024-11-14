@@ -24,7 +24,7 @@ def normalise_imbalance(imbalance: List[float]) -> List[float]:
 
 
 def sort_imbalance(
-        imbalance: List[float], keys: List, task_type: TaskType
+    imbalance: List[float], keys: List, task_type: TaskType
 ) -> List[float]:
     """
     Sorts the imbalance counters by the index the neural networks intend to predict.
@@ -50,7 +50,7 @@ def sort_imbalance(
 
 
 def sorted_imbalance_weights(
-        imbalance: Counter, task_type: TaskType
+    imbalance: Counter, task_type: TaskType
 ) -> List[float]:
     """
     Returns normalised sorted inverse imbalance.

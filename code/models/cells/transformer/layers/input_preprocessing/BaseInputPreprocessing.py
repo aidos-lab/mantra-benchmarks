@@ -9,8 +9,8 @@ from torch import nn
 class BaseInputPreprocessing(nn.Module, ABC):
     @abstractmethod
     def forward(
-            self,
-            x: Float[torch.Tensor, "..."],
-            positional_encoding: Optional[Float[torch.Tensor, "..."]],
+        self,
+        x: Float[torch.Tensor, "..."],
+        positional_encoding: Optional[Float[torch.Tensor, "..."]],
     ):
         pass

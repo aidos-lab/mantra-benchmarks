@@ -19,8 +19,8 @@ class MLPConfig(BaseModel):
 
 class MLP(nn.Module):
     def __init__(
-            self,
-            config: MLPConfig,
+        self,
+        config: MLPConfig,
     ):
         super().__init__()
         self.input_layer = nn.Linear(

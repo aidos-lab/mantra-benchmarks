@@ -33,13 +33,13 @@ class SparseMultiHeadAttention(nn.Module):
     """
 
     def __init__(
-            self,
-            hidden_size: int,
-            num_heads: int,
-            use_bias: bool = True,
-            dropout: float = 0.0,
-            attention_mask_type: MaskType = MaskType.NO_MASK,
-            initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
+        self,
+        hidden_size: int,
+        num_heads: int,
+        use_bias: bool = True,
+        dropout: float = 0.0,
+        attention_mask_type: MaskType = MaskType.NO_MASK,
+        initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
     ):
         super().__init__()
         # Parameters of the MultiHeadAttention
@@ -72,7 +72,7 @@ class SparseMultiHeadAttention(nn.Module):
         init_fn(self.out_proj.weight)
 
     def apply_dropout_to_attention_coefficients(
-            self, attention_coefficients: SparseMatrix
+        self, attention_coefficients: SparseMatrix
     ) -> SparseMatrix:
         """
         Applies dropout to the attention coefficients.
@@ -81,7 +81,9 @@ class SparseMultiHeadAttention(nn.Module):
         """
         if self.dropout > 0.0:
             values_with_dropout = nn.functional.dropout(
-                attention_coefficients.val, p=self.dropout, training=self.training
+                attention_coefficients.val,
+                p=self.dropout,
+                training=self.training,
             )
             attention_coefficients_d = dglsp.spmatrix(
                 attention_coefficients.indices(),
@@ -92,11 +94,11 @@ class SparseMultiHeadAttention(nn.Module):
         return attention_coefficients
 
     def forward(
-            self,
-            h_source: Float[torch.Tensor, "n_source dh  nh"],
-            h_target: Float[torch.Tensor, "n_target dh nh"],
-            batch_mask: Optional[SparseMatrix] = None,
-            attention_mask: Optional[SparseMatrix] = None,
+        self,
+        h_source: Float[torch.Tensor, "n_source dh  nh"],
+        h_target: Float[torch.Tensor, "n_target dh nh"],
+        batch_mask: Optional[SparseMatrix] = None,
+        attention_mask: Optional[SparseMatrix] = None,
     ) -> Float[torch.Tensor, "n_target dh nh"]:
         """
         Performs multi-head attention with sparse masks for batches and attention.
@@ -124,11 +126,17 @@ class SparseMultiHeadAttention(nn.Module):
         n_target = h_target.shape[0]
         # First, we obtain query, keys, and values from our source and target signals.
         # [n_target, dh, nh], dh = head_dim, nh = num_heads
-        q = self.q_proj(h_target).reshape(n_target, self.head_dim, self.num_heads)
+        q = self.q_proj(h_target).reshape(
+            n_target, self.head_dim, self.num_heads
+        )
         q *= self.scale
         # [n_source, dh, nh]
-        k = self.k_proj(h_source).reshape(n_source, self.head_dim, self.num_heads)
-        v = self.v_proj(h_source).reshape(n_source, self.head_dim, self.num_heads)
+        k = self.k_proj(h_source).reshape(
+            n_source, self.head_dim, self.num_heads
+        )
+        v = self.v_proj(h_source).reshape(
+            n_source, self.head_dim, self.num_heads
+        )
         # Perform attention using masks.
         k_transposed = torch.transpose(k, 0, 1)
         if self.attention_mask_type == MaskType.PRODUCT:

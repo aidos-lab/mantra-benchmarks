@@ -13,7 +13,7 @@ from .utils import get_matching_indeces, get_metric_col_names, format_res_val
 
 
 def per_family(
-        result_dataframes: Dict[TaskType, pd.DataFrame], ds_type: DatasetType
+    result_dataframes: Dict[TaskType, pd.DataFrame], ds_type: DatasetType
 ):
     model_families = [
         {

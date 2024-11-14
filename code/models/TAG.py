@@ -16,8 +16,8 @@ class TAGConfig(BaseModel):
 
 class TAG(nn.Module):
     def __init__(
-            self,
-            config: TAGConfig,
+        self,
+        config: TAGConfig,
     ):
         super().__init__()
         self.conv_input = TAGConv(

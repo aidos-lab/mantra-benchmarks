@@ -46,7 +46,7 @@ def barycentric_subdivision(K: SimplicialComplex) -> SimplicialComplex:
 
 
 def recursive_barycentric_subdivision(
-        K: SimplicialComplex, number_of_transformations: int
+    K: SimplicialComplex, number_of_transformations: int
 ) -> SimplicialComplex:
     Sd_K = K
     for _ in range(number_of_transformations):
@@ -78,7 +78,7 @@ def eigenvectors_smallest_k_eigenvalues(L, k):
 
 
 def compute_hodge_laplacian_matrix(
-        t_complex: SimplicialComplex | CellComplex, dim: int, signed=True
+    t_complex: SimplicialComplex | CellComplex, dim: int, signed=True
 ):
     # Check type of t_complex
     if isinstance(t_complex, SimplicialComplex):
@@ -90,5 +90,7 @@ def compute_hodge_laplacian_matrix(
 def normalize_laplacian(H: scipy.sparse.spmatrix):
     # We assume that the matrix is a scipy sparse matrix. We normalize by multiplying by D^{-1/2} where D is the
     # diagonal matrix of the Hodge Laplacian H.
-    inverse_squared_diagonal = (scipy.sparse.diags(H.diagonal()).sqrt()).power(-1)
+    inverse_squared_diagonal = (scipy.sparse.diags(H.diagonal()).sqrt()).power(
+        -1
+    )
     return inverse_squared_diagonal @ H @ inverse_squared_diagonal
