@@ -4,7 +4,6 @@ import matplotlib.colors
 import matplotlib.pyplot
 from matplotlib import cycler
 
-
 cdict = {
     "USblue": (0, 81, 158),  # 004191
     "USlightblue": (0, 190, 255),  # 00BEFF

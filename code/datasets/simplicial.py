@@ -1,17 +1,19 @@
+import os
+from collections import Counter
 from typing import Callable
+from typing import List
+
 from lightning import LightningDataModule
 from torch_geometric.loader import DataLoader as DataLoaderGeometric
 from torch_geometric.transforms import Compose
-from collections import Counter
-from typing import List
-from .simplicial_ds import SimplicialDS
-from metrics.tasks import TaskType
+
 from datasets.dataset_types import DatasetType, filter_nameless
-import os
 from datasets.transforms import (
     BarycentricSubdivisionTransform,
     SimplicialComplexTransform,
 )
+from metrics.tasks import TaskType
+from .simplicial_ds import SimplicialDS
 
 
 def unique_counts(input_list: List[str]) -> Counter:
@@ -19,7 +21,7 @@ def unique_counts(input_list: List[str]) -> Counter:
 
 
 def barycentric_subdivision_transform(
-    num_barycentric_subdivisions: int = 1,
+        num_barycentric_subdivisions: int = 1,
 ) -> Compose:
     return Compose(
         [
@@ -31,16 +33,16 @@ def barycentric_subdivision_transform(
 
 class SimplicialDataModule(LightningDataModule):
     def __init__(
-        self,
-        data_dir: str = "./data",
-        task_type: TaskType = TaskType.ORIENTABILITY,
-        transform: Compose | None = None,
-        use_stratified: bool = False,
-        batch_size: int = 128,
-        seed: int = 2024,
-        dataloader_builder: Callable = DataLoaderGeometric,
-        ds_type: DatasetType = DatasetType.FULL_2D,
-        num_barycentric_subdivisions: int = 0,
+            self,
+            data_dir: str = "./data",
+            task_type: TaskType = TaskType.ORIENTABILITY,
+            transform: Compose | None = None,
+            use_stratified: bool = False,
+            batch_size: int = 128,
+            seed: int = 2024,
+            dataloader_builder: Callable = DataLoaderGeometric,
+            ds_type: DatasetType = DatasetType.FULL_2D,
+            num_barycentric_subdivisions: int = 0,
     ):
         super().__init__()
         self.ds_type = ds_type

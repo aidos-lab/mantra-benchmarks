@@ -3,25 +3,24 @@ Collection of models. Useful for quantitative comparisons and templating.
 """
 
 from typing import Dict, Union, Annotated, Callable
-from pydantic import Tag
+
 import torch.nn as nn
+from pydantic import Tag
 from torch_geometric.loader import DataLoader
 
 from datasets.topox_dataloader import SimplicialTopoXDataloader
 from datasets.transformer_dataloader import TransformerDataloader
-from .GCN import GCN, GCNConfig
 from models.GAT import GAT, GATConfig
-
-from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
-from .MLP import MLP, MLPConfig
-from .cells.transformer.CellularTransformer import CellularTransformer, CellularTransformerConfig
-from .model_types import ModelType
-
+from models.TransfConv import TransfConv, TransfConvConfig
 from models.simplicial_complexes.san import SAN, SANConfig
 from models.simplicial_complexes.sccn import SCCN, SCCNConfig
 from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
+from .GCN import GCN, GCNConfig
+from .MLP import MLP, MLPConfig
+from .cells.transformer.CellularTransformer import CellularTransformer, CellularTransformerConfig
+from .model_types import ModelType
 
 model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.GAT: GAT,

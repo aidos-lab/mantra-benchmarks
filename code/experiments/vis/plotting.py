@@ -1,11 +1,7 @@
-import random
-
 import matplotlib
 import matplotlib.lines as mlines
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.ticker
-import numpy as np
 
 import experiments.vis.us_cmap as us_cmap
 
@@ -25,7 +21,7 @@ def above_legend_args(ax):
 
 
 def add_single_row_legend(
-    ax: matplotlib.pyplot.Axes, title: str, **legend_args
+        ax: matplotlib.pyplot.Axes, title: str, **legend_args
 ):
     # Extracting handles and labels
     try:
@@ -88,7 +84,7 @@ def get_dimensions(height=140, num_cols=1, half_size=False):
 
     if num_cols == 1:
         width_inches = (
-            single_col_pts * inches_per_pt + 0.23
+                single_col_pts * inches_per_pt + 0.23
         )  # added default matplotlib padding
     elif num_cols == 2:
         width_inches = double_col_pts * inches_per_pt + 0.23
@@ -140,7 +136,6 @@ def prepare_for_latex(preamble=""):
         "axes.unicode_minus": False,
     }
     matplotlib.rcParams.update(params)
-
 
 # \documentclass{article}
 # \usepackage{layouts}

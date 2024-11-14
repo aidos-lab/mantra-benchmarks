@@ -2,35 +2,35 @@
 Code for a single experiment run.
 """
 
+import os
+import uuid
+from collections import ChainMap
+from typing import List, Dict
+from typing import Optional, Tuple
+
+import lightning as L
+from lightning import LightningDataModule, LightningModule
+from lightning.pytorch.loggers import WandbLogger
+
+from datasets.simplicial import SimplicialDataModule
+from datasets.transforms import transforms_lookup
+from experiments.utils.configs import ConfigExperimentRun
+from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 from metrics.tasks import (
-    TaskType,
     Task,
     get_task_lookup,
 )
-from experiments.utils.configs import ConfigExperimentRun
-from models import model_lookup
 from metrics.tasks import TaskType
-from typing import Dict, Optional, Tuple, List
-from datasets.simplicial import SimplicialDataModule
+from models import model_lookup
 from models.base import BaseModel
-from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
-import lightning as L
-import uuid
-from datasets.transforms import transforms_lookup
-from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
-from typing import List, Dict
 from .imbalance_handling import sorted_imbalance_weights
-import os
-from torch_geometric.transforms import Compose
-from lightning import LightningDataModule, LightningModule
-from collections import ChainMap
 
 
 def get_data_module(
-    config: ConfigExperimentRun,
-    data_dir: str = "./data",
-    number_of_barycentric_subdivisions: int = 0,
+        config: ConfigExperimentRun,
+        data_dir: str = "./data",
+        number_of_barycentric_subdivisions: int = 0,
 ) -> SimplicialDataModule:
     transforms = transforms_lookup(config.transforms, config.ds_type)
     task_lookup: Dict[TaskType, Task] = get_task_lookup(
@@ -53,10 +53,10 @@ def get_data_module(
 
 
 def get_setup(
-    config: ConfigExperimentRun,
-    use_logger: bool = True,
-    data_dir: str = "./data",
-    devices=None,
+        config: ConfigExperimentRun,
+        use_logger: bool = True,
+        data_dir: str = "./data",
+        devices=None,
 ) -> Tuple[SimplicialDataModule, BaseModel, L.Trainer, WandbLogger]:
     run_id = str(uuid.uuid4())
     transforms = transforms_lookup(config.transforms, config.ds_type)
@@ -66,8 +66,8 @@ def get_setup(
     dm = get_data_module(config, data_dir)
     # ignore imbalance when working with betti numbers
     if (
-        config.use_imbalance_weighting
-        and config.task_type != TaskType.BETTI_NUMBERS
+            config.use_imbalance_weighting
+            and config.task_type != TaskType.BETTI_NUMBERS
     ):
         imbalance = sorted_imbalance_weights(
             dm.class_imbalance_statistics(), config.task_type
@@ -125,10 +125,10 @@ def get_setup(
 
 
 def run_configuration(
-    config: ConfigExperimentRun,
-    save_checkpoint_path: Optional[str] = None,
-    data_dir: str = "./data",
-    devices=None,
+        config: ConfigExperimentRun,
+        save_checkpoint_path: Optional[str] = None,
+        data_dir: str = "./data",
+        devices=None,
 ):
     dm, lit_model, trainer, logger = get_setup(
         config, data_dir=data_dir, devices=devices
@@ -147,11 +147,11 @@ def run_configuration(
 
 
 def retrieve_benchmarks(
-    trainer: L.Trainer,
-    model: LightningModule,
-    dm: LightningDataModule,
-    save_path: str,
-    test_on_train_set: bool = True,
+        trainer: L.Trainer,
+        model: LightningModule,
+        dm: LightningDataModule,
+        save_path: str,
+        test_on_train_set: bool = True,
 ) -> Dict:
     out_test = trainer.test(model, dm, save_path)[0]
     if test_on_train_set:
@@ -169,12 +169,12 @@ def retrieve_benchmarks(
 
 
 def benchmark_configuration(
-    config: ConfigExperimentRun,
-    save_checkpoint_path: str,
-    use_logger: bool = False,
-    data_dir: str = "./data",
-    number_of_barycentric_subdivisions: int = 0,
-    devices=None,
+        config: ConfigExperimentRun,
+        save_checkpoint_path: str,
+        use_logger: bool = False,
+        data_dir: str = "./data",
+        number_of_barycentric_subdivisions: int = 0,
+        devices=None,
 ) -> List[Dict[str, float]]:
     dm, lit_model, trainer, logger = get_setup(
         config, use_logger=use_logger, data_dir=data_dir, devices=devices

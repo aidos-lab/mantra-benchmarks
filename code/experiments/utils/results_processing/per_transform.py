@@ -1,25 +1,26 @@
 from typing import List, Tuple, Dict
+
+import numpy as np
 import pandas as pd
+
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
-from datasets.transforms import TransformType
-import numpy as np
 from .utils import (
     get_matching_indeces,
     get_metric_col_names,
-    get_result_path,
     format_res_val,
     get_max_info,
 )
 
 
 def reduce(
-    df: pd.DataFrame,
-    model_types: List[ModelType],
-    transform_types: List[TransformType],
-    row: any,
-    metric: str,
-    max_info: bool = False,
+        df: pd.DataFrame,
+        model_types: List[ModelType],
+        transform_types: List[TransformType],
+        row: any,
+        metric: str,
+        max_info: bool = False,
 ):
     """
     Reduce the dataframe by aggregating metric results for each transform type and model type.
@@ -53,11 +54,11 @@ def reduce(
 
 
 def per_transform(
-    tasks: List[TaskType],
-    model_types_cartesian: List[List[ModelType]],
-    transform_types_cartesian: List[List[TransformType]],
-    result_dataframes: Dict[TaskType, pd.DataFrame],
-    max_info: bool = False,
+        tasks: List[TaskType],
+        model_types_cartesian: List[List[ModelType]],
+        transform_types_cartesian: List[List[TransformType]],
+        result_dataframes: Dict[TaskType, pd.DataFrame],
+        max_info: bool = False,
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Generate results per transform type for each task type by processing model and transform type combinations.

@@ -1,16 +1,16 @@
-import torchmetrics
-import torch
-from torch import Tensor
-from torchmetrics import Metric
-import torchmetrics.classification
 from typing import Optional, List
-from metrics.custom_metrics.general_accuracy import GeneralAccuracy
+
+import torchmetrics
+import torchmetrics.classification
+from torchmetrics import Metric
+
+from datasets.dataset_types import DatasetType
+from metrics.custom_metrics.auroc import AUROC
 from metrics.custom_metrics.betti_numbers_acc import (
     BettiNumbersMultiClassAccuracy,
 )
+from metrics.custom_metrics.general_accuracy import GeneralAccuracy
 from metrics.custom_metrics.mcc import MatthewsCorrCoeff
-from metrics.custom_metrics.auroc import AUROC
-from datasets.dataset_types import DatasetType
 
 
 class NamedMetric:
@@ -39,11 +39,11 @@ class BettiNumbersMetricCollection:
     betti_3: Optional[List[NamedMetric]]
 
     def __init__(
-        self,
-        betti_0: List[NamedMetric],
-        betti_1: List[NamedMetric],
-        betti_2: List[NamedMetric],
-        betti_3: Optional[List[NamedMetric]] = None,
+            self,
+            betti_0: List[NamedMetric],
+            betti_1: List[NamedMetric],
+            betti_2: List[NamedMetric],
+            betti_3: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.betti_0 = betti_0
         self.betti_1 = betti_1
@@ -67,10 +67,10 @@ class MetricTrainValTest:
     test: List[NamedMetric] | BettiNumbersMetricCollection
 
     def __init__(
-        self,
-        train: List[NamedMetric] | BettiNumbersMetricCollection,
-        val: Optional[List[NamedMetric]] = None,
-        test: Optional[List[NamedMetric]] = None,
+            self,
+            train: List[NamedMetric] | BettiNumbersMetricCollection,
+            val: Optional[List[NamedMetric]] = None,
+            test: Optional[List[NamedMetric]] = None,
     ) -> None:
         self.train = train
         self.val = self.train if val is None else val

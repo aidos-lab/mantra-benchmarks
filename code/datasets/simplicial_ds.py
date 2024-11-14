@@ -1,24 +1,25 @@
+import os
+from typing import Literal, Tuple
+
+import torch
+from mantra.datasets import ManifoldTriangulations
+from sklearn.model_selection import train_test_split
+from torch_geometric.data import InMemoryDataset
+from torch_geometric.transforms import Compose
+
 from metrics.tasks import (
     TaskType,
     class_transforms_lookup_2manifold,
     class_transforms_lookup_3manifold,
 )
-import torch
-import numpy as np
-from sklearn.model_selection import train_test_split
-from typing import Dict, List, Literal, Tuple, Optional
-from torch_geometric.transforms import Compose
-from mantra.datasets import ManifoldTriangulations
-from torch_geometric.data import InMemoryDataset
-import os
 
 
 class SplitConfig:
     def __init__(
-        self,
-        split: Tuple[float, float, float],
-        seed: int,
-        use_stratified: bool,
+            self,
+            split: Tuple[float, float, float],
+            seed: int,
+            use_stratified: bool,
     ) -> None:
         self.split = split
         self.seed = seed
@@ -39,18 +40,18 @@ class SimplicialDS(InMemoryDataset):
     """
 
     def __init__(
-        self,
-        root: str,
-        split: Tuple[float, float, float] = [0.8, 0.1, 0.1],
-        seed: int = 0,
-        use_stratified: bool = True,
-        task_type: TaskType = TaskType.ORIENTABILITY,
-        mode: Mode = "train",
-        manifold="2",
-        version="latest",
-        transform=None,
-        pre_transform=None,
-        pre_filter=None,
+            self,
+            root: str,
+            split: Tuple[float, float, float] = [0.8, 0.1, 0.1],
+            seed: int = 0,
+            use_stratified: bool = True,
+            task_type: TaskType = TaskType.ORIENTABILITY,
+            mode: Mode = "train",
+            manifold="2",
+            version="latest",
+            transform=None,
+            pre_transform=None,
+            pre_filter=None,
     ):
         self.manifold = manifold
         self.task_type = task_type
@@ -148,7 +149,7 @@ class SimplicialDS(InMemoryDataset):
             train_indices, val_indices = train_test_split(
                 train_val_indices,
                 test_size=self.split_config.split[1]
-                / (self.split_config.split[0] + self.split_config.split[1]),
+                          / (self.split_config.split[0] + self.split_config.split[1]),
                 shuffle=True,
                 stratify=(
                     stratified[train_val_indices]

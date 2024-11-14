@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun
@@ -15,11 +15,11 @@ def print_info(config: ConfigExperimentRun):
 
 
 def run_configs_folder(
-    args_dict: Dict[str, Any],
-    checkpoint_folder: Optional[str] = None,
-    data_dir: str = "./data",
-    config_dir: str = "./configs",
-    devices=None,
+        args_dict: Dict[str, Any],
+        checkpoint_folder: Optional[str] = None,
+        data_dir: str = "./data",
+        config_dir: str = "./configs",
+        devices=None,
 ):
     files = os.listdir(config_dir)
     results = ResultCollection()

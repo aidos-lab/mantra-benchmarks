@@ -1,5 +1,6 @@
 from enum import Enum
-from torch_geometric.data import Batch, Data
+
+from torch_geometric.data import Data
 
 
 class DatasetType(Enum):

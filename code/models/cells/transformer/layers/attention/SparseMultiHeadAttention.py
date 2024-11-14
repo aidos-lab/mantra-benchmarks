@@ -6,12 +6,12 @@ from dgl.sparse import SparseMatrix
 from jaxtyping import Float
 from torch import nn
 
+from general_utils import generate_repeated_sparse_matrix
 from models.cells.transformer.WeightInitialization import (
     WeightInitialization,
     get_initialization_function,
 )
 from models.cells.transformer.layers.attention.MaskType import MaskType
-from utils import generate_repeated_sparse_matrix
 
 
 class SparseMultiHeadAttention(nn.Module):

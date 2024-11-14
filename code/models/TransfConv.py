@@ -1,8 +1,8 @@
 import torch.nn.functional as F
+from pydantic import BaseModel
 from torch import nn
 from torch_geometric.nn import global_mean_pool, TransformerConv
 
-from pydantic import BaseModel
 from .model_types import ModelType
 
 
@@ -16,8 +16,8 @@ class TransfConvConfig(BaseModel):
 
 class TransfConv(nn.Module):
     def __init__(
-        self,
-        config: TransfConvConfig,
+            self,
+            config: TransfConvConfig,
     ):
         super().__init__()
         self.conv_input = TransformerConv(

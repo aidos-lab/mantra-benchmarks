@@ -1,9 +1,9 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 
-from typing import List, Dict
+from typing import Dict
 import pandas as pd
 from metrics.tasks import TaskType
 from models.models import ModelType
@@ -28,10 +28,10 @@ import argparse
 
 
 def process_results(
-    results: Dict[TaskType, pd.DataFrame],
-    include_topo_models: bool = True,
-    include_name_task: bool = True,
-    max_info: bool = False,
+        results: Dict[TaskType, pd.DataFrame],
+        include_topo_models: bool = True,
+        include_name_task: bool = True,
+        max_info: bool = False,
 ):
     tasks = (
         [TaskType.BETTI_NUMBERS, TaskType.NAME, TaskType.ORIENTABILITY]
@@ -91,11 +91,11 @@ def process_results(
 
 
 def process_ds_type(
-    ds_type: DatasetType,
-    include_topo_models: bool = True,
-    include_name_task: bool = True,
-    max_info: bool = False,
-    csv_prefix: str = "results_",
+        ds_type: DatasetType,
+        include_topo_models: bool = True,
+        include_name_task: bool = True,
+        max_info: bool = False,
+        csv_prefix: str = "results_",
 ):
     results_csv_prefix = csv_prefix
     results = read_result_csv(results_csv_prefix)

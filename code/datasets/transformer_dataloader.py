@@ -8,8 +8,8 @@ from jaxtyping import Float, Int
 from torch.utils.data import DataLoader
 
 from datasets.utils import concat_tensors
-from models.cells.transformer.DataTypes import CellComplexData, NeighborhoodMatrixType, NeighborhoodType
 from datasets.utils import torch_sparse_to_scipy_sparse
+from models.cells.transformer.DataTypes import CellComplexData, NeighborhoodMatrixType, NeighborhoodType
 
 
 class TransformerDataloader(DataLoader):

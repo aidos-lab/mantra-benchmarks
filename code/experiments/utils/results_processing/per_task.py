@@ -1,23 +1,24 @@
 from typing import List, Tuple, Dict
+
+import numpy as np
 import pandas as pd
+
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
-from datasets.transforms import TransformType
-import numpy as np
 from .utils import (
     get_matching_indeces,
     get_metric_col_names,
-    get_result_path,
     format_res_val,
 )
 
 
 def reduce(
-    df: pd.DataFrame,
-    model_types: List[ModelType],
-    transform_types: List[TransformType],
-    metric_res_list: List[float],
-    metric: str,
+        df: pd.DataFrame,
+        model_types: List[ModelType],
+        transform_types: List[TransformType],
+        metric_res_list: List[float],
+        metric: str,
 ):
     """
     Reduce the results for a specific task by finding the maximum metric value for each model and transform type.
@@ -47,10 +48,10 @@ def reduce(
 
 
 def per_task(
-    tasks: List[TaskType],
-    model_types_cartesian: List[List[ModelType]],
-    transform_types_cartesian: List[List[TransformType]],
-    result_dataframes: Dict[TaskType, pd.DataFrame],
+        tasks: List[TaskType],
+        model_types_cartesian: List[List[ModelType]],
+        transform_types_cartesian: List[List[TransformType]],
+        result_dataframes: Dict[TaskType, pd.DataFrame],
 ) -> List[Tuple[str, pd.DataFrame]]:
     """
     Process results for each task by calculating the mean of the maximum metric values across different model and transform types.

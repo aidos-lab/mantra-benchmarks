@@ -1,7 +1,12 @@
+from enum import Enum
+from typing import List, Callable, Dict
+
 import torch
 from toponetx.classes import SimplicialComplex
-from torch_geometric.utils import degree
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
+from torch_geometric.utils import degree
+
+from datasets.dataset_types import DatasetType
 from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
@@ -9,10 +14,6 @@ from datasets.utils import (
     create_or_empty_signals_on_data,
     get_triangles_from_simplicial_complex,
 )
-from enum import Enum
-from datasets.dataset_types import DatasetType
-from typing import List, Callable, Dict
-
 from math_utils import recursive_barycentric_subdivision
 from models.cells.transformer.positional_encodings.PositionalEncodings import get_positional_encodings, \
     PositionalEncodingsType

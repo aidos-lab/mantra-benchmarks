@@ -1,15 +1,15 @@
 import itertools
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Dict, List
 
 import dgl.sparse as dglsp
 import torch
 from dgl.sparse import SparseMatrix
 from jaxtyping import Float, Int
+from pydantic import BaseModel
 from torch import nn
 
 from math_utils import sparse_abs
-from models import ModelType
+from ...model_types import ModelType
 from models.cells.transformer.DataTypes import NeighborhoodMatrixType, NeighborhoodType, CellComplexData
 from models.cells.transformer.InputPreprocessing import (
     InputPreprocessing,
@@ -199,13 +199,14 @@ def _get_input_preprocessing_layers(
     )
     return input_preprocessing_layers
 
+
 class CellularTransformerConfig(BaseModel):
     type: ModelType = ModelType.CELL_TRANSF
-    input_sizes: dict[int, int]
-    positional_encodings_lengths: dict[int, int]
+    input_sizes: Dict[int, int]
+    positional_encodings_lengths: Dict[int, int]
     out_size: int
-    num_layers: int = 8
-    hidden_size: int = 80
+    num_layers: int = 2
+    hidden_size: int = 64
     num_heads: int = 8
     dropout_attention: float = 0.0
     dropout_activations: float = 0.0
@@ -214,18 +215,8 @@ class CellularTransformerConfig(BaseModel):
     drop_path_probability: float = 0.0
     num_hidden_layers_last_mlp: int = 2
     use_bias: bool = True
-    initialization: WeightInitialization = WeightInitialization.XAVIER_UNIFORM,
-    input_preprocessing_type: (
-                        dict[int, InputPreprocessing] | InputPreprocessing
-                ) = InputPreprocessing.CONCATENATION_POSITIONAL_ENCODINGS,
-    layer_tensor_diagrams: Optional[
-        list[TensorDiagram, ...] | TensorDiagram
-        ] = None
-    attention_mask_types: Optional[list[MaskType, ...] | MaskType] = None
-    forget_dimensions: bool = False,  # If True, layer_tensor_diagrams must be None and attention
+    forget_dimensions: bool = False  # If True, layer_tensor_diagrams must be None and attention
     # is performed with cells as points in a point cloud, forgetting the dimensions.
-    positional_encoding_type: PositionalEncodingsType = PositionalEncodingsType.BARYCENTRIC_SUBDIVISION_GRAPH_EIGENVECTORS
-    readout: Readout = Readout.GLOBAL_ADD_POOLING
 
 
 class CellularTransformer(nn.Module):
@@ -236,24 +227,26 @@ class CellularTransformer(nn.Module):
     ):
         super().__init__()
         self.input_sizes = config.input_sizes
-        self.readout = config.readout
+        self.readout = Readout.GLOBAL_MEAN_POOLING  # Fixed
         self.num_layers = config.num_layers
         self.num_heads = config.num_heads
-        self.positional_encoding_type = config.positional_encoding_type
-        self.input_preprocessing_type = config.input_preprocessing_type
+        self.positional_encoding_type = PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS  # Fixed
+        self.input_preprocessing_type = InputPreprocessing.SUM_POSITIONAL_ENCODINGS  # Fixed
         self.dropout_attention = config.dropout_attention
         self.dropout_activations = config.dropout_activations
         self.drop_path_probability = config.drop_path_probability
         self.num_hidden_layers_last_mlp = config.num_hidden_layers_last_mlp
         self.use_bias = config.use_bias
         self.hidden_size = config.hidden_size
-        self.initialization = config.initialization
+        self.initialization = WeightInitialization.XAVIER_UNIFORM  # Fixed.
         self.dropout_final_mlp = config.dropout_final_mlp
         self.out_size = config.out_size
+        self.layer_tensor_diagrams = TensorDiagram("0->0,0->1,1->0,1->1,1->2,2->1,2->2")  # Fixed
+        attention_mask_types = MaskType.SUM  # Fixed
         # Configuring the attention type. Here, we decide if we drop the hierarchical structure of the
         # cellular_data complex to perform attention.
         self.forget_dimensions = config.forget_dimensions
-        if self.forget_dimensions and config.layer_tensor_diagrams is not None:
+        if self.forget_dimensions and self.layer_tensor_diagrams is not None:
             raise ValueError(
                 "If forget_dimensions is True, layer_tensor_diagrams must be None."
             )
@@ -263,22 +256,22 @@ class CellularTransformer(nn.Module):
             )
             # layer tensor diagrams is None.
         self.layer_tensor_diagrams = _get_layer_tensor_diagrams(
-            config.layer_tensor_diagrams, config.input_sizes, config.num_layers
+            self.layer_tensor_diagrams, config.input_sizes, config.num_layers
         )
         self.attention_mask_types = _get_layer_mask_types(
-            config.attention_mask_types, config.num_layers
+            attention_mask_types, config.num_layers
         )
         # Input preprocessing layers
         self.preproc_layers = _get_input_preprocessing_layers(
-            config.input_preprocessing_type,
+            self.input_preprocessing_type,
             config.input_sizes,
             config.positional_encodings_lengths,
             config.hidden_size,
-            config.initialization,
+            self.initialization,
         )
         # If the positional encodings are of eigenvector type, we randomly flip the sign of the positional encodings
         # each time we forward pass the input with the objective of learning invariance to the sign of the eigenvectors.
-        self.flip_sign_pe = config.positional_encoding_type in [
+        self.flip_sign_pe = self.positional_encoding_type in [
             PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS,
             PositionalEncodingsType.BARYCENTRIC_SUBDIVISION_GRAPH_EIGENVECTORS,
         ]
@@ -288,9 +281,9 @@ class CellularTransformer(nn.Module):
         # Attention layers
         self.attention_layers = self.get_attention_layers()
         if self.readout == Readout.SET2SET_POOLING:
-            self.readout_layer = get_readout_layer(config.readout, input_dim=config.hidden_size)
+            self.readout_layer = get_readout_layer(self.readout, input_dim=config.hidden_size)
         else:
-            self.readout_layer = get_readout_layer(config.readout)
+            self.readout_layer = get_readout_layer(self.readout)
         # Final MLP block and readout layer
         self.predictor_head = self.get_prediction_head()
 

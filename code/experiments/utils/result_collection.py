@@ -1,21 +1,23 @@
-from typing import List, Dict
-from metrics.tasks import TaskType
-from experiments.utils.configs import ConfigExperimentRun
-import pandas as pd
 import os
+from typing import List, Dict
+
+import pandas as pd
+
+from datasets.dataset_types import DatasetType
+from datasets.transforms import TransformType
+from experiments.utils.configs import ConfigExperimentRun
+from experiments.utils.enum_utils import enum_from_str_id
+from metrics.tasks import TaskType
 from models import model_cfg_lookup
 from models.model_types import ModelType
-from datasets.transforms import TransformType
-from datasets.dataset_types import DatasetType
-from experiments.utils.enum_utils import enum_from_str_id
 
 
 class Result:
     def __init__(
-        self,
-        data: Dict[str, float],
-        config: ConfigExperimentRun,
-        barycentric_subdivision_idx: int = 0,
+            self,
+            data: Dict[str, float],
+            config: ConfigExperimentRun,
+            barycentric_subdivision_idx: int = 0,
     ) -> None:
         self.data = data
         self.config = config
@@ -34,10 +36,10 @@ class ResultCollection:
         }
 
     def add(
-        self,
-        data: Dict[str, float],
-        config: ConfigExperimentRun,
-        barycentric_subdivision_idx: int = 0,
+            self,
+            data: Dict[str, float],
+            config: ConfigExperimentRun,
+            barycentric_subdivision_idx: int = 0,
     ):
         self.collection[config.task_type].append(
             Result(
@@ -84,7 +86,6 @@ class ResultCollection:
             entries_per_task = []
 
             for _, row in df.iterrows():
-
                 # read csv and reconstruct entry
                 r_data = row.drop(
                     [
@@ -117,7 +118,7 @@ class ResultCollection:
             self.collection[task_type] = entries_per_task
 
     def exists(
-        self, config: ConfigExperimentRun, barycentric_subdivision_idx
+            self, config: ConfigExperimentRun, barycentric_subdivision_idx
     ) -> int:
         """
         Returns the number of matching entries in the result collection.

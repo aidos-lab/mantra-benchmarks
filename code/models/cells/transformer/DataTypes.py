@@ -7,7 +7,7 @@ import torch
 from dgl.sparse import SparseMatrix
 from jaxtyping import Float
 
-from utils import (
+from general_utils import (
     scipy_sparse_matrix_to_dgl_sparse,
     dict_of_tensors_to_device,
     list_of_tensors_to_device,

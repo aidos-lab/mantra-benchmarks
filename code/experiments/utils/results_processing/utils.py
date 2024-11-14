@@ -1,12 +1,13 @@
+from enum import Enum
 from typing import List, Tuple, Optional, Dict
+
+import numpy as np
 import pandas as pd
+
+from datasets.dataset_types import DatasetType
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
-from datasets.transforms import TransformType
-from datasets.dataset_types import DatasetType
-from experiments.utils.enum_utils import enum_from_str_id
-from enum import Enum
-import numpy as np
 
 
 def get_max_info(enums: List[Enum], results: np.ndarray) -> Enum:
@@ -28,16 +29,16 @@ def format_res_val(value: float, std: Optional[float] = None, note: str = ""):
         return f"{value_scaled:.2f} {note_formatted}"
     else:
         return (
-            f"${value_scaled:.2f}_"
-            + "{\pm"
-            + f" {std_scaled:.2f}"
-            + "}$"
-            + f"{note_formatted}"
+                f"${value_scaled:.2f}_"
+                + "{\pm"
+                + f" {std_scaled:.2f}"
+                + "}$"
+                + f"{note_formatted}"
         )
 
 
 def read_result_csv(
-    path_prefix: str = ".ignore_",
+        path_prefix: str = ".ignore_",
 ) -> Dict[TaskType, pd.DataFrame]:
     res_dict = {}
     for task_type in TaskType:
@@ -55,10 +56,10 @@ def filter_for_ds_type(df: pd.DataFrame, ds_type: DatasetType) -> pd.DataFrame:
 
 
 def get_matching_indeces(
-    df: pd.DataFrame,
-    model_type: ModelType,
-    transform_type: TransformType,
-    barycentric_subdivision_idx: int = 0,
+        df: pd.DataFrame,
+        model_type: ModelType,
+        transform_type: TransformType,
+        barycentric_subdivision_idx: int = 0,
 ):
     """
     Get indices of rows in the dataframe that match the specified model type and transform type.
@@ -72,9 +73,9 @@ def get_matching_indeces(
     Series: Boolean series indicating rows that match the specified criteria.
     """
     return (
-        (df["type_model"] == model_type.name.lower())
-        & (df["transform"] == transform_type.name.lower())
-        & (df["barycentric_subdivision_idx"] == barycentric_subdivision_idx)
+            (df["type_model"] == model_type.name.lower())
+            & (df["transform"] == transform_type.name.lower())
+            & (df["barycentric_subdivision_idx"] == barycentric_subdivision_idx)
     )
 
 

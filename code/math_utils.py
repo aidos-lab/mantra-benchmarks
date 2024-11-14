@@ -1,12 +1,11 @@
+import dgl.sparse as dglsp
 import numpy as np
 import scipy
 import torch
 from dgl.sparse import SparseMatrix
-from toponetx import SimplicialComplex
-import dgl.sparse as dglsp
 from toponetx import SimplicialComplex, CellComplex
 
-from models.cells.CellComplexCombinatorics import hodge_laplacian_matrix
+from CellComplexCombinatorics import hodge_laplacian_matrix
 
 
 def barycentric_subdivision(K: SimplicialComplex) -> SimplicialComplex:
@@ -58,6 +57,7 @@ def recursive_barycentric_subdivision(
 def sparse_abs(M: SparseMatrix) -> SparseMatrix:
     return dglsp.val_like(M, torch.abs(M.val))
 
+
 def eigenvectors_smallest_k_eigenvalues(L, k):
     n = L.shape[0]
     # select eigenvectors with smaller eigenvalues O(n + klogk)
@@ -75,6 +75,7 @@ def eigenvectors_smallest_k_eigenvalues(L, k):
         temp_EigVec = np.zeros((n, k - n + 1), dtype=np.float32)
         PE = np.concatenate((PE, temp_EigVec), axis=1)
     return PE
+
 
 def compute_hodge_laplacian_matrix(
         t_complex: SimplicialComplex | CellComplex, dim: int, signed=True

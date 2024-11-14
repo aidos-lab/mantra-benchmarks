@@ -3,22 +3,23 @@ Base pytorch lightning model.
 """
 
 from typing import Literal
+
 import lightning as L
-import torch
 import numpy as np
+import torch
 
 
 class BaseModel(L.LightningModule):
     def __init__(
-        self,
-        model,
-        training_accuracy,
-        test_accuracy,
-        validation_accuracy,
-        accuracies_fn,
-        loss_fn,
-        learning_rate,
-        imbalance,
+            self,
+            model,
+            training_accuracy,
+            test_accuracy,
+            validation_accuracy,
+            accuracies_fn,
+            loss_fn,
+            learning_rate,
+            imbalance,
     ):
         super().__init__()
         self.training_accuracy = training_accuracy
@@ -91,7 +92,7 @@ class BaseModel(L.LightningModule):
         return optimizer
 
     def log_accuracies(
-        self, x_hat, y, batch_len, step: Literal["train", "test", "validation"]
+            self, x_hat, y, batch_len, step: Literal["train", "test", "validation"]
     ):
         if step == "train":
             acc_fun = self.training_accuracy
