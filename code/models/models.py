@@ -8,13 +8,15 @@ import torch.nn as nn
 from torch_geometric.loader import DataLoader
 
 from datasets.topox_dataloader import SimplicialTopoXDataloader
-from models.GCN import GCN, GCNConfig
+from datasets.transformer_dataloader import TransformerDataloader
+from .GCN import GCN, GCNConfig
 from models.GAT import GAT, GATConfig
-from models.MLP import MLP, MLPConfig
+
 from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
+from .MLP import MLP, MLPConfig
+from .cells.transformer.CellularTransformer import CellularTransformer, CellularTransformerConfig
 from .model_types import ModelType
-from pydantic import BaseModel
 
 from models.simplicial_complexes.san import SAN, SANConfig
 from models.simplicial_complexes.sccn import SCCN, SCCNConfig
@@ -31,6 +33,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.SCCNN: SCCNN,
     ModelType.SCN: SCN,
     ModelType.TransfConv: TransfConv,
+    ModelType.CELL_TRANSF: CellularTransformer
 }
 
 ModelConfig = Union[
@@ -43,6 +46,7 @@ ModelConfig = Union[
     Annotated[SCCNConfig, Tag(ModelType.SCCN)],
     Annotated[SCCNNConfig, Tag(ModelType.SCCNN)],
     Annotated[SCNConfig, Tag(ModelType.SCN)],
+    Annotated[CellularTransformerConfig, Tag(ModelType.CELL_TRANSF)]
 ]
 
 model_cfg_lookup: Dict[ModelType, ModelConfig] = {
@@ -55,6 +59,7 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
     ModelType.SCCNN: SCCNNConfig,
     ModelType.SCN: SCNConfig,
     ModelType.TransfConv: TransfConvConfig,
+    ModelType.CELL_TRANSF: CellularTransformerConfig
 }
 
 dataloader_lookup: Dict[ModelType, Callable] = {
@@ -67,4 +72,5 @@ dataloader_lookup: Dict[ModelType, Callable] = {
     ModelType.SCCNN: SimplicialTopoXDataloader,
     ModelType.SCN: SimplicialTopoXDataloader,
     ModelType.TransfConv: DataLoader,
+    ModelType.CELL_TRANSF: TransformerDataloader,
 }

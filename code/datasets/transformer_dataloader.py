@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 
 from datasets.utils import concat_tensors
 from models.cells.transformer.DataTypes import CellComplexData, NeighborhoodMatrixType, NeighborhoodType
+from datasets.utils import torch_sparse_to_scipy_sparse
 
 
 class TransformerDataloader(DataLoader):
@@ -24,22 +25,22 @@ def sc_to_cell_complex_data(data):
     for dim in signals.keys():
         if f'boundary_{dim}' in data.connectivity and dim > 0:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.BOUNDARY, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'boundary_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'boundary_{dim}'])
         if f'adjacency_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.UPPER_ADJACENCY, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'adjacency_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'adjacency_{dim}'])
         if f'coadjacency_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.LOWER_ADJACENCY, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'coadjacency_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'coadjacency_{dim}'])
         if f'up_laplacian_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.UPPER_HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'up_laplacian_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'up_laplacian_{dim}'])
         if f'down_laplacian_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.LOWER_HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'down_laplacian_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'down_laplacian_{dim}'])
         if f'hodge_{dim}' in data.connectivity:
             neighb_type = NeighborhoodMatrixType(NeighborhoodType.HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = data.connectivity[f'hodge_{dim}']
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'hodge_{dim}'])
     other_features = dict()
     other_features["positional_encodings"] = data.pe
     if "y" in other_features:

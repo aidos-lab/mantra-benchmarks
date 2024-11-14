@@ -34,6 +34,7 @@ def generate_zero_sparse_connectivity(m, n, scipy_format=False):
 
     Parameters
     ----------
+    scipy_format
     m : int
         Number of rows.
     n : int
@@ -216,3 +217,28 @@ def concat_tensors(tensors: list[torch.Tensor], dim: int = 0) -> torch.Tensor:
     if tensors[0].dim() == 0:
         return torch.stack(tensors, dim=dim)
     return torch.cat(tensors, dim=dim)
+
+
+def torch_sparse_to_scipy_sparse(torch_tensor):
+    """
+    Convert a PyTorch sparse tensor to a SciPy sparse matrix.
+    """
+    # Ensure the tensor is in COO format
+    torch_tensor = torch_tensor.coalesce()
+
+    # Get the indices and values
+    indices = torch_tensor.indices()
+    values = torch_tensor.values()
+    size = torch_tensor.size()
+
+    # Convert to numpy arrays
+    indices = indices.cpu().numpy()
+    values = values.cpu().numpy()
+
+    # Separate row and column indices
+    rows, cols = indices
+
+    # Create the SciPy sparse matrix in COO format
+    scipy_sparse_matrix = scipy.sparse.coo_matrix((values, (rows, cols)), shape=size)
+
+    return scipy_sparse_matrix

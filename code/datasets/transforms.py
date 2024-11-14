@@ -296,9 +296,6 @@ simplicial_transforms: Dict[str, List[TransformType]] = {
 }
 
 
-# TODO: Add transforms for positional encodings
-
-
 def transforms_lookup(
         tr_type: TransformType, ds_type: DatasetType
 ) -> List[Callable]:
