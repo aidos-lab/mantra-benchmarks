@@ -1,4 +1,5 @@
 import numpy as np
+import scipy
 import torch
 
 
@@ -27,7 +28,7 @@ def get_triangles_from_simplicial_complex(data):
     return triangles
 
 
-def generate_zero_sparse_connectivity(m, n):
+def generate_zero_sparse_connectivity(m, n, scipy_format=False):
     # Function extracted from TopoBenchmarkX
     """Generate a zero sparse connectivity matrix.
 
@@ -43,10 +44,18 @@ def generate_zero_sparse_connectivity(m, n):
     torch.sparse_coo_tensor
         Zero sparse connectivity matrix.
     """
+    if scipy_format:
+        return scipy.sparse.coo_matrix((m, n))
     return torch.sparse_coo_tensor((m, n)).coalesce()
 
 
-def get_complex_connectivity(complex, max_rank, signed=False):
+def get_complex_connectivity(complex, max_rank, keep_scipy=False):
+    def format_matrix(matrix):
+        if keep_scipy:
+            return matrix
+        else:
+            return from_sparse(matrix)
+
     # Function extracted from TopoBenchmarkX
     """Get the connectivity matrices for the complex.
 
@@ -75,11 +84,14 @@ def get_complex_connectivity(complex, max_rank, signed=False):
             "up_laplacian",
             "adjacency",
             "hodge_laplacian",
+            "coadjacency",
         ]:
+            if connectivity_info == "incidence" and rank_idx == 0:
+                continue
             try:
-                connectivity[f"{connectivity_info}_{rank_idx}"] = from_sparse(
+                connectivity[f"{connectivity_info}_{rank_idx}"] = format_matrix(
                     getattr(complex, f"{connectivity_info}_matrix")(
-                        rank=rank_idx, signed=signed
+                        rank=rank_idx, signed=False
                     )
                 )
             except ValueError:
@@ -88,6 +100,7 @@ def get_complex_connectivity(complex, max_rank, signed=False):
                         generate_zero_sparse_connectivity(
                             m=practical_shape[rank_idx - 1],
                             n=practical_shape[rank_idx],
+                            scipy_format=keep_scipy
                         )
                     )
                 else:
@@ -95,8 +108,26 @@ def get_complex_connectivity(complex, max_rank, signed=False):
                         generate_zero_sparse_connectivity(
                             m=practical_shape[rank_idx],
                             n=practical_shape[rank_idx],
+                            scipy_format=keep_scipy,
                         )
                     )
+        if rank_idx == 0:
+            continue
+        try:
+            connectivity[f"boundary_{rank_idx}"] = format_matrix(
+                getattr(complex, "incidence_matrix")(
+                    rank=rank_idx, signed=True
+                )
+            )
+        except ValueError:
+            connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                generate_zero_sparse_connectivity(
+                    m=practical_shape[rank_idx - 1],
+                    n=practical_shape[rank_idx],
+                    scipy_format=keep_scipy
+                )
+            )
+
     """
     Not needed right now according to TopoBenchmarkX
     # Obtain normalized incidence matrices
@@ -179,3 +210,9 @@ def transfer_simplicial_complex_batch_to_device(batch, device, dataloader_idx):
         signals_belongings[key] = signals_belongings[key].to(device)
     # Not using batch masks
     return batched_example, signals_belongings, len_batch
+
+
+def concat_tensors(tensors: list[torch.Tensor], dim: int = 0) -> torch.Tensor:
+    if tensors[0].dim() == 0:
+        return torch.stack(tensors, dim=dim)
+    return torch.cat(tensors, dim=dim)
