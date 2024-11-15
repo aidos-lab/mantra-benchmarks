@@ -22,9 +22,9 @@ class Set2SetPooling(BaseReadout):
         self,
         x: dict[int, Float[torch.Tensor, "..."], ...],
         x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
-        torch.Tensor, "..."
-    ]:
+    ) -> (
+        dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]
+    ):
         # Concatenate all x tensors
         sorted_x_indices = sorted(list(x.keys()))
         x_concat = torch.cat([x[i] for i in sorted_x_indices], dim=0)

@@ -60,9 +60,9 @@ class ResultCollection:
                 result["type_model"] = x.config.conf_model.type.name.lower()
                 result["transform"] = x.config.transforms.name.lower()
                 result["ds_type"] = x.config.ds_type.name.lower()
-                result[
-                    "barycentric_subdivision_idx"
-                ] = x.barycentric_subdivision_idx
+                result["barycentric_subdivision_idx"] = (
+                    x.barycentric_subdivision_idx
+                )
                 data.append(result)
 
             df = pd.DataFrame(data)

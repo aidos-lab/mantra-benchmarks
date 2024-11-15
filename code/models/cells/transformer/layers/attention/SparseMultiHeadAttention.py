@@ -46,7 +46,7 @@ class SparseMultiHeadAttention(nn.Module):
         self.hidden_size = hidden_size
         self.num_heads = num_heads
         self.head_dim = hidden_size // num_heads
-        self.scale = self.head_dim ** -0.5
+        self.scale = self.head_dim**-0.5
         self.attention_mask_type = attention_mask_type
         # Projection layers
         self.q_proj = nn.Linear(hidden_size, hidden_size, bias=use_bias)

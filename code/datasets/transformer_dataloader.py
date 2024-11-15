@@ -9,7 +9,11 @@ from torch.utils.data import DataLoader
 
 from datasets.utils import concat_tensors
 from datasets.utils import torch_sparse_to_scipy_sparse
-from models.cells.transformer.DataTypes import CellComplexData, NeighborhoodMatrixType, NeighborhoodType
+from models.cells.transformer.DataTypes import (
+    CellComplexData,
+    NeighborhoodMatrixType,
+    NeighborhoodType,
+)
 
 
 class TransformerDataloader(DataLoader):
@@ -23,36 +27,67 @@ def sc_to_cell_complex_data(data):
     signals = data.x
     neighborhood_matrices = dict()
     for dim in signals.keys():
-        if f'boundary_{dim}' in data.connectivity and dim > 0:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.BOUNDARY, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'boundary_{dim}'])
-        if f'adjacency_{dim}' in data.connectivity:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.UPPER_ADJACENCY, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'adjacency_{dim}'])
-        if f'coadjacency_{dim}' in data.connectivity:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.LOWER_ADJACENCY, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'coadjacency_{dim}'])
-        if f'up_laplacian_{dim}' in data.connectivity:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.UPPER_HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'up_laplacian_{dim}'])
-        if f'down_laplacian_{dim}' in data.connectivity:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.LOWER_HODGE_LAPLACIAN, dim)
+        if f"boundary_{dim}" in data.connectivity and dim > 0:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.BOUNDARY, dim
+            )
             neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
-                data.connectivity[f'down_laplacian_{dim}'])
-        if f'hodge_{dim}' in data.connectivity:
-            neighb_type = NeighborhoodMatrixType(NeighborhoodType.HODGE_LAPLACIAN, dim)
-            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(data.connectivity[f'hodge_{dim}'])
+                data.connectivity[f"boundary_{dim}"]
+            )
+        if f"adjacency_{dim}" in data.connectivity:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.UPPER_ADJACENCY, dim
+            )
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f"adjacency_{dim}"]
+            )
+        if f"coadjacency_{dim}" in data.connectivity:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.LOWER_ADJACENCY, dim
+            )
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f"coadjacency_{dim}"]
+            )
+        if f"up_laplacian_{dim}" in data.connectivity:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.UPPER_HODGE_LAPLACIAN, dim
+            )
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f"up_laplacian_{dim}"]
+            )
+        if f"down_laplacian_{dim}" in data.connectivity:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.LOWER_HODGE_LAPLACIAN, dim
+            )
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f"down_laplacian_{dim}"]
+            )
+        if f"hodge_{dim}" in data.connectivity:
+            neighb_type = NeighborhoodMatrixType(
+                NeighborhoodType.HODGE_LAPLACIAN, dim
+            )
+            neighborhood_matrices[neighb_type] = torch_sparse_to_scipy_sparse(
+                data.connectivity[f"hodge_{dim}"]
+            )
     other_features = dict()
     other_features["positional_encodings"] = data.pe
-    y = getattr(data, 'y', None)
-    return CellComplexData(signals=signals, neighborhood_matrices=neighborhood_matrices, other_features=other_features,
-                           y=y)
+    y = getattr(data, "y", None)
+    return CellComplexData(
+        signals=signals,
+        neighborhood_matrices=neighborhood_matrices,
+        other_features=other_features,
+        y=y,
+    )
 
 
 def collate_signals(
-        batch: Sequence[CellComplexData],
-) -> tuple[dict[int, Float[torch.Tensor, "..."]], dict[int, Int[torch.Tensor, "..."]]]:
-    all_signals_keys = set([key for example in batch for key in example.signals])
+    batch: Sequence[CellComplexData],
+) -> tuple[
+    dict[int, Float[torch.Tensor, "..."]], dict[int, Int[torch.Tensor, "..."]]
+]:
+    all_signals_keys = set(
+        [key for example in batch for key in example.signals]
+    )
     signals = dict()
     signals_belonging = dict()
     for key in all_signals_keys:
@@ -70,24 +105,27 @@ def collate_signals(
 
 
 def collate_other_features_type_dependent(
-        feature_list: list[
-            Float[torch.Tensor, "..."]
-            | dict[Any, Float[torch.Tensor, "..."]]
-            | list[Float[torch.Tensor, "..."]]
-            ]
-) -> (
+    feature_list: list[
         Float[torch.Tensor, "..."]
         | dict[Any, Float[torch.Tensor, "..."]]
         | list[Float[torch.Tensor, "..."]]
+    ]
+) -> (
+    Float[torch.Tensor, "..."]
+    | dict[Any, Float[torch.Tensor, "..."]]
+    | list[Float[torch.Tensor, "..."]]
 ):
     data_example = feature_list[0]
     collated_subfeatures = None
     if isinstance(data_example, dict):
         collated_subfeatures = dict()
-        feature_names = set([key for example in feature_list for key in example.keys()])
+        feature_names = set(
+            [key for example in feature_list for key in example.keys()]
+        )
         for key in feature_names:
             collated_subfeatures[key] = torch.cat(
-                [example[key] for example in feature_list if key in example], dim=0
+                [example[key] for example in feature_list if key in example],
+                dim=0,
             )
     if isinstance(data_example, torch.Tensor):
         collated_subfeatures = concat_tensors(feature_list, dim=0)
@@ -103,7 +141,7 @@ def collate_other_features_type_dependent(
 
 
 def collate_other_features(
-        batch: Sequence[CellComplexData],
+    batch: Sequence[CellComplexData],
 ) -> dict[Any, Float[torch.Tensor, "..."]]:
     feature_names = set(
         [
@@ -129,7 +167,7 @@ def collate_other_features(
 
 
 def collate_neighborhood_matrices(
-        batch: Sequence[CellComplexData],
+    batch: Sequence[CellComplexData],
 ) -> dict[NeighborhoodMatrixType, scipy.sparse.spmatrix | SparseMatrix]:
     all_neighborhood_matrices_keys = set(
         [
@@ -141,26 +179,28 @@ def collate_neighborhood_matrices(
     )
     neighborhood_matrices = dict()
     for key in all_neighborhood_matrices_keys:
-        neighborhood_matrices[key] = convert_sparse_matrices_to_sparse_block_matrix(
-            key,
-            [
-                #  Get the neighborhood matrix if it exists, otherwise None
-                (
-                    example.neighborhood_matrices[key]
-                    if key in example.neighborhood_matrices
-                    else None
-                )
-                for example in batch
-            ],
-            batch,
+        neighborhood_matrices[key] = (
+            convert_sparse_matrices_to_sparse_block_matrix(
+                key,
+                [
+                    #  Get the neighborhood matrix if it exists, otherwise None
+                    (
+                        example.neighborhood_matrices[key]
+                        if key in example.neighborhood_matrices
+                        else None
+                    )
+                    for example in batch
+                ],
+                batch,
+            )
         )
     return neighborhood_matrices
 
 
 def convert_sparse_matrices_to_sparse_block_matrix(
-        key: NeighborhoodMatrixType,
-        sparse_matrices: list[Optional[scipy.sparse.spmatrix | SparseMatrix]],
-        batch: list[CellComplexData],
+    key: NeighborhoodMatrixType,
+    sparse_matrices: list[Optional[scipy.sparse.spmatrix | SparseMatrix]],
+    batch: list[CellComplexData],
 ) -> scipy.sparse.spmatrix:
     rows, columns, values = [], [], []
     idx_rows, idx_cols = 0, 0
@@ -178,11 +218,11 @@ def convert_sparse_matrices_to_sparse_block_matrix(
             # Depending on the neighborhood matrix, we need to perform different operations
             match key.type:
                 case (
-                NeighborhoodType.UPPER_ADJACENCY
-                | NeighborhoodType.LOWER_ADJACENCY
-                | NeighborhoodType.LOWER_HODGE_LAPLACIAN
-                | NeighborhoodType.UPPER_HODGE_LAPLACIAN
-                | NeighborhoodType.HODGE_LAPLACIAN
+                    NeighborhoodType.UPPER_ADJACENCY
+                    | NeighborhoodType.LOWER_ADJACENCY
+                    | NeighborhoodType.LOWER_HODGE_LAPLACIAN
+                    | NeighborhoodType.UPPER_HODGE_LAPLACIAN
+                    | NeighborhoodType.HODGE_LAPLACIAN
                 ):
                     # In this case we have two possibilities.
                     # (1) There are no cells of that dimension in the cell complex, so we do not need to add any
@@ -192,7 +232,9 @@ def convert_sparse_matrices_to_sparse_block_matrix(
                     # hodge laplacian matrix). In this case, we should add as many rows and columns as there are cells
                     # of that dimension in the cell complex.
                     if c_complex.dim >= key.dimension:
-                        c_dim_cardinality = len(c_complex.signals[key.dimension])
+                        c_dim_cardinality = len(
+                            c_complex.signals[key.dimension]
+                        )
                         idx_rows += c_dim_cardinality
                         idx_cols += c_dim_cardinality
                 case NeighborhoodType.BOUNDARY:
@@ -203,12 +245,16 @@ def convert_sparse_matrices_to_sparse_block_matrix(
                     # add no rows or columns.
 
                     if c_complex.dim == key.dimension - 1:
-                        c_dim_cardinality = len(c_complex.signals[key.dimension - 1])
+                        c_dim_cardinality = len(
+                            c_complex.signals[key.dimension - 1]
+                        )
                         idx_rows += c_dim_cardinality
                     else:
                         pass
                 case _:
-                    raise ValueError(f"Unknown neighborhood matrix type {key.type}")
+                    raise ValueError(
+                        f"Unknown neighborhood matrix type {key.type}"
+                    )
         else:
             coo_matrix = matrix.tocoo()
             len_rows, len_cols = coo_matrix.shape
@@ -217,7 +263,10 @@ def convert_sparse_matrices_to_sparse_block_matrix(
                 coo_matrix.col,
                 coo_matrix.data,
             )
-            rows_abs, cols_abs = rows_example + idx_rows, cols_example + idx_cols
+            rows_abs, cols_abs = (
+                rows_example + idx_rows,
+                cols_example + idx_cols,
+            )
             rows.append(rows_abs)
             columns.append(cols_abs)
             values.append(values_example)
@@ -227,11 +276,11 @@ def convert_sparse_matrices_to_sparse_block_matrix(
     columns_cat = np.concatenate(columns, axis=0)
     values_cat = np.concatenate(values, axis=0)
     if idx_rows != sum(
-            [
-                example.signals[key.dimension - 1].shape[0]
-                for example in batch
-                if (key.dimension - 1) in example.signals
-            ]
+        [
+            example.signals[key.dimension - 1].shape[0]
+            for example in batch
+            if (key.dimension - 1) in example.signals
+        ]
     ) and idx_rows != sum(
         [
             example.signals[key.dimension].shape[0]
@@ -256,13 +305,17 @@ def collate_cell_complex(batch: list[CellComplexData]) -> CellComplexData:
     other_features["signals_belonging"] = signals_belonging
     # Collate labels
     # We only concatenate y's for not None labels.
-    y = concat_tensors([data.y for data in batch], dim=0) if batch[0].y is not None else None
+    y = (
+        concat_tensors([data.y for data in batch], dim=0)
+        if batch[0].y is not None
+        else None
+    )
     return CellComplexData(
         signals=signals,
         neighborhood_matrices=neighborhood_matrices,
         other_features=other_features,
         batch_size=len(batch),
-        y=y
+        y=y,
     )
 
 

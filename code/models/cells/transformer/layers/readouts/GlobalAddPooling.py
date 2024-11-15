@@ -10,9 +10,9 @@ class GlobalAddPooling(BaseReadout):
         self,
         x: dict[int, Float[torch.Tensor, "..."], ...],
         x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
-        torch.Tensor, "..."
-    ]:
+    ) -> (
+        dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]
+    ):
         readout_result = dict()
         for key in x.keys():
             readout_result[key] = pyg_nn.global_add_pool(

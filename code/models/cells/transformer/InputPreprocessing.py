@@ -18,7 +18,9 @@ class InputPreprocessing(Enum):
     CONCATENATION_POSITIONAL_ENCODINGS = "concatenation_positional_encodings"
 
 
-def get_input_preprocessing_layer(input_preprocessing_type: InputPreprocessing):
+def get_input_preprocessing_layer(
+    input_preprocessing_type: InputPreprocessing,
+):
     match input_preprocessing_type:
         case InputPreprocessing.SUM_POSITIONAL_ENCODINGS:
             return SumPositionalEncoding
@@ -33,11 +35,11 @@ def get_input_preprocessing_layer(input_preprocessing_type: InputPreprocessing):
 
 
 def generate_input_preprocessing_layer(
-        input_preprocessing_type: InputPreprocessing,
-        dim_features: int,
-        dim_positional_encoding: int,
-        hidden_dim: int,
-        initialization: WeightInitialization,
+    input_preprocessing_type: InputPreprocessing,
+    dim_features: int,
+    dim_positional_encoding: int,
+    hidden_dim: int,
+    initialization: WeightInitialization,
 ):
     input_preproccesing_layer_class = get_input_preprocessing_layer(
         input_preprocessing_type
