@@ -1,7 +1,12 @@
+from enum import Enum
+from typing import List, Callable, Dict
+
 import torch
 from toponetx.classes import SimplicialComplex
-from torch_geometric.utils import degree
 from torch_geometric.transforms import FaceToEdge, OneHotDegree
+from torch_geometric.utils import degree
+
+from datasets.dataset_types import DatasetType
 from datasets.utils import (
     create_signals_on_data_if_needed,
     append_signals,
@@ -9,12 +14,11 @@ from datasets.utils import (
     create_or_empty_signals_on_data,
     get_triangles_from_simplicial_complex,
 )
-from enum import Enum
-from datasets.dataset_types import DatasetType
-from typing import List, Callable, Dict
-
-
 from math_utils import recursive_barycentric_subdivision
+from models.cells.transformer.positional_encodings.PositionalEncodings import (
+    get_positional_encodings,
+    PositionalEncodingsType,
+)
 
 NAME_TO_CLASS = {"Klein bottle": 0, "RP^2": 1, "T^2": 2, "S^2": 3, "": 4}
 
@@ -163,15 +167,27 @@ class SimplicialComplexTriangleCoadjacencyDegreeTransform:
         return data
 
 
-class OrientableToClassSimplicialComplexTransform:
+class SimplicialComplexStructureMatricesTransform:
+    def __init__(self, scipy_format=False):
+        self.scipy_format = scipy_format
+
     def __call__(self, data):
-        data.other_features["y"] = data.orientable.long()
+        data.connectivity = get_complex_connectivity(
+            data.sc, data.sc.dim, self.scipy_format
+        )
         return data
 
 
-class SimplicialComplexStructureMatricesTransform:
+class SimplicialComplexHodgeLapEigPETransform:
+    def __init__(self, length_pe: int = 8):
+        self.length_pe = length_pe
+
     def __call__(self, data):
-        data.connectivity = get_complex_connectivity(data.sc, data.sc.dim)
+        data.pe = get_positional_encodings(
+            t_complex=data.sc,
+            pe_type=PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS,
+            length_positional_encodings=self.length_pe,
+        )
         return data
 
 

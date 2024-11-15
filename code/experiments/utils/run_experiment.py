@@ -2,29 +2,32 @@
 Code for a single experiment run.
 """
 
+import os
+import uuid
+from collections import ChainMap
+from typing import List, Dict
+from typing import Optional, Tuple
+
+import lightning as L
+from lightning import LightningDataModule, LightningModule
+from lightning.pytorch.loggers import WandbLogger
+
+from datasets.simplicial import SimplicialDataModule
+from datasets.transforms import (
+    transforms_lookup,
+    SimplicialComplexHodgeLapEigPETransform,
+)
+from experiments.utils.configs import ConfigExperimentRun
+from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
 from metrics.tasks import (
-    TaskType,
     Task,
     get_task_lookup,
 )
-from experiments.utils.configs import ConfigExperimentRun
-from models import model_lookup
 from metrics.tasks import TaskType
-from typing import Dict, Optional, Tuple, List
-from datasets.simplicial import SimplicialDataModule
+from models import model_lookup, ModelType
 from models.base import BaseModel
-from experiments.utils.loggers import get_wandb_logger, update_wandb_logger
-import lightning as L
-import uuid
-from datasets.transforms import transforms_lookup
-from lightning.pytorch.loggers import WandbLogger
 from models.models import dataloader_lookup
-from typing import List, Dict
 from .imbalance_handling import sorted_imbalance_weights
-import os
-from torch_geometric.transforms import Compose
-from lightning import LightningDataModule, LightningModule
-from collections import ChainMap
 
 
 def get_data_module(
@@ -33,6 +36,9 @@ def get_data_module(
     number_of_barycentric_subdivisions: int = 0,
 ) -> SimplicialDataModule:
     transforms = transforms_lookup(config.transforms, config.ds_type)
+    # Hack: If we use the transformers, then we add the positional encodings
+    if config.conf_model.type == ModelType.CELL_TRANSF:
+        transforms.append(SimplicialComplexHodgeLapEigPETransform())
     task_lookup: Dict[TaskType, Task] = get_task_lookup(
         transforms, ds_type=config.ds_type
     )

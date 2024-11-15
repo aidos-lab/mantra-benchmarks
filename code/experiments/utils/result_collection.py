@@ -1,13 +1,15 @@
-from typing import List, Dict
-from metrics.tasks import TaskType
-from experiments.utils.configs import ConfigExperimentRun
-import pandas as pd
 import os
+from typing import List, Dict
+
+import pandas as pd
+
+from datasets.dataset_types import DatasetType
+from datasets.transforms import TransformType
+from experiments.utils.configs import ConfigExperimentRun
+from experiments.utils.enum_utils import enum_from_str_id
+from metrics.tasks import TaskType
 from models import model_cfg_lookup
 from models.model_types import ModelType
-from datasets.transforms import TransformType
-from datasets.dataset_types import DatasetType
-from experiments.utils.enum_utils import enum_from_str_id
 
 
 class Result:
@@ -84,7 +86,6 @@ class ResultCollection:
             entries_per_task = []
 
             for _, row in df.iterrows():
-
                 # read csv and reconstruct entry
                 r_data = row.drop(
                     [

@@ -1,16 +1,17 @@
+import os
+from typing import Literal, Tuple
+
+import torch
+from mantra.datasets import ManifoldTriangulations
+from sklearn.model_selection import train_test_split
+from torch_geometric.data import InMemoryDataset
+from torch_geometric.transforms import Compose
+
 from metrics.tasks import (
     TaskType,
     class_transforms_lookup_2manifold,
     class_transforms_lookup_3manifold,
 )
-import torch
-import numpy as np
-from sklearn.model_selection import train_test_split
-from typing import Dict, List, Literal, Tuple, Optional
-from torch_geometric.transforms import Compose
-from mantra.datasets import ManifoldTriangulations
-from torch_geometric.data import InMemoryDataset
-import os
 
 
 class SplitConfig:

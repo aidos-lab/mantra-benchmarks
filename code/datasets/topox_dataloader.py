@@ -1,5 +1,4 @@
 import torch
-from toponetx import SimplicialComplex
 from torch.utils.data import DataLoader
 from torch_geometric.data import Data
 

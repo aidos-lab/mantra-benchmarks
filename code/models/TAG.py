@@ -1,7 +1,8 @@
 import torch.nn.functional as F
+from pydantic import BaseModel
 from torch import nn
 from torch_geometric.nn import TAGConv, global_mean_pool
-from pydantic import BaseModel
+
 from .model_types import ModelType
 
 

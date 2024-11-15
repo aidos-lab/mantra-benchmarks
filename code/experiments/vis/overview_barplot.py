@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
-import plotting
 import numpy as np
+
+import plotting
 from .result_handler import ResultHandler
 
 

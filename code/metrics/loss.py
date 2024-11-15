@@ -1,5 +1,5 @@
-import torch.nn as nn
 import torch
+import torch.nn as nn
 
 
 def name_loss_fn(y_pred, y, weight: torch.Tensor | None):

@@ -1,10 +1,10 @@
 import torch
+from pydantic import BaseModel
+from topomodelx.nn.simplicial.scn2 import SCN2
 from torch import nn
 
 from .readouts.SumReadout import SumReadout
 from ..model_types import ModelType
-from pydantic import BaseModel
-from topomodelx.nn.simplicial.scn2 import SCN2
 
 
 class SCNConfig(BaseModel):

@@ -1,9 +1,10 @@
-from metrics.tasks import TaskType
-from typing import List
-import numpy as np
-from typing import List, Tuple
-from datasets.transforms import NAME_TO_CLASS
 from collections import Counter
+from typing import List, Tuple
+
+import numpy as np
+
+from datasets.transforms import NAME_TO_CLASS
+from metrics.tasks import TaskType
 
 
 def convert_to_list(imb: Counter) -> Tuple[List[float], List[float]]:

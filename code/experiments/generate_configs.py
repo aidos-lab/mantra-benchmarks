@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 from metrics.tasks import TaskType
@@ -92,6 +92,7 @@ simplicial_models = {
     ModelType.SCCN,
     ModelType.SCCNN,
     ModelType.SCN,
+    ModelType.CELL_TRANSF,
 }
 models = list(graph_models) + list(simplicial_models)
 # ###########
@@ -119,6 +120,8 @@ out_channels_dict_mantra3 = {
     TaskType.ORIENTABILITY: 1,
     TaskType.BETTI_NUMBERS: 4,
 }
+
+
 # ###########
 
 # -----------------------------------------------------------------------------
@@ -139,6 +142,16 @@ def get_model_config(
     if model in graph_models:
         model_config = model_config_cls(
             out_channels=out_channels, num_node_features=dim_features
+        )
+    elif model == ModelType.CELL_TRANSF:
+        model_config = model_config_cls(
+            input_sizes={
+                i: dim_feat for i, dim_feat in enumerate(dim_features)
+            },
+            positional_encodings_lengths={
+                i: 8 for i in range(len(dim_features))
+            },
+            out_size=out_channels,
         )
     else:
         model_config = model_config_cls(

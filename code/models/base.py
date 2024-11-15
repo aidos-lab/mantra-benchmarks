@@ -3,9 +3,10 @@ Base pytorch lightning model.
 """
 
 from typing import Literal
+
 import lightning as L
-import torch
 import numpy as np
+import torch
 
 
 class BaseModel(L.LightningModule):

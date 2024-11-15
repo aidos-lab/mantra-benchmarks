@@ -4,7 +4,6 @@ data
 **/__pycache__
 /code/lightning_logs/
 k-simplex*
-RandomWalks*
 results
 wandb
 configs

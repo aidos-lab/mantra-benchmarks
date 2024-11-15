@@ -1,11 +1,11 @@
 from typing import Optional
 
+from pydantic import BaseModel
 from torch import nn
 
+from models.simplicial_complexes.scnn_custom import SCCNNCustom
 from .readouts.SumReadout import SumReadout
 from ..model_types import ModelType
-from pydantic import BaseModel
-from models.simplicial_complexes.scnn_custom import SCCNNCustom
 
 
 class SCCNNConfig(BaseModel):

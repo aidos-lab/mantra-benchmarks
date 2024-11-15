@@ -1,13 +1,15 @@
-from typing import List, Callable, Dict
 from enum import Enum
+from typing import List, Callable, Dict
 
+from torch_geometric.transforms import Compose
+
+from datasets.dataset_types import DatasetType
 from datasets.transforms import (
     orientability_transforms,
     name_transforms,
     betti_numbers_transforms_2manifold,
     betti_numbers_transforms_3manifold,
 )
-
 from .accuracies import (
     compute_betti_numbers_accuracies,
     compute_name_accuracies,
@@ -24,10 +26,6 @@ from .metrics import (
     get_orientability_metrics,
     MetricTrainValTest,
 )
-
-from enum import Enum
-from torch_geometric.transforms import Compose
-from datasets.dataset_types import DatasetType
 
 
 class Task:

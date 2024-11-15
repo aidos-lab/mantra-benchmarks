@@ -2,16 +2,18 @@
 Pydantic configuration of experiment runs.
 """
 
+import os
+from typing import Any, List, Optional
+
+import yaml
 from pydantic import Discriminator, Field
 from pydantic_settings import BaseSettings
-from models.models import ModelConfig
-from datasets.transforms import TransformType
+
 from datasets.dataset_types import DatasetType
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
+from models.models import ModelConfig
 from models.models import ModelType
-import yaml
-from typing import Any, List, Optional
-import os
 
 
 class TrainerConfig(BaseSettings):

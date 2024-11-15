@@ -1,10 +1,10 @@
 import torch
+from pydantic import BaseModel
+from topomodelx.nn.simplicial.san import SAN as SANBack
 from torch import nn
 
 from .readouts.SumReadout import SumReadout
 from ..model_types import ModelType
-from pydantic import BaseModel
-from topomodelx.nn.simplicial.san import SAN as SANBack
 
 
 class SANConfig(BaseModel):

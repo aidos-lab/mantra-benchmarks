@@ -1,9 +1,9 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 
-from typing import List, Dict
+from typing import Dict
 import pandas as pd
 from metrics.tasks import TaskType
 from models.models import ModelType

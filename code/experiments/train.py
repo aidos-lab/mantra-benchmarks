@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun

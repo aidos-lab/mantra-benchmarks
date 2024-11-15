@@ -1,7 +1,9 @@
-import torch
-from .metrics import BettiNumbersMetricCollection, NamedMetric
-from torchmetrics import Metric
 from typing import List
+
+import torch
+from torchmetrics import Metric
+
+from .metrics import BettiNumbersMetricCollection, NamedMetric
 
 
 def compute_orientability_accuracies(
@@ -37,7 +39,6 @@ def compute_betti_numbers_accuracies(
     y: torch.Tensor,
     name: str,
 ):
-
     metrics_list = metrics.as_list()
 
     assert y_hat.shape[1] == len(metrics_list)

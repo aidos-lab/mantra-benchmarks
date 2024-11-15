@@ -1,9 +1,9 @@
-from torch import nn
+from pydantic import BaseModel
 from topomodelx.nn.simplicial.sccn import SCCN as SCCNBack
+from torch import nn
 
 from .readouts.SumReadout import SumReadout
 from ..model_types import ModelType
-from pydantic import BaseModel
 
 
 class SCCNConfig(BaseModel):
