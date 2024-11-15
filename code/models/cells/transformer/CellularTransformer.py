@@ -10,7 +10,11 @@ from torch import nn
 
 from math_utils import sparse_abs
 from ...model_types import ModelType
-from models.cells.transformer.DataTypes import NeighborhoodMatrixType, NeighborhoodType, CellComplexData
+from models.cells.transformer.DataTypes import (
+    NeighborhoodMatrixType,
+    NeighborhoodType,
+    CellComplexData,
+)
 from models.cells.transformer.InputPreprocessing import (
     InputPreprocessing,
     generate_input_preprocessing_layer,
@@ -26,12 +30,15 @@ from models.cells.transformer.layers.attention.MaskType import MaskType
 from models.cells.transformer.layers.attention.PointCloudAttentionLayer import (
     PointCloudAttentionLayer,
 )
-from models.cells.transformer.positional_encodings.PositionalEncodings import PositionalEncodingsType
+from models.cells.transformer.positional_encodings.PositionalEncodings import (
+    PositionalEncodingsType,
+)
 
 
-def _get_batch_mask_improved(s: Float[torch.Tensor, "1 source_simplices"],
-                             t: Float[torch.Tensor, "1 target_simplices"]) \
-        -> Float[torch.Tensor, "target_simplices source_simplices"]:
+def _get_batch_mask_improved(
+    s: Float[torch.Tensor, "1 source_simplices"],
+    t: Float[torch.Tensor, "1 target_simplices"],
+) -> Float[torch.Tensor, "target_simplices source_simplices"]:
     mask_n = torch.zeros((len(t), len(s)), dtype=torch.float32)
     ps_start, pt_start = 0, 0
     ps, pt = 0, 0
@@ -66,13 +73,23 @@ def _get_batch_mask_improved(s: Float[torch.Tensor, "1 source_simplices"],
     return mask_n
 
 
-def _get_batch_mask(x: CellComplexData, interaction: Interaction, improved: bool = False):
-    target_belongings = x.other_features["signals_belonging"][interaction.out_dim]
-    source_belongings = x.other_features["signals_belonging"][interaction.in_dim]
+def _get_batch_mask(
+    x: CellComplexData, interaction: Interaction, improved: bool = False
+):
+    target_belongings = x.other_features["signals_belonging"][
+        interaction.out_dim
+    ]
+    source_belongings = x.other_features["signals_belonging"][
+        interaction.in_dim
+    ]
     if improved:
-        batch_mask_dense = _get_batch_mask_improved(s=source_belongings, t=target_belongings).to_sparse()
+        batch_mask_dense = _get_batch_mask_improved(
+            s=source_belongings, t=target_belongings
+        ).to_sparse()
     else:
-        batch_mask_dense = (target_belongings.unsqueeze(1) == source_belongings).to_sparse()
+        batch_mask_dense = (
+            target_belongings.unsqueeze(1) == source_belongings
+        ).to_sparse()
     batch_mask = dglsp.spmatrix(
         indices=batch_mask_dense.indices().to(target_belongings.device),
         shape=tuple(batch_mask_dense.shape),
@@ -94,7 +111,8 @@ def _get_attention_mask(x: CellComplexData, interaction: Interaction):
             attention_masks = x.neighborhood_matrices[neighborhood_type]
         else:
             neighborhood_type = NeighborhoodMatrixType(
-                type=NeighborhoodType.LOWER_ADJACENCY, dimension=interaction.in_dim
+                type=NeighborhoodType.LOWER_ADJACENCY,
+                dimension=interaction.in_dim,
             )
             attention_masks = x.neighborhood_matrices[neighborhood_type]
     elif interaction.in_dim == interaction.out_dim - 1:
@@ -108,7 +126,9 @@ def _get_attention_mask(x: CellComplexData, interaction: Interaction):
         neighborhood_type = NeighborhoodMatrixType(
             type=NeighborhoodType.BOUNDARY, dimension=interaction.in_dim
         )
-        attention_masks = sparse_abs(x.neighborhood_matrices[neighborhood_type])
+        attention_masks = sparse_abs(
+            x.neighborhood_matrices[neighborhood_type]
+        )
     else:
         attention_masks = dglsp.spmatrix(
             indices=torch.tensor([[0], [0]]).to(x.signals[0].device),
@@ -122,11 +142,13 @@ def _get_attention_mask(x: CellComplexData, interaction: Interaction):
 
 
 def _get_layer_mask_types(
-        attention_mask_types: Optional[list[MaskType, ...] | MaskType],
-        number_of_layers: int,
+    attention_mask_types: Optional[list[MaskType, ...] | MaskType],
+    number_of_layers: int,
 ) -> list[MaskType, ...]:
     if attention_mask_types is None:
-        attention_mask_types = [MaskType.NO_MASK for _ in range(number_of_layers)]
+        attention_mask_types = [
+            MaskType.NO_MASK for _ in range(number_of_layers)
+        ]
     else:
         if not isinstance(attention_mask_types, list):
             # If only one mask type is provided, we repeat it for all layers.
@@ -134,15 +156,16 @@ def _get_layer_mask_types(
                 attention_mask_types for _ in range(number_of_layers)
             ]
     assert len(attention_mask_types) == number_of_layers, (
-        "The number of attention mask types must be equal " "to the number of layers."
+        "The number of attention mask types must be equal "
+        "to the number of layers."
     )
     return attention_mask_types
 
 
 def _get_layer_tensor_diagrams(
-        tensor_diagram_input: Optional[list[TensorDiagram, ...] | TensorDiagram],
-        input_sizes: dict[int, int],
-        number_of_layers: int,
+    tensor_diagram_input: Optional[list[TensorDiagram, ...] | TensorDiagram],
+    input_sizes: dict[int, int],
+    number_of_layers: int,
 ) -> list[TensorDiagram, ...]:
     if tensor_diagram_input is None:
         # In case tensor diagram(s) is (are) not provided, we use a fully connected tensor diagram.
@@ -157,7 +180,9 @@ def _get_layer_tensor_diagrams(
             ]
         )
         tensor_diagram = TensorDiagram(tensor_diag_str)
-        tensor_diagram_input = [tensor_diagram for _ in range(number_of_layers)]
+        tensor_diagram_input = [
+            tensor_diagram for _ in range(number_of_layers)
+        ]
     else:
         if not isinstance(tensor_diagram_input, list):
             # If only one tensor diagram is provided, we repeat it for all layers.
@@ -166,25 +191,32 @@ def _get_layer_tensor_diagrams(
             ]
 
     assert len(tensor_diagram_input) == number_of_layers, (
-        "The number of tensor diagrams must be equal " "to the number of layers."
+        "The number of tensor diagrams must be equal "
+        "to the number of layers."
     )
     return tensor_diagram_input
 
 
 def _get_input_preprocessing_layers(
-        input_preprocessing_type: dict[int, InputPreprocessing] | InputPreprocessing,
-        input_sizes: dict[int, int],
-        positional_encodings_lengths: dict[int, int],
-        hidden_size: int,
-        initialization: WeightInitialization,
+    input_preprocessing_type: (
+        dict[int, InputPreprocessing] | InputPreprocessing
+    ),
+    input_sizes: dict[int, int],
+    positional_encodings_lengths: dict[int, int],
+    hidden_size: int,
+    initialization: WeightInitialization,
 ) -> nn.ModuleList:
     if isinstance(input_preprocessing_type, dict):
-        assert set(input_preprocessing_type.keys()) == set(input_sizes.keys()), (
+        assert set(input_preprocessing_type.keys()) == set(
+            input_sizes.keys()
+        ), (
             "The keys of the input preprocessing type dictionary must be the same as the keys of the input sizes"
             " dictionary."
         )
     else:
-        input_preprocessing_type = [input_preprocessing_type for _ in input_sizes]
+        input_preprocessing_type = [
+            input_preprocessing_type for _ in input_sizes
+        ]
     input_preprocessing_layers = nn.ModuleList(
         [
             generate_input_preprocessing_layer(
@@ -215,23 +247,26 @@ class CellularTransformerConfig(BaseModel):
     drop_path_probability: float = 0.0
     num_hidden_layers_last_mlp: int = 2
     use_bias: bool = True
-    forget_dimensions: bool = False  # If True, layer_tensor_diagrams must be None and attention
+    forget_dimensions: bool = (
+        False  # If True, layer_tensor_diagrams must be None and attention
+    )
     # is performed with cells as points in a point cloud, forgetting the dimensions.
 
 
 class CellularTransformer(nn.Module):
 
-    def __init__(
-            self,
-            config: CellularTransformerConfig
-    ):
+    def __init__(self, config: CellularTransformerConfig):
         super().__init__()
         self.input_sizes = config.input_sizes
         self.readout = Readout.GLOBAL_MEAN_POOLING  # Fixed
         self.num_layers = config.num_layers
         self.num_heads = config.num_heads
-        self.positional_encoding_type = PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS  # Fixed
-        self.input_preprocessing_type = InputPreprocessing.SUM_POSITIONAL_ENCODINGS  # Fixed
+        self.positional_encoding_type = (
+            PositionalEncodingsType.HODGE_LAPLACIAN_EIGENVECTORS
+        )  # Fixed
+        self.input_preprocessing_type = (
+            InputPreprocessing.SUM_POSITIONAL_ENCODINGS
+        )  # Fixed
         self.dropout_attention = config.dropout_attention
         self.dropout_activations = config.dropout_activations
         self.drop_path_probability = config.drop_path_probability
@@ -241,7 +276,9 @@ class CellularTransformer(nn.Module):
         self.initialization = WeightInitialization.XAVIER_UNIFORM  # Fixed.
         self.dropout_final_mlp = config.dropout_final_mlp
         self.out_size = config.out_size
-        self.layer_tensor_diagrams = TensorDiagram("0->0,0->1,1->0,1->1,1->2,2->1,2->2")  # Fixed
+        self.layer_tensor_diagrams = TensorDiagram(
+            "0->0,0->1,1->0,1->1,1->2,2->1,2->2"
+        )  # Fixed
         attention_mask_types = MaskType.SUM  # Fixed
         # Configuring the attention type. Here, we decide if we drop the hierarchical structure of the
         # cellular_data complex to perform attention.
@@ -251,9 +288,7 @@ class CellularTransformer(nn.Module):
                 "If forget_dimensions is True, layer_tensor_diagrams must be None."
             )
         if self.forget_dimensions:
-            layer_tensor_diagrams = (
-                None  # We use a fully connected tensor diagram, that is generated when
-            )
+            layer_tensor_diagrams = None  # We use a fully connected tensor diagram, that is generated when
             # layer tensor diagrams is None.
         self.layer_tensor_diagrams = _get_layer_tensor_diagrams(
             self.layer_tensor_diagrams, config.input_sizes, config.num_layers
@@ -276,19 +311,28 @@ class CellularTransformer(nn.Module):
             PositionalEncodingsType.BARYCENTRIC_SUBDIVISION_GRAPH_EIGENVECTORS,
         ]
         self.input_dropout_layers = nn.ModuleList(
-            [nn.Dropout(config.dropout_input_projections) for _ in config.input_sizes.keys()]
+            [
+                nn.Dropout(config.dropout_input_projections)
+                for _ in config.input_sizes.keys()
+            ]
         )
         # Attention layers
         self.attention_layers = self.get_attention_layers()
         if self.readout == Readout.SET2SET_POOLING:
-            self.readout_layer = get_readout_layer(self.readout, input_dim=config.hidden_size)
+            self.readout_layer = get_readout_layer(
+                self.readout, input_dim=config.hidden_size
+            )
         else:
             self.readout_layer = get_readout_layer(self.readout)
         # Final MLP block and readout layer
         self.predictor_head = self.get_prediction_head()
 
     def get_prediction_head(self) -> Optional[nn.ModuleDict | nn.Module]:
-        in_features = self.hidden_size if self.readout != Readout.SET2SET_POOLING else self.readout_layer.output_dim
+        in_features = (
+            self.hidden_size
+            if self.readout != Readout.SET2SET_POOLING
+            else self.readout_layer.output_dim
+        )
         if self.readout == Readout.ALL_GLOBAL_ADD_POOLING:
             return nn.ModuleDict(
                 {
@@ -332,7 +376,9 @@ class CellularTransformer(nn.Module):
                         activation_dropout=self.dropout_activations,
                         drop_path_probability=self.drop_path_probability,
                         initialization=self.initialization,
-                        attention_mask_type=self.attention_mask_types[layer_idx],
+                        attention_mask_type=self.attention_mask_types[
+                            layer_idx
+                        ],
                     )
                     for layer_idx in range(self.num_layers)
                 ]
@@ -349,14 +395,16 @@ class CellularTransformer(nn.Module):
                         drop_path_probability=self.drop_path_probability,
                         initialization=self.initialization,
                         tensor_diagram=self.layer_tensor_diagrams[layer_idx],
-                        attention_mask_type=self.attention_mask_types[layer_idx],
+                        attention_mask_type=self.attention_mask_types[
+                            layer_idx
+                        ],
                     )
                     for layer_idx in range(self.num_layers)
                 ]
             )
 
     def apply_random_sign_flip_if_needed(
-            self, positional_encodings: dict[int, Float[torch.Tensor, "..."]]
+        self, positional_encodings: dict[int, Float[torch.Tensor, "..."]]
     ) -> dict[int, Float[torch.Tensor, "..."]]:
         with torch.no_grad():
             if self.training and self.flip_sign_pe:
@@ -366,11 +414,14 @@ class CellularTransformer(nn.Module):
                 for dim in positional_encodings:
                     pe_dim = positional_encodings[dim]
                     rand_sign = (
-                            2
-                            * (
-                                    torch.rand(pe_dim.shape[0], 1, device=pe_dim.device) > 0.5
-                            ).float()
-                            - 1.0
+                        2
+                        * (
+                            torch.rand(
+                                pe_dim.shape[0], 1, device=pe_dim.device
+                            )
+                            > 0.5
+                        ).float()
+                        - 1.0
                     )
                     pe_dim_updated = rand_sign * pe_dim
                     updated_positional_encodings[dim] = pe_dim_updated
@@ -379,7 +430,7 @@ class CellularTransformer(nn.Module):
                 return positional_encodings
 
     def get_attention_matrices(
-            self, x: CellComplexData
+        self, x: CellComplexData
     ) -> dict[Interaction, SparseMatrix]:
         attention_masks = dict()
         # We iterate over all possible interactions through the whole set of layers.
@@ -387,10 +438,14 @@ class CellularTransformer(nn.Module):
             for interaction in tensor_diagram.interactions:
                 # We avoid recomputing the attention mask if it has already been computed.
                 if interaction not in attention_masks:
-                    attention_masks[interaction] = _get_attention_mask(x, interaction)
+                    attention_masks[interaction] = _get_attention_mask(
+                        x, interaction
+                    )
         return attention_masks
 
-    def get_batch_matrices(self, x: CellComplexData) -> dict[Interaction, SparseMatrix]:
+    def get_batch_matrices(
+        self, x: CellComplexData
+    ) -> dict[Interaction, SparseMatrix]:
         batch_masks = dict()
         # We iterate over all possible interactions through the whole set of layers.
         for tensor_diagram in self.layer_tensor_diagrams:
@@ -401,11 +456,11 @@ class CellularTransformer(nn.Module):
         return batch_masks
 
     def forward_readout(
-            self,
-            h: dict[int, Float[torch.Tensor, "..."]],
-            h_belongings: dict[int, Int[torch.Tensor, "total_signals"]],
+        self,
+        h: dict[int, Float[torch.Tensor, "..."]],
+        h_belongings: dict[int, Int[torch.Tensor, "total_signals"]],
     ) -> Float[torch.Tensor, "..."]:
-        # Global readouts are computed using all possible features at the final attention layer. 
+        # Global readouts are computed using all possible features at the final attention layer.
         # No readout is a layer that do not perform any computation and that directly accepts h and
         # h_belongings as input.
         if self.readout == Readout.NO_READOUT:
@@ -429,36 +484,48 @@ class CellularTransformer(nn.Module):
         h = self.predictor_head(h[0])
         match self.readout:
             case Readout.GLOBAL_ADD_POOLING:
-                out = self.readout_layer(x={0: h}, x_belongings={0: h_belongings[0]})
+                out = self.readout_layer(
+                    x={0: h}, x_belongings={0: h_belongings[0]}
+                )
                 out = (
-                        out[0] / self.num_heads
+                    out[0] / self.num_heads
                 )  # We use the vertex outputs and we normalize by the number of heads.
             case Readout.GLOBAL_MEAN_POOLING:
-                out = self.readout_layer(x={0: h}, x_belongings={0: h_belongings[0]})
+                out = self.readout_layer(
+                    x={0: h}, x_belongings={0: h_belongings[0]}
+                )
                 out = out[0]
                 # We do not normalize in this case as the mean pooling already does it.
             case Readout.GLOBAL_MAX_POOLING:
-                out = self.readout_layer(x={0: h}, x_belongings={0: h_belongings[0]})
+                out = self.readout_layer(
+                    x={0: h}, x_belongings={0: h_belongings[0]}
+                )
                 out = out[0]
                 # We do not normalize in this case as the max pooling only selects the value of one vertex.
             case Readout.GLOBAL_BASIC_COMBINATION_POOLING:
-                out = self.readout_layer(x={0: h}, x_belongings={0: h_belongings[0]})
+                out = self.readout_layer(
+                    x={0: h}, x_belongings={0: h_belongings[0]}
+                )
                 out = out[0]
                 # We do not normalize in this case as we are learning a weight for the sum and combining with the other
                 # two simple readouts mean and max.
             case _:
-                raise NotImplementedError(f"Readout {self.readout} is not implemented.")
+                raise NotImplementedError(
+                    f"Readout {self.readout} is not implemented."
+                )
         return out
 
     def forward_point_cloud_attention(
-            self,
-            h: dict[int, Float[torch.Tensor, "..."]],
-            batch_matrices: dict[Interaction, SparseMatrix],
-            attention_matrices: dict[Interaction, SparseMatrix],
+        self,
+        h: dict[int, Float[torch.Tensor, "..."]],
+        batch_matrices: dict[Interaction, SparseMatrix],
+        attention_matrices: dict[Interaction, SparseMatrix],
     ) -> dict[int, Float[torch.Tensor, "..."]]:
         (h_joint, joint_batch_matrix, joint_attention_matrix) = (
             PointCloudAttentionLayer.get_joint_signals_and_batch_and_attention_matrices(
-                x=h, batch_masks=batch_matrices, attention_masks=attention_matrices
+                x=h,
+                batch_masks=batch_matrices,
+                attention_masks=attention_matrices,
             )
         )
         for layer_idx in range(self.num_layers):
@@ -471,20 +538,25 @@ class CellularTransformer(nn.Module):
         return h_updated
 
     def forward_hierarchical_attention(
-            self,
-            h: dict[int, Float[torch.Tensor, "..."]],
-            batch_matrices: dict[Interaction, SparseMatrix],
-            attention_matrices: dict[Interaction, SparseMatrix],
+        self,
+        h: dict[int, Float[torch.Tensor, "..."]],
+        batch_matrices: dict[Interaction, SparseMatrix],
+        attention_matrices: dict[Interaction, SparseMatrix],
     ) -> dict[int, Float[torch.Tensor, "..."]]:
         for layer_idx in range(self.num_layers):
-            h = self.attention_layers[layer_idx](h, batch_matrices, attention_matrices)
+            h = self.attention_layers[layer_idx](
+                h, batch_matrices, attention_matrices
+            )
         return h
 
     def forward(self, x: CellComplexData) -> Float[torch.Tensor, "..."]:
         # h will contain the updated signals at each step.
         h = dict()
         # First we get the positional encodings and apply a random flip of the sign if needed.
-        if self.input_preprocessing_type == InputPreprocessing.NO_POSITIONAL_ENCODINGS:
+        if (
+            self.input_preprocessing_type
+            == InputPreprocessing.NO_POSITIONAL_ENCODINGS
+        ):
             positional_encodings = None
         else:
             positional_encodings = x.other_features["positional_encodings"]
@@ -499,7 +571,8 @@ class CellularTransformer(nn.Module):
         for dim in x.signals:
             pe_dim = (
                 None
-                if self.input_preprocessing_type == InputPreprocessing.NO_POSITIONAL_ENCODINGS
+                if self.input_preprocessing_type
+                == InputPreprocessing.NO_POSITIONAL_ENCODINGS
                 else positional_encodings[dim]
             )
             h[dim] = self.preproc_layers[dim](x.signals[dim], pe_dim)

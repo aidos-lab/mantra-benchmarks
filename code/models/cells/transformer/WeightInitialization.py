@@ -10,7 +10,7 @@ class WeightInitialization(Enum):
 
 
 def get_initialization_function(
-        initialization: WeightInitialization, gain: float = 1.0
+    initialization: WeightInitialization, gain: float = 1.0
 ):
     match initialization:
         case WeightInitialization.XAVIER_UNIFORM:

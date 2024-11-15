@@ -1,14 +1,24 @@
 from enum import Enum
 
-from models.cells.transformer.layers.readouts.AllGlobalAddPooling import AllGlobalAddPooling
+from models.cells.transformer.layers.readouts.AllGlobalAddPooling import (
+    AllGlobalAddPooling,
+)
 from models.cells.transformer.layers.readouts.GlobalAddPooling import (
     GlobalAddPooling,
 )
-from models.cells.transformer.layers.readouts.GlobalBasicCombinationPooling import GlobalBasicCombinationPooling
-from models.cells.transformer.layers.readouts.GlobalMaxPooling import GlobalMaxPooling
-from models.cells.transformer.layers.readouts.GlobalMeanPooling import GlobalMeanPooling
+from models.cells.transformer.layers.readouts.GlobalBasicCombinationPooling import (
+    GlobalBasicCombinationPooling,
+)
+from models.cells.transformer.layers.readouts.GlobalMaxPooling import (
+    GlobalMaxPooling,
+)
+from models.cells.transformer.layers.readouts.GlobalMeanPooling import (
+    GlobalMeanPooling,
+)
 from models.cells.transformer.layers.readouts.NoReadout import NoReadout
-from models.cells.transformer.layers.readouts.Set2SetPooling import Set2SetPooling
+from models.cells.transformer.layers.readouts.Set2SetPooling import (
+    Set2SetPooling,
+)
 
 
 class Readout(Enum):
@@ -41,4 +51,6 @@ def get_readout_layer(readout_type: Readout, **kwargs):
         case Readout.GLOBAL_BASIC_COMBINATION_POOLING:
             return GlobalBasicCombinationPooling()
         case _:
-            raise ValueError(f"Readout layer type {readout_type} not recognized.")
+            raise ValueError(
+                f"Readout layer type {readout_type} not recognized."
+            )

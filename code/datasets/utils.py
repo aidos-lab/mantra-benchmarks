@@ -90,29 +90,29 @@ def get_complex_connectivity(complex, max_rank, keep_scipy=False):
             if connectivity_info == "incidence" and rank_idx == 0:
                 continue
             try:
-                connectivity[
-                    f"{connectivity_info}_{rank_idx}"
-                ] = format_matrix(
-                    getattr(complex, f"{connectivity_info}_matrix")(
-                        rank=rank_idx, signed=False
+                connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                    format_matrix(
+                        getattr(complex, f"{connectivity_info}_matrix")(
+                            rank=rank_idx, signed=False
+                        )
                     )
                 )
             except ValueError:
                 if connectivity_info == "incidence":
-                    connectivity[
-                        f"{connectivity_info}_{rank_idx}"
-                    ] = generate_zero_sparse_connectivity(
-                        m=practical_shape[rank_idx - 1],
-                        n=practical_shape[rank_idx],
-                        scipy_format=keep_scipy,
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx - 1],
+                            n=practical_shape[rank_idx],
+                            scipy_format=keep_scipy,
+                        )
                     )
                 else:
-                    connectivity[
-                        f"{connectivity_info}_{rank_idx}"
-                    ] = generate_zero_sparse_connectivity(
-                        m=practical_shape[rank_idx],
-                        n=practical_shape[rank_idx],
-                        scipy_format=keep_scipy,
+                    connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                        generate_zero_sparse_connectivity(
+                            m=practical_shape[rank_idx],
+                            n=practical_shape[rank_idx],
+                            scipy_format=keep_scipy,
+                        )
                     )
         if rank_idx == 0:
             continue
@@ -123,12 +123,12 @@ def get_complex_connectivity(complex, max_rank, keep_scipy=False):
                 )
             )
         except ValueError:
-            connectivity[
-                f"{connectivity_info}_{rank_idx}"
-            ] = generate_zero_sparse_connectivity(
-                m=practical_shape[rank_idx - 1],
-                n=practical_shape[rank_idx],
-                scipy_format=keep_scipy,
+            connectivity[f"{connectivity_info}_{rank_idx}"] = (
+                generate_zero_sparse_connectivity(
+                    m=practical_shape[rank_idx - 1],
+                    n=practical_shape[rank_idx],
+                    scipy_format=keep_scipy,
+                )
             )
 
     """

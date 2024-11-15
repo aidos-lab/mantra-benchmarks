@@ -13,9 +13,9 @@ class NoReadout(BaseReadout):
         self,
         x: dict[int, Float[torch.Tensor, "..."], ...],
         x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
-        torch.Tensor, "..."
-    ]:
+    ) -> (
+        dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]
+    ):
         if self.only_faces:
             return x[2]
         return x

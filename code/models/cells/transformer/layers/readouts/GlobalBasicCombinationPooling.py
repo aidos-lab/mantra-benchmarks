@@ -28,9 +28,9 @@ class GlobalBasicCombinationPooling(BaseReadout):
         self,
         x: dict[int, Float[torch.Tensor, "..."], ...],
         x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
-        torch.Tensor, "..."
-    ]:
+    ) -> (
+        dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]
+    ):
         readout_result = dict()
         max_pooling_result = self.global_max_pooling(x, x_belongings)
         add_pooling_result = self.global_add_pooling(x, x_belongings)

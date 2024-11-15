@@ -4,15 +4,17 @@ from toponetx.utils import incidence_to_adjacency
 
 
 def cc_incidence_matrix(
-        cell_complex: CellComplex,
-        rank: int,
-        signed: bool = True,
-        index: bool = False,
+    cell_complex: CellComplex,
+    rank: int,
+    signed: bool = True,
+    index: bool = False,
 ) -> scipy.sparse.csr_matrix | tuple[dict, dict, scipy.sparse.csr_matrix]:
     """
     Same function as toponet but returns the boundary matrix of the cell complex in the correct order.
     """
-    nodelist = cell_complex.nodes  # order simplices as they appear in the cell complex
+    nodelist = (
+        cell_complex.nodes
+    )  # order simplices as they appear in the cell complex
     if rank == 0:
         A = scipy.sparse.lil_matrix((0, len(nodelist)))
         if index:
@@ -29,14 +31,15 @@ def cc_incidence_matrix(
     # edgelist contains edges composed by the indices of the vertices they contain sorted,
     # this is, with the induced orientation by the order of the vertices in the cell complex.
     edgelist = [
-        sorted((node_index[e[0]], node_index[e[1]])) for e in cell_complex.edges
+        sorted((node_index[e[0]], node_index[e[1]]))
+        for e in cell_complex.edges
     ]
     if rank == 1:
         A = scipy.sparse.lil_matrix((len(nodelist), len(edgelist)))
         for ei, e in enumerate(edgelist):
             (ui, vi) = e[
-                       :2
-                       ]  # Note that the indices are sorted, so we are orienting the edges
+                :2
+            ]  # Note that the indices are sorted, so we are orienting the edges
             # by the order of the nodes in the cell complex given by their indices
             A[ui, ei] = -1
             A[vi, ei] = 1
@@ -79,7 +82,9 @@ def cc_incidence_matrix(
                 # else:
                 #    A[ei, celli] = -1
         if index:
-            cell_index = {c.elements: i for i, c in enumerate(cell_complex.cells)}
+            cell_index = {
+                c.elements: i for i, c in enumerate(cell_complex.cells)
+            }
             if signed:
                 return edge_index, cell_index, A.asformat("csr")
             return edge_index, cell_index, abs(A.asformat("csr"))
@@ -91,11 +96,13 @@ def cc_incidence_matrix(
 
 
 def hodge_laplacian_matrix(
-        cell_complex: CellComplex,
-        rank: int,
-        signed: bool = True,
+    cell_complex: CellComplex,
+    rank: int,
+    signed: bool = True,
 ) -> scipy.sparse.csr_matrix:
-    assert cell_complex.dim >= rank >= 0  # No negative dimensional Hodge Laplacian
+    assert (
+        cell_complex.dim >= rank >= 0
+    )  # No negative dimensional Hodge Laplacian
     if cell_complex.dim > rank >= 0:
         up_laplacian = up_laplacian_matrix(cell_complex, rank, True)
     else:
@@ -124,9 +131,9 @@ def hodge_laplacian_matrix(
 
 
 def up_laplacian_matrix(
-        cell_complex: CellComplex,
-        rank: int,
-        signed: bool = True,
+    cell_complex: CellComplex,
+    rank: int,
+    signed: bool = True,
 ) -> scipy.sparse.csr_matrix:
     """
     Same function as toponet but returns the upper laplacian of the cell complex in the correct order.
@@ -145,7 +152,7 @@ def up_laplacian_matrix(
 
 
 def down_laplacian_matrix(
-        cell_complex: CellComplex, rank: int, signed: bool = True, weight=None
+    cell_complex: CellComplex, rank: int, signed: bool = True, weight=None
 ) -> scipy.sparse.csr_matrix:
     """
     Same function as toponet but returns the lower laplacian of the cell complex in the correct order.
@@ -166,7 +173,7 @@ def down_laplacian_matrix(
 
 
 def lower_adjacency(
-        cell_complex: CellComplex, dim: int, s: int = 1
+    cell_complex: CellComplex, dim: int, s: int = 1
 ) -> scipy.sparse.spmatrix:
     # A cell is neighbor of itself and all the other cells appearing in the lower hodge laplacian.
     if dim == 0:
@@ -180,7 +187,7 @@ def lower_adjacency(
 
 
 def upper_adjacency(
-        cell_complex: CellComplex, dim: int, s: int = 1
+    cell_complex: CellComplex, dim: int, s: int = 1
 ) -> scipy.sparse.spmatrix:
     if cell_complex.dim == dim:
         match dim:
@@ -198,6 +205,8 @@ def upper_adjacency(
                 )
     else:
         # A cell is neighbor of itself and all the other cells appearing in the upper hodge laplacian.
-        B_T = cc_incidence_matrix(cell_complex, dim + 1, signed=False).transpose()
+        B_T = cc_incidence_matrix(
+            cell_complex, dim + 1, signed=False
+        ).transpose()
         A = incidence_to_adjacency(B_T, s=s)
         return A.tocoo()

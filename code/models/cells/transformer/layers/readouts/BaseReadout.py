@@ -17,9 +17,9 @@ class BaseReadout(nn.Module, ABC):
         self,
         x: dict[int, Float[torch.Tensor, "..."], ...],
         x_belongings: dict[int, list[int]],
-    ) -> dict[int, Float[torch.Tensor, "..."], ...] | Float[
-        torch.Tensor, "..."
-    ]:
+    ) -> (
+        dict[int, Float[torch.Tensor, "..."], ...] | Float[torch.Tensor, "..."]
+    ):
         """
         :param x: Dict of signals for the different dimensions. The keys are the dimensions.
         :param x_belongings: Dict of signal belongings
