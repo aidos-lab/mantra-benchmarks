@@ -11,6 +11,7 @@ class ModelType(Enum):
     MLP = "mlp"
     TAG = "tag"
     TransfConv = "transfconv"
+    CELL_MP = "cell_mp"
 
 
 simplicial_models = [

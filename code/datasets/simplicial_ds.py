@@ -8,7 +8,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from typing import Dict, List, Literal, Tuple, Optional
 from torch_geometric.transforms import Compose
-from mantra.datasets import ManifoldTriangulations
+from mantra.simplicial import SimplicialDataset
 from torch_geometric.data import InMemoryDataset
 import os
 
@@ -56,7 +56,7 @@ class SimplicialDS(InMemoryDataset):
         self.task_type = task_type
         self.split = mode
         self.split_config = SplitConfig(split, seed, use_stratified)
-        self.raw_simplicial_ds = ManifoldTriangulations(
+        self.raw_simplicial_ds = SimplicialDataset(
             os.path.join(root, "raw_simplicial"),
             manifold,
             version,
