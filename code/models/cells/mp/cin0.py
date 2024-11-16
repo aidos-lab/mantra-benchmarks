@@ -160,10 +160,7 @@ class SparseCIN(torch.nn.Module):
 
     def __init__(
         self,
-        num_input_features,
-        num_classes,
-        num_layers,
-        hidden,
+        config: CellMPConfig,
         dropout_rate: float = 0.5,
         max_dim: int = 2,
         jump_mode=None,
@@ -178,6 +175,11 @@ class SparseCIN(torch.nn.Module):
         graph_norm="bn",
     ):
         super(SparseCIN, self).__init__()
+        
+        num_input_features = config.num_input_features
+        num_classes = config.num_classes
+        num_layers = config.num_layers
+        hidden = config.hidden
 
         self.max_dim = max_dim
         if readout_dims is not None:

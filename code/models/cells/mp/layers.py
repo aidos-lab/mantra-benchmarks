@@ -276,7 +276,6 @@ class SparseCINCochainConv(CochainMessagePassing):
             up_attr=cochain.kwargs["up_attr"],
             boundary_attr=cochain.kwargs["boundary_attr"],
         )
-
         # As in GIN, we can learn an injective update function for each multi-set
         out_up += (1 + self.eps1) * cochain.x
         out_boundaries += (1 + self.eps2) * cochain.x

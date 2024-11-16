@@ -808,3 +808,10 @@ class ComplexBatch(Complex):
         )
 
         return batch
+
+    @property
+    def batch_size(self) -> int:
+        return self.num_complexes
+
+    def __len__(self) -> int:
+        return self.num_complexes

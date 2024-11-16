@@ -2,9 +2,8 @@ import numpy as np
 import torch
 from toponetx import SimplicialComplex
 from torch.utils.data import DataLoader
-from torch_geometric.data.data import Data
+from torch_geometric.data import Data
 from typing import List
-
 from datasets.utils import eliminate_zeros_torch_sparse, torch_sparse_to_scipy_sparse
 from models.cells.mp.complex import ComplexBatch, Cochain, CochainBatch, Complex
 
@@ -109,10 +108,11 @@ def collate_cell_models(batch: List[Data]) -> ComplexBatch:
     ComplexBatch = [Complex(Data Point 1), Complex(Data Point 2)]
     """
     complexes = []
-    max_dim = max(x.sc.dim for x in batch)
+    max_dim = 0 max(x.sc.dim for x in batch)
 
     for data in batch:
         cochains = []
+        dim = max_dim
         for dim in range(max_dim + 1):
             cochain = data_to_cochain(data, dim, max_dim)
             cochains.append(cochain)

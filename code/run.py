@@ -29,7 +29,10 @@ from models.cells.mp.cin0 import CellMPConfig
 # CONFIG ---------------------------------------------------------------------
 
 # model
-model_config = CellMPConfig()
+model_config = CellMPConfig(
+    num_input_features=1,
+    num_classes=3,
+)
 transform_type = TransformType.degree_transform_sc
 # model_config = MLPConfig(
 #     num_hidden_neurons=64,

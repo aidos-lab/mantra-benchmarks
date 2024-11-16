@@ -21,7 +21,7 @@ from models.simplicial_complexes.san import SAN, SANConfig
 from models.simplicial_complexes.sccn import SCCN, SCCNConfig
 from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
-from models.cells.mp.cin0 import CIN0, CellMPConfig
+from models.cells.mp.cin0 import CIN0, CellMPConfig, SparseCIN
 
 model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.GAT: GAT,
@@ -33,7 +33,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.SCCNN: SCCNN,
     ModelType.SCN: SCN,
     ModelType.TransfConv: TransfConv,
-    ModelType.CELL_MP: CIN0,
+    ModelType.CELL_MP: SparseCIN,
 }
 
 ModelConfig = Union[
