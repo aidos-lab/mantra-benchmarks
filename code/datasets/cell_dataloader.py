@@ -108,7 +108,7 @@ def collate_cell_models(batch: List[Data]) -> ComplexBatch:
     ComplexBatch = [Complex(Data Point 1), Complex(Data Point 2)]
     """
     complexes = []
-    max_dim = 0 max(x.sc.dim for x in batch)
+    max_dim = max(x.sc.dim for x in batch)
 
     for data in batch:
         cochains = []
