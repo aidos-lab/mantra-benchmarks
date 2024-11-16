@@ -246,3 +246,36 @@ def torch_sparse_to_scipy_sparse(torch_tensor):
     )
 
     return scipy_sparse_matrix
+
+
+def eliminate_zeros_torch_sparse(sparse_tensor: torch.Tensor):
+    """
+        Remove zero entries from a PyTorch sparse tensor.
+
+        Args:
+            sparse_tensor (torch.sparse.Tensor): The input sparse tensor.
+
+        Returns:
+            torch.sparse.Tensor: A new sparse tensor with zero values removed.
+        """
+    if not sparse_tensor.is_coalesced():
+        sparse_tensor = sparse_tensor.coalesce()
+
+    # Get the indices and values
+    indices = sparse_tensor.indices()
+    values = sparse_tensor.values()
+
+    # Create a mask of non-zero values
+    non_zero_mask = values != 0
+
+    # Filter out zero entries
+    filtered_indices = indices[:, non_zero_mask]
+    filtered_values = values[non_zero_mask]
+
+    # Create a new sparse tensor without zero entries
+    new_sparse_tensor = torch.sparse_coo_tensor(
+        filtered_indices, filtered_values, sparse_tensor.size(), dtype=values.dtype, device=values.device
+    )
+
+    # Coalesce the new tensor to ensure indices are unique and sorted
+    return new_sparse_tensor.coalesce()
