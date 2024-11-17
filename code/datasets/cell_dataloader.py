@@ -1,6 +1,5 @@
 import numpy as np
 import torch
-from toponetx import SimplicialComplex
 from torch.utils.data import DataLoader
 from torch_geometric.data import Data
 from typing import List
@@ -13,11 +12,6 @@ class CellDataloader(DataLoader):
         collate_fn = kwargs.get("collate_fn", collate_cell_models)
         kwargs = {k: v for k, v in kwargs.items() if k != "collate_fn"}
         super().__init__(dataset, collate_fn=collate_fn, **kwargs)
-
-
-def get_boundary_index(sc: Data, dim: int):
-    if dim == 0:
-        return None  # No boundary for vertices
 
 
 def _get_shared_simplices(data: Data, adj_index, dim: int, cofaces: bool = False):
