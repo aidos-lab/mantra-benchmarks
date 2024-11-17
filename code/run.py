@@ -30,7 +30,7 @@ from models.cells.mp.cin0 import CellMPConfig
 
 # model
 model_config = CellMPConfig(
-    num_input_features=1,
+    num_input_features=8,
     num_classes=3,
 )
 transform_type = TransformType.degree_transform_sc
@@ -49,7 +49,7 @@ trainer_config = TrainerConfig(max_epochs=10, log_every_n_steps=1)
 config = ConfigExperimentRun(
     seed=10,
     ds_type=DatasetType.FULL_2D,
-    transforms=TransformType.degree_transform_sc,
+    transforms=TransformType.random_simplices_features,
     use_stratified=True,
     task_type=TaskType.BETTI_NUMBERS,
     trainer_config=trainer_config,
@@ -57,7 +57,7 @@ config = ConfigExperimentRun(
 )
 
 # data and logging
-data_dir = "/data"
+data_dir = "./data"
 use_logger = False
 devices = [0]
 run_id = str(uuid.uuid4())
