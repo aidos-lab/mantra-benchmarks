@@ -1,6 +1,3 @@
-[submodule "mantra"]
-	path = dependencies/mantra
-	url = git@github.com:aidos-lab/mantra.git
 [submodule "TopoModelX"]
 	path = dependencies/TopoModelX
 	url = git@github.com:pyt-team/TopoModelX.git
