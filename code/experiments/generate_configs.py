@@ -73,9 +73,14 @@ graph_features = [
     TransformType.degree_transform_onehot,
     TransformType.random_node_features,
 ]
-simplicial_features = [
-    TransformType.degree_transform_sc,
-    TransformType.random_simplices_features,
+simplicial_features_2d = [
+    TransformType.degree_transform_sc_2d,
+    TransformType.random_simplices_features_2d,
+]
+
+simplicial_features_3d = [
+    TransformType.degree_transform_sc_3d,
+    TransformType.random_simplices_features_3d,
 ]
 # ###########
 
@@ -102,8 +107,10 @@ feature_dim_dict = {
     TransformType.degree_transform: 1,
     TransformType.degree_transform_onehot: 10,
     TransformType.random_node_features: 8,
-    TransformType.degree_transform_sc: [1, 2, 1],
-    TransformType.random_simplices_features: [8, 8, 8],
+    TransformType.degree_transform_sc_2d: [1, 2, 1],
+    TransformType.random_simplices_features_2d: [8, 8, 8],
+    TransformType.degree_transform_sc_3d: [1, 2, 2, 1],
+    TransformType.random_simplices_features_3d: [8, 8, 8, 8],
 }
 
 out_channels_dict_mantra2_full = {
@@ -128,15 +135,17 @@ out_channels_dict_mantra3 = {
 
 
 # UTILS -----------------------------------------------------------------------
-def get_feature_types(model: ModelType):
+def get_feature_types(model: ModelType, ds_type: DatasetType):
     if model in graph_models:
         return graph_features
     else:
-        return simplicial_features
+        if ds_type in [DatasetType.FULL_2D, DatasetType.NO_NAMELESS_2D]:
+            return simplicial_features_2d
+        return simplicial_features_3d
 
 
 def get_model_config(
-    model: ModelType, out_channels: int, dim_features: int | tuple[int]
+        model: ModelType, out_channels: int, dim_features: int | tuple[int]
 ):
     model_config_cls = model_cfg_lookup[model]
     if model in graph_models:
@@ -176,8 +185,8 @@ def get_tasks(ds_type: DatasetType) -> List[TaskType]:
     tasks = (
         tasks_mantra2.copy()
         if (
-            ds_type == DatasetType.FULL_2D
-            or ds_type == DatasetType.NO_NAMELESS_2D
+                ds_type == DatasetType.FULL_2D
+                or ds_type == DatasetType.NO_NAMELESS_2D
         )
         else tasks_mantra3.copy()
     )
@@ -207,7 +216,7 @@ for ds_type in dataset_types:
         # if ds_type == DatasetType.FULL_3D and model in simplicial_models:
         #     continue
 
-        features = get_feature_types(model)
+        features = get_feature_types(model, ds_type)
         for feature in features:
             for task in tasks:
                 dim_features = feature_dim_dict[feature]

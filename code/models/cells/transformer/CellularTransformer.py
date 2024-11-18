@@ -276,9 +276,15 @@ class CellularTransformer(nn.Module):
         self.initialization = WeightInitialization.XAVIER_UNIFORM  # Fixed.
         self.dropout_final_mlp = config.dropout_final_mlp
         self.out_size = config.out_size
-        self.layer_tensor_diagrams = TensorDiagram(
-            "0->0,0->1,1->0,1->1,1->2,2->1,2->2"
-        )  # Fixed
+        if len(self.input_sizes.keys()) == 3:
+            self.layer_tensor_diagrams = TensorDiagram(
+                "0->0,0->1,1->0,1->1,1->2,2->1,2->2"
+            )  # Fixed
+        else:
+            # 3D
+            self.layer_tensor_diagrams = TensorDiagram(
+                "0->0,0->1,1->0,1->1,1->2,2->1,2->2,2->3,3->2,3->3"
+            )
         attention_mask_types = MaskType.SUM  # Fixed
         # Configuring the attention type. Here, we decide if we drop the hierarchical structure of the
         # cellular_data complex to perform attention.
