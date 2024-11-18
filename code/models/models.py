@@ -11,6 +11,7 @@ from datasets.topox_dataloader import SimplicialTopoXDataloader
 from models.GCN import GCN, GCNConfig
 from models.GAT import GAT, GATConfig
 from models.MLP import MLP, MLPConfig
+from models.DECT import DECTMLP, DECTConfig
 from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
 from .model_types import ModelType
@@ -22,6 +23,7 @@ from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
 
 model_lookup: Dict[ModelType, nn.Module] = {
+    ModelType.DECT: DECTMLP,
     ModelType.GAT: GAT,
     ModelType.GCN: GCN,
     ModelType.MLP: MLP,
@@ -34,6 +36,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
 }
 
 ModelConfig = Union[
+    Annotated[DECTConfig, Tag(ModelType.DECT)],
     Annotated[MLPConfig, Tag(ModelType.MLP)],
     Annotated[GATConfig, Tag(ModelType.GAT)],
     Annotated[GCNConfig, Tag(ModelType.GCN)],
@@ -46,6 +49,7 @@ ModelConfig = Union[
 ]
 
 model_cfg_lookup: Dict[ModelType, ModelConfig] = {
+    ModelType.DECT: DECTConfig,
     ModelType.GAT: GATConfig,
     ModelType.GCN: GCNConfig,
     ModelType.MLP: MLPConfig,
@@ -58,6 +62,7 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
 }
 
 dataloader_lookup: Dict[ModelType, Callable] = {
+    ModelType.DECT: DataLoader,
     ModelType.GAT: DataLoader,
     ModelType.GCN: DataLoader,
     ModelType.MLP: DataLoader,
