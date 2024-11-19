@@ -26,7 +26,6 @@ class EctConfig:
     num_thetas: int = 32
     bump_steps: int = 32
     r: float = 1.1
-    ect_type: str = "points"
     normalized: bool = True
 
 
@@ -65,6 +64,88 @@ def compute_ect_points(data, index, v, lin, out, scale):
     return compute_ecc(nh, index, lin, out, scale)
 
 
+def compute_ect_faces(batch, index, v, lin, out, scale):
+    """Computes the Euler Characteristic Transform of a batch of meshes.
+
+    Parameters
+    ----------
+    batch : Batch
+        A batch of data containing the node coordinates, edges, faces and batch
+        index.
+    v: torch.FloatTensor
+        The direction vector that contains the directions.
+    lin: torch.FloatTensor
+        The discretization of the interval [-1,1] each node height falls in this
+        range due to rescaling in normalizing the data.
+    """
+    # Compute the node heigths
+    nh = batch.x @ v
+
+    # Perform a lookup with the edge indices on node heights, this replaces the
+    # node index with its node height and then compute the maximum over the
+    # columns to compute the edge height.
+    eh, _ = nh[batch.edge_index].max(dim=0)
+
+    # Do the same thing for the faces.
+    fh, _ = nh[batch.face].max(dim=0)
+
+    # Compute which batch an edge belongs to. We take the first index of the
+    # edge (or faces) and do a lookup on the batch index of that node in the
+    # batch indices of the nodes.
+    batch_index_nodes = batch.batch
+    batch_index_edges = batch.batch[batch.edge_index[0]]
+    batch_index_faces = batch.batch[batch.face[0]]
+
+    return (
+        compute_ecc(nh, batch_index_nodes, lin, out, scale)
+        - compute_ecc(eh, batch_index_edges, lin, out, scale)
+        + compute_ecc(fh, batch_index_faces, lin, out, scale)
+    )
+
+
+def compute_ect_tetrahedra(batch, index, v, lin, out, scale):
+    """Computes the Euler Characteristic Transform of a batch of meshes.
+
+    Parameters
+    ----------
+    batch : Batch
+        A batch of data containing the node coordinates, edges, faces and batch
+        index.
+    v: torch.FloatTensor
+        The direction vector that contains the directions.
+    lin: torch.FloatTensor
+        The discretization of the interval [-1,1] each node height falls in this
+        range due to rescaling in normalizing the data.
+    """
+    # Compute the node heigths
+    nh = batch.x @ v
+
+    # Perform a lookup with the edge indices on node heights, this replaces the
+    # node index with its node height and then compute the maximum over the
+    # columns to compute the edge height.
+    eh, _ = nh[batch.edge_index].max(dim=0)
+
+    # Do the same thing for the faces.
+    fh, _ = nh[batch.face].max(dim=0)
+
+    # Do the same thing for the faces.
+    th, _ = nh[batch.triangulation.T].max(dim=0)
+
+    # Compute which batch an edge belongs to. We take the first index of the
+    # edge (or faces) and do a lookup on the batch index of that node in the
+    # batch indices of the nodes.
+    batch_index_nodes = batch.batch
+    batch_index_edges = batch.batch[batch.edge_index[0]]
+    batch_index_faces = batch.batch[batch.face[0]]
+    batch_index_triangulation = batch.batch[batch.triangulation.T[0]]
+    return (
+        compute_ecc(nh, batch_index_nodes, lin, out, scale)
+        - compute_ecc(eh, batch_index_edges, lin, out, scale)
+        + compute_ecc(fh, batch_index_faces, lin, out, scale)
+        - compute_ecc(th, batch_index_triangulation, lin, out, scale)
+    )
+
+
 class EctLayer(nn.Module):
     """Docstring for EctLayer."""
 
@@ -83,9 +164,6 @@ class EctLayer(nn.Module):
             raise AttributeError("Please provide the directions")
         self.v = nn.Parameter(v, requires_grad=False)
 
-        if config.ect_type == "points":
-            self.compute_ect = compute_ect_points
-
     def forward(self, data: Data, index, scale=500):
         """Forward method"""
         out = torch.zeros(
@@ -96,7 +174,16 @@ class EctLayer(nn.Module):
             ),
             device=data.x.device,
         )
-        ect = self.compute_ect(data, index, self.v, self.lin, out, scale)
+
+        if data.triangulation.shape[1] == 3:
+            ect = compute_ect_faces(data, index, self.v, self.lin, out, scale)
+        elif data.triangulation.shape[1] == 4:
+            ect = compute_ect_tetrahedra(
+                data, index, self.v, self.lin, out, scale
+            )
+        else:
+            raise ValueError("The triangulation is not correct.")
+
         if self.config.normalized:
             return ect / torch.amax(ect, dim=(1, 2)).unsqueeze(1).unsqueeze(1)
         return ect

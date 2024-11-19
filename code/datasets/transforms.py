@@ -71,7 +71,7 @@ class TriangulationToFaceTransform:
     the FaceToEdge transform by default creates undirected edges.
     """
 
-    def __init__(self, remove_triangulation: bool = True) -> None:
+    def __init__(self, remove_triangulation: bool = False) -> None:
         self.remove_triangulation = remove_triangulation
 
     def __call__(self, data):
@@ -87,6 +87,8 @@ class TriangulationToFaceTransform:
 
             if self.remove_triangulation:
                 data.triangulation = None
+            else:
+                data.triangulation = torch.tensor(data.triangulation)
 
         return data
 
