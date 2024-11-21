@@ -162,7 +162,7 @@ def append_signals(data, signals_key, signals):
     if signals_key not in data.x:
         data.x[signals_key] = signals
     else:
-        data.x[signals_key] = torch.concatenate([data.x[1], signals], dim=1)
+        data.x[signals_key] = torch.concatenate([data.x[signals_key], signals], dim=1)
     return data
 
 
