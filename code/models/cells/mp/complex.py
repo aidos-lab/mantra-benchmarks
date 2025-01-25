@@ -791,7 +791,13 @@ class ComplexBatch(Complex):
                     cochains[dim].append(comp.cochains[dim])
             per_complex_labels &= comp.y is not None
             if per_complex_labels:
-                label_list.append(comp.y)
+
+                if comp.y.dim() == 0:
+                    y = comp.y.unsqueeze(0)
+                else:
+                    y = comp.y
+
+                label_list.append(y)
 
         batched_cochains = [
             CochainBatch.from_cochain_list(

@@ -71,11 +71,12 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
     ModelType.SCN: SCNConfig,
     ModelType.TransfConv: TransfConvConfig,
     ModelType.CELL_MP: CellMPConfig,
+    ModelType.CELL_TRANSF: CellularTransformerConfig,
 }
 
 dataloader_lookup: Dict[ModelType, Callable] = {
     ModelType.DECT: DataLoader,
-    ModelType.CELL_MP: DataLoader,
+    ModelType.CELL_MP: CellDataloader,
     ModelType.GAT: DataLoader,
     ModelType.GCN: DataLoader,
     ModelType.MLP: DataLoader,

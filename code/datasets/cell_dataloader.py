@@ -30,7 +30,7 @@ def _get_shared_simplices(
     }
     simplices_related_dim = dim + 1 if cofaces else dim - 1
     simplices_related = {
-        simplex: i
+        tuple(simplex): i
         for i, simplex in enumerate(data.sc.skeleton(simplices_related_dim))
     }
     common_cofaces = []

@@ -1,6 +1,9 @@
 #!/bin/bash
 
 python ./experiments/generate_configs.py \
-    --max_epochs 6 \
+    --max_epochs 10 \
     --lr 0.001 \
-    --config_dir "/data/configs" \
+    --config_dir "/data/configs_3manifolds" \
+    --three_manifold_only \
+    # --random_transform_only \
+    # --degree_transform_only

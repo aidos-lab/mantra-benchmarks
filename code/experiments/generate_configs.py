@@ -45,11 +45,32 @@ parser.add_argument(
     help="Whether to weight loss terms with imbalance weights.",
 )
 
+parser.add_argument(
+    "--three_manifold_only",
+    action="store_true",
+    help="Whether to use only the 3-manifold dataset only.",
+)
+
+parser.add_argument(
+    "--random_transform_only",
+    action="store_true",
+    help="Whether to use random transform only.",
+)
+
+parser.add_argument(
+    "--degree_transform_only",
+    action="store_true",
+    help="Whether to use degree_transform_only only.",
+)
+
 args = parser.parse_args()
 max_epochs: int = args.max_epochs
 lr: float = args.lr
 config_dir: str = args.config_dir
 use_imbalance_weights: bool = args.use_imbalance_weighting
+three_manifold_only: bool = args.three_manifold_only
+random_transform_only: bool = args.random_transform_only
+degree_transform_only: bool = args.degree_transform_only
 # -----------------------------------------------------------------------------
 
 # CONFIGS ---------------------------------------------------------------------
@@ -68,11 +89,20 @@ tasks_mantra3 = [TaskType.BETTI_NUMBERS, TaskType.ORIENTABILITY]
 # ###########
 
 # TRANSFORMS
-graph_features = [
+graph_features_degree = [
     TransformType.degree_transform,
     TransformType.degree_transform_onehot,
+]
+
+graph_features_random = [
     TransformType.random_node_features,
 ]
+
+if degree_transform_only and random_transform_only:
+    raise ValueError()
+
+graph_features = graph_features_random + graph_features_degree
+
 simplicial_features_2d = [
     TransformType.degree_transform_sc_2d,
     TransformType.random_simplices_features_2d,
@@ -82,6 +112,18 @@ simplicial_features_3d = [
     TransformType.degree_transform_sc_3d,
     TransformType.random_simplices_features_3d,
 ]
+
+if degree_transform_only:
+    graph_features = graph_features_degree
+    simplicial_features_2d = [TransformType.degree_transform_sc_2d]
+    simplicial_features_3d = [TransformType.degree_transform_sc_3d]
+
+if random_transform_only:
+    graph_features = graph_features_random
+    simplicial_features_2d = [TransformType.random_simplices_features_2d]
+    simplicial_features_3d = [TransformType.degree_transform_sc_3d]
+
+
 # ###########
 
 # MODELS ####
@@ -91,6 +133,7 @@ graph_models = {
     ModelType.MLP,
     ModelType.TAG,
     ModelType.TransfConv,
+    ModelType.DECT,
 }
 simplicial_models = {
     ModelType.SAN,
@@ -98,6 +141,7 @@ simplicial_models = {
     ModelType.SCCNN,
     ModelType.SCN,
     ModelType.CELL_TRANSF,
+    ModelType.CELL_MP,
 }
 models = list(graph_models) + list(simplicial_models)
 # ###########
@@ -162,6 +206,11 @@ def get_model_config(
             },
             out_size=out_channels,
         )
+    elif model == ModelType.CELL_MP:
+        model_config = model_config_cls(
+            num_input_features=dim_features,
+            num_classes=out_channels,
+        )
     else:
         model_config = model_config_cls(
             out_channels=out_channels, in_channels=tuple(dim_features)
@@ -210,16 +259,20 @@ def get_out_channels_dict(ds_type: DatasetType) -> Dict[TaskType, int]:
 manage_directory(config_dir)
 
 for ds_type in dataset_types:
+
+    if three_manifold_only and ds_type != DatasetType.FULL_3D:
+        continue
+
     tasks = get_tasks(ds_type)
     for model in models:
-
-        # if ds_type == DatasetType.FULL_3D and model in simplicial_models:
-        #     continue
-
         features = get_feature_types(model, ds_type)
         for feature in features:
             for task in tasks:
-                dim_features = feature_dim_dict[feature]
+                dim_features = (
+                    feature_dim_dict[feature]
+                    if model != ModelType.CELL_MP
+                    else 8
+                )
                 out_channels = get_out_channels_dict(ds_type)[task]
                 model_config = get_model_config(
                     model, out_channels, dim_features
