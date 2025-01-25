@@ -31,12 +31,6 @@ def run_configs_folder(
             config_file = os.path.join(config_dir, file)
             config = load_config(config_file)
 
-            if config.conf_model.type != ModelType.CELL_TRANSF:
-                print("[INFO] Skipping all models except cell transformer")
-                continue
-            if config.ds_type != DatasetType.FULL_3D:
-                print("[INFO] Skipping all dataset except of full_3d.")
-                continue
             print("[INFO] Using configuration file:", config_file)
             print_info(config)
 
@@ -113,7 +107,7 @@ if __name__ == "__main__":
         nargs="+",
         type=int,
         help="List of GPU IDs to use.",
-        default=[3, 4, 5],
+        default=[0],
     )
 
     args = parser.parse_args()
