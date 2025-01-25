@@ -1,16 +1,17 @@
-from models.model_types import simplicial_models, graphbased_models
 from typing import Dict
-from metrics.tasks import TaskType
-import pandas as pd
-from datasets.transforms import TransformType
-from .utils import get_matching_indeces, get_metric_col_names, format_res_val
+
 import numpy as np
+import pandas as pd
+
+from datasets.transforms import TransformType
+from metrics.tasks import TaskType
+from models.model_types import simplicial_models, graphbased_models
+from .utils import get_matching_indeces, get_metric_col_names, format_res_val
 
 
 def per_barycentric_subdivision(
     result_dataframes: Dict[TaskType, pd.DataFrame]
 ):
-
     model_families = [
         {"models": simplicial_models, "name": "simplicial"},
         {"models": graphbased_models, "name": "graphbased"},

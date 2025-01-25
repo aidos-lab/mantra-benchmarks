@@ -3,23 +3,27 @@ Collection of models. Useful for quantitative comparisons and templating.
 """
 
 from typing import Dict, Union, Annotated, Callable
-from pydantic import Tag
+
 import torch.nn as nn
+from pydantic import Tag
 from torch_geometric.loader import DataLoader
 
 from datasets.topox_dataloader import SimplicialTopoXDataloader
-from models.GCN import GCN, GCNConfig
+from datasets.transformer_dataloader import TransformerDataloader
 from models.GAT import GAT, GATConfig
-from models.MLP import MLP, MLPConfig
-from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
-from .model_types import ModelType
-from pydantic import BaseModel
-
+from models.TransfConv import TransfConv, TransfConvConfig
 from models.simplicial_complexes.san import SAN, SANConfig
 from models.simplicial_complexes.sccn import SCCN, SCCNConfig
 from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
+from .GCN import GCN, GCNConfig
+from .MLP import MLP, MLPConfig
+from .cells.transformer.CellularTransformer import (
+    CellularTransformer,
+    CellularTransformerConfig,
+)
+from .model_types import ModelType
 
 model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.GAT: GAT,
@@ -31,6 +35,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
     ModelType.SCCNN: SCCNN,
     ModelType.SCN: SCN,
     ModelType.TransfConv: TransfConv,
+    ModelType.CELL_TRANSF: CellularTransformer,
 }
 
 ModelConfig = Union[
@@ -43,6 +48,7 @@ ModelConfig = Union[
     Annotated[SCCNConfig, Tag(ModelType.SCCN)],
     Annotated[SCCNNConfig, Tag(ModelType.SCCNN)],
     Annotated[SCNConfig, Tag(ModelType.SCN)],
+    Annotated[CellularTransformerConfig, Tag(ModelType.CELL_TRANSF)],
 ]
 
 model_cfg_lookup: Dict[ModelType, ModelConfig] = {
@@ -55,6 +61,7 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
     ModelType.SCCNN: SCCNNConfig,
     ModelType.SCN: SCNConfig,
     ModelType.TransfConv: TransfConvConfig,
+    ModelType.CELL_TRANSF: CellularTransformerConfig,
 }
 
 dataloader_lookup: Dict[ModelType, Callable] = {
@@ -67,4 +74,5 @@ dataloader_lookup: Dict[ModelType, Callable] = {
     ModelType.SCCNN: SimplicialTopoXDataloader,
     ModelType.SCN: SimplicialTopoXDataloader,
     ModelType.TransfConv: DataLoader,
+    ModelType.CELL_TRANSF: TransformerDataloader,
 }

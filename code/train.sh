@@ -1,8 +1,8 @@
 #!/bin/bash
 
-python ./experiments/train.py \
-    --mode "single" \
-    --config "./configs/gat_betti_numbers_degree_transform_onehot.yaml" \
-    --wandb "mantra-proj" \
-    --checkpoints "../data/checkpoints" \
-    --data "../data"
+sudo /deps/venv/bin/python ./experiments/train.py \
+    --mode "all" \
+    --Configs "/data/configs/" \
+    --wandb "mantra-proj-transformer-3manifolds" \
+    --checkpoints "/data/checkpoints" \
+    --data "/data"

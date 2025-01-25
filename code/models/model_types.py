@@ -9,6 +9,7 @@ class ModelType(Enum):
     GAT = "gat"
     GCN = "gcn"
     MLP = "mlp"
+    CELL_TRANSF = "celltrans"
     TAG = "tag"
     TransfConv = "transfconv"
 
@@ -18,6 +19,7 @@ simplicial_models = [
     ModelType.SCCN,
     ModelType.SCCNN,
     ModelType.SCN,
+    ModelType.CELL_TRANSF,
 ]
 graphbased_models = [t for t in ModelType if t not in simplicial_models]
 
