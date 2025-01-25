@@ -1,3 +1,6 @@
 [submodule "TopoModelX"]
 	path = dependencies/TopoModelX
 	url = git@github.com:pyt-team/TopoModelX.git
+[submodule "dependencies/dect"]
+	path = dependencies/dect
+	url = git@github.com:aidos-lab/dect.git
