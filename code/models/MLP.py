@@ -3,8 +3,9 @@ Multi-Layer Perceptron implementation.
 """
 
 import torch.nn as nn
-from torch_geometric.nn import pool
 from pydantic import BaseModel
+from torch_geometric.nn import pool
+
 from .model_types import ModelType
 
 

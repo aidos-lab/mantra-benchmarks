@@ -1,17 +1,19 @@
+import os
+from collections import Counter
 from typing import Callable
+from typing import List
+
 from lightning import LightningDataModule
 from torch_geometric.loader import DataLoader as DataLoaderGeometric
 from torch_geometric.transforms import Compose
-from collections import Counter
-from typing import List
-from .simplicial_ds import SimplicialDS
-from metrics.tasks import TaskType
+
 from datasets.dataset_types import DatasetType, filter_nameless
-import os
 from datasets.transforms import (
     BarycentricSubdivisionTransform,
     SimplicialComplexTransform,
 )
+from metrics.tasks import TaskType
+from .simplicial_ds import SimplicialDS
 
 
 def unique_counts(input_list: List[str]) -> Counter:
@@ -118,15 +120,17 @@ class SimplicialDataModule(LightningDataModule):
 
     def train_dataloader(self):
         return self.dataloader_builder(
-            self.train_ds, batch_size=self.batch_size
+            self.train_ds, batch_size=self.batch_size, num_workers=8
         )
 
     def val_dataloader(self):
-        return self.dataloader_builder(self.val_ds, batch_size=self.batch_size)
+        return self.dataloader_builder(
+            self.val_ds, batch_size=self.batch_size, num_workers=8
+        )
 
     def test_dataloader(self):
         return self.dataloader_builder(
-            self.test_ds, batch_size=self.batch_size
+            self.test_ds, batch_size=self.batch_size, num_workers=8
         )
 
 

@@ -3,9 +3,10 @@ Implementation for Graph Convolutional Neural Network.
 """
 
 import torch.nn.functional as F
+from pydantic import BaseModel
 from torch import nn
 from torch_geometric.nn import GCNConv, global_mean_pool
-from pydantic import BaseModel
+
 from .model_types import ModelType
 
 

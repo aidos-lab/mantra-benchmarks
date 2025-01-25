@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 from experiments.utils.configs import load_config, ConfigExperimentRun
@@ -8,6 +8,8 @@ import os
 import argparse
 from typing import Dict, Any, List, Optional
 from experiments.utils.result_collection import ResultCollection
+from datasets.dataset_types import DatasetType
+from models.model_types import ModelType
 
 
 def print_info(config: ConfigExperimentRun):

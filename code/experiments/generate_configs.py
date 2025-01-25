@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 sys.path.append(os.curdir)
 from metrics.tasks import TaskType
@@ -73,9 +73,14 @@ graph_features = [
     TransformType.degree_transform_onehot,
     TransformType.random_node_features,
 ]
-simplicial_features = [
-    TransformType.degree_transform_sc,
-    TransformType.random_simplices_features,
+simplicial_features_2d = [
+    TransformType.degree_transform_sc_2d,
+    TransformType.random_simplices_features_2d,
+]
+
+simplicial_features_3d = [
+    TransformType.degree_transform_sc_3d,
+    TransformType.random_simplices_features_3d,
 ]
 # ###########
 
@@ -92,6 +97,7 @@ simplicial_models = {
     ModelType.SCCN,
     ModelType.SCCNN,
     ModelType.SCN,
+    ModelType.CELL_TRANSF,
 }
 models = list(graph_models) + list(simplicial_models)
 # ###########
@@ -101,8 +107,10 @@ feature_dim_dict = {
     TransformType.degree_transform: 1,
     TransformType.degree_transform_onehot: 10,
     TransformType.random_node_features: 8,
-    TransformType.degree_transform_sc: [1, 2, 1],
-    TransformType.random_simplices_features: [8, 8, 8],
+    TransformType.degree_transform_sc_2d: [1, 2, 1],
+    TransformType.random_simplices_features_2d: [8, 8, 8],
+    TransformType.degree_transform_sc_3d: [1, 2, 2, 1],
+    TransformType.random_simplices_features_3d: [8, 8, 8, 8],
 }
 
 out_channels_dict_mantra2_full = {
@@ -119,17 +127,21 @@ out_channels_dict_mantra3 = {
     TaskType.ORIENTABILITY: 1,
     TaskType.BETTI_NUMBERS: 4,
 }
+
+
 # ###########
 
 # -----------------------------------------------------------------------------
 
 
 # UTILS -----------------------------------------------------------------------
-def get_feature_types(model: ModelType):
+def get_feature_types(model: ModelType, ds_type: DatasetType):
     if model in graph_models:
         return graph_features
     else:
-        return simplicial_features
+        if ds_type in [DatasetType.FULL_2D, DatasetType.NO_NAMELESS_2D]:
+            return simplicial_features_2d
+        return simplicial_features_3d
 
 
 def get_model_config(
@@ -139,6 +151,16 @@ def get_model_config(
     if model in graph_models:
         model_config = model_config_cls(
             out_channels=out_channels, num_node_features=dim_features
+        )
+    elif model == ModelType.CELL_TRANSF:
+        model_config = model_config_cls(
+            input_sizes={
+                i: dim_feat for i, dim_feat in enumerate(dim_features)
+            },
+            positional_encodings_lengths={
+                i: 8 for i in range(len(dim_features))
+            },
+            out_size=out_channels,
         )
     else:
         model_config = model_config_cls(
@@ -194,7 +216,7 @@ for ds_type in dataset_types:
         # if ds_type == DatasetType.FULL_3D and model in simplicial_models:
         #     continue
 
-        features = get_feature_types(model)
+        features = get_feature_types(model, ds_type)
         for feature in features:
             for task in tasks:
                 dim_features = feature_dim_dict[feature]

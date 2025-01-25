@@ -3,6 +3,7 @@ Logging via wandb.
 """
 
 from lightning.pytorch.loggers import WandbLogger
+
 from metrics.tasks import TaskType
 
 

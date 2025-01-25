@@ -1,11 +1,7 @@
-import random
-
 import matplotlib
 import matplotlib.lines as mlines
-import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import matplotlib.ticker
-import numpy as np
 
 import experiments.vis.us_cmap as us_cmap
 

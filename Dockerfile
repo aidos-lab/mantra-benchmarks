@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.6.1-devel-ubuntu20.04
+FROM nvidia/cuda:12.1.1-devel-ubuntu20.04
 
 # Add the current user to the image, to use the same user as the host. run the command "id" to find out your ids.
 ARG USER_NAME=<username>
@@ -31,12 +31,15 @@ WORKDIR /deps
 COPY dependencies /deps/
 COPY pyproject.toml /deps/
 COPY .git /.git
-RUN git config --global --add safe.directory /deps/mantra && git config --global --add safe.directory /deps/TopoModelX && git config --global --add safe.directory /
+RUN git config --global --add safe.directory /deps/TopoModelX && git config --global --add safe.directory /
 
 # set up virtual environment
 RUN python3 -m venv /deps/venv && . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry 
 RUN . /deps/venv/bin/activate && poetry install 
-RUN . /deps/venv/bin/activate && pip install -e /deps/mantra/ /deps/TopoModelX/
+RUN . /deps/venv/bin/activate && pip install -e /deps/TopoModelX/
+RUN . /deps/venv/bin/activate && pip install dgl -f https://data.dgl.ai/wheels/torch-2.3/cu121/repo.html
+RUN . /deps/venv/bin/activate && pip install torch-scatter --no-build-isolation -f https://data.pyg.org/whl/torch-2.3.0+cu121.html
+RUN . /deps/venv/bin/activate && pip install torch-sparse --no-build-isolation -f https://data.pyg.org/whl/torch-2.3.0+cu121.html
 
 # Set the default user to the new user
 USER $USER_NAME

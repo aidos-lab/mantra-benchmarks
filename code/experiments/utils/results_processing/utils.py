@@ -1,12 +1,13 @@
+from enum import Enum
 from typing import List, Tuple, Optional, Dict
+
+import numpy as np
 import pandas as pd
+
+from datasets.dataset_types import DatasetType
+from datasets.transforms import TransformType
 from metrics.tasks import TaskType
 from models.models import ModelType
-from datasets.transforms import TransformType
-from datasets.dataset_types import DatasetType
-from experiments.utils.enum_utils import enum_from_str_id
-from enum import Enum
-import numpy as np
 
 
 def get_max_info(enums: List[Enum], results: np.ndarray) -> Enum:
