@@ -175,7 +175,7 @@ class SparseCIN(torch.nn.Module):
         graph_norm="bn",
     ):
         super(SparseCIN, self).__init__()
-        
+
         num_input_features = config.num_input_features
         num_classes = config.num_classes
         num_layers = config.num_layers

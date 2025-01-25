@@ -3,8 +3,16 @@ import torch
 from torch.utils.data import DataLoader
 from torch_geometric.data import Data
 from typing import List
-from datasets.utils import eliminate_zeros_torch_sparse, torch_sparse_to_scipy_sparse
-from models.cells.mp.complex import ComplexBatch, Cochain, CochainBatch, Complex
+from datasets.utils import (
+    eliminate_zeros_torch_sparse,
+    torch_sparse_to_scipy_sparse,
+)
+from models.cells.mp.complex import (
+    ComplexBatch,
+    Cochain,
+    CochainBatch,
+    Complex,
+)
 
 
 class CellDataloader(DataLoader):
@@ -14,10 +22,17 @@ class CellDataloader(DataLoader):
         super().__init__(dataset, collate_fn=collate_fn, **kwargs)
 
 
-def _get_shared_simplices(data: Data, adj_index, dim: int, cofaces: bool = False):
-    simplices_dim = {i: simplex for i, simplex in enumerate(data.sc.skeleton(dim))}
+def _get_shared_simplices(
+    data: Data, adj_index, dim: int, cofaces: bool = False
+):
+    simplices_dim = {
+        i: simplex for i, simplex in enumerate(data.sc.skeleton(dim))
+    }
     simplices_related_dim = dim + 1 if cofaces else dim - 1
-    simplices_related = {simplex: i for i, simplex in enumerate(data.sc.skeleton(simplices_related_dim))}
+    simplices_related = {
+        simplex: i
+        for i, simplex in enumerate(data.sc.skeleton(simplices_related_dim))
+    }
     common_cofaces = []
     for i in range(adj_index.shape[1]):
         s1_idx = adj_index[0, i].item()
@@ -75,21 +90,50 @@ def data_to_cochain(data: Data, dim: int, max_dim: int):
     Convert a SimplicialComplex object into a Cochain object for a given dimension.
     """
     x = data.x[dim]
-    upper_index, upper_orient = extract_adj_from_boundary(
-        torch_sparse_to_scipy_sparse(data.connectivity[f"boundary_{dim+1}"].T)
-    ) if (dim < data.sc.dim) and (dim < max_dim) else (None, None)
-    lower_index, lower_orient = extract_adj_from_boundary(
-        torch_sparse_to_scipy_sparse(data.connectivity[f"boundary_{dim}"])
-    ) if (dim < data.sc.dim) and (dim > 0) else (None, None)
-    shared_boundaries = _get_shared_simplices(data, lower_index, dim, cofaces=False) \
-        if lower_index is not None else None
-    shared_coboundaries = _get_shared_simplices(data, upper_index, dim, cofaces=True) \
-        if upper_index is not None else None
-    boundary_index = data.connectivity[f"boundary_{dim}"].indices() if dim > 0 else None
+    upper_index, upper_orient = (
+        extract_adj_from_boundary(
+            torch_sparse_to_scipy_sparse(
+                data.connectivity[f"boundary_{dim+1}"].T
+            )
+        )
+        if (dim < data.sc.dim) and (dim < max_dim)
+        else (None, None)
+    )
+    lower_index, lower_orient = (
+        extract_adj_from_boundary(
+            torch_sparse_to_scipy_sparse(data.connectivity[f"boundary_{dim}"])
+        )
+        if (dim < data.sc.dim) and (dim > 0)
+        else (None, None)
+    )
+    shared_boundaries = (
+        _get_shared_simplices(data, lower_index, dim, cofaces=False)
+        if lower_index is not None
+        else None
+    )
+    shared_coboundaries = (
+        _get_shared_simplices(data, upper_index, dim, cofaces=True)
+        if upper_index is not None
+        else None
+    )
+    boundary_index = (
+        data.connectivity[f"boundary_{dim}"].indices() if dim > 0 else None
+    )
     y = getattr(data, "y", None)
     # TODO: Mapping is not used in their implementation, so I leave it as None for now
-    return Cochain(dim, x, upper_index, lower_index, shared_boundaries, shared_coboundaries,
-                   None, boundary_index, upper_orient, lower_orient, y)
+    return Cochain(
+        dim,
+        x,
+        upper_index,
+        lower_index,
+        shared_boundaries,
+        shared_coboundaries,
+        None,
+        boundary_index,
+        upper_orient,
+        lower_orient,
+        y,
+    )
 
 
 def collate_cell_models(batch: List[Data]) -> ComplexBatch:
@@ -110,16 +154,11 @@ def collate_cell_models(batch: List[Data]) -> ComplexBatch:
         for dim in range(max_dim + 1):
             cochain = data_to_cochain(data, dim, max_dim)
             cochains.append(cochain)
-        complex = Complex(
-            *cochains,
-            y=data.y,
-            dimension=max_dim
-        )
+        complex = Complex(*cochains, y=data.y, dimension=max_dim)
         complexes.append(complex)
 
     cochain_batch = ComplexBatch.from_complex_list(
-        data_list=complexes,
-        max_dim=max_dim
+        data_list=complexes, max_dim=max_dim
     )
 
     return cochain_batch
