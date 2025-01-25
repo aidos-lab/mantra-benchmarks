@@ -71,7 +71,6 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
     ModelType.SCN: SCNConfig,
     ModelType.TransfConv: TransfConvConfig,
     ModelType.CELL_MP: CellMPConfig,
-
 }
 
 dataloader_lookup: Dict[ModelType, Callable] = {
