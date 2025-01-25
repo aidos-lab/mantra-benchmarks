@@ -1,6 +1,7 @@
+from typing import Tuple, List
+
 import pandas as pd
 import wandb
-from typing import Tuple, List
 
 
 def setup_wandb(wandb_project_id: str = "mantra-dev-run-3"):
@@ -93,7 +94,6 @@ def process_df(df):
             betti_task = lambda i: f"betti_{int(i)}"
 
             for i in range(3):
-
                 new_row_dict = {
                     "Task": [betti_task(i)],
                     "Model Name": [row["model_name"]],

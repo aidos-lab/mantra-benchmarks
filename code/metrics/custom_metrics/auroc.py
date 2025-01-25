@@ -1,7 +1,7 @@
 import torch
+import torchmetrics.classification
 from torch import Tensor
 from torchmetrics import Metric
-import torchmetrics.classification
 
 
 class AUROC(Metric):

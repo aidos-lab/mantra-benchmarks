@@ -18,7 +18,6 @@ $ pip install poetry
 $ poetry install
 ```
 3. `pip install -e ./dependencies/TopoModelX/`
-4. `pip install -e ./dependencies/mantra/`
 
 ### Docker
 
