@@ -145,7 +145,7 @@ def get_feature_types(model: ModelType, ds_type: DatasetType):
 
 
 def get_model_config(
-        model: ModelType, out_channels: int, dim_features: int | tuple[int]
+    model: ModelType, out_channels: int, dim_features: int | tuple[int]
 ):
     model_config_cls = model_cfg_lookup[model]
     if model in graph_models:
@@ -185,8 +185,8 @@ def get_tasks(ds_type: DatasetType) -> List[TaskType]:
     tasks = (
         tasks_mantra2.copy()
         if (
-                ds_type == DatasetType.FULL_2D
-                or ds_type == DatasetType.NO_NAMELESS_2D
+            ds_type == DatasetType.FULL_2D
+            or ds_type == DatasetType.NO_NAMELESS_2D
         )
         else tasks_mantra3.copy()
     )

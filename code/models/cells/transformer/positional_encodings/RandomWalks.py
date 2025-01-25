@@ -4,13 +4,15 @@ from jaxtyping import Float
 from toponetx.classes import CellComplex, SimplicialComplex
 
 from CellComplexCombinatorics import lower_adjacency, upper_adjacency
-from models.cells.transformer.positional_encodings.BasePositionalEncodings import BasePositionalEncodings
+from models.cells.transformer.positional_encodings.BasePositionalEncodings import (
+    BasePositionalEncodings,
+)
 
 
 def random_walk_positional_encoding(
-        t_complex: CellComplex | SimplicialComplex,
-        dim_positional_encodings: int,
-        length_pos_enc: int,
+    t_complex: CellComplex | SimplicialComplex,
+    dim_positional_encodings: int,
+    length_pos_enc: int,
 ):
     if isinstance(t_complex, SimplicialComplex):
         raise NotImplementedError("SimplicialComplex not supported yet.")
@@ -31,7 +33,9 @@ def compute_lower_and_upper_degrees(adjacency_lower, adjacency_upper):
 
 
 def compute_rw_cell_complex(cell_complex: CellComplex, dim: int):
-    adjacency_lower, adjacency_upper = compute_adjacency_matrices(cell_complex, dim)
+    adjacency_lower, adjacency_upper = compute_adjacency_matrices(
+        cell_complex, dim
+    )
     lower_degrees, upper_degrees = compute_lower_and_upper_degrees(
         adjacency_lower, adjacency_upper
     )
@@ -76,9 +80,9 @@ def generate_pe_from_transition_matrix(RW, length_pos_enc: int):
 
 class RandomWalkPE(BasePositionalEncodings):
     def generate_positional_encodings(
-            self,
-            t_complex: CellComplex | SimplicialComplex,
-            length_positional_encodings: int,
+        self,
+        t_complex: CellComplex | SimplicialComplex,
+        length_positional_encodings: int,
     ) -> dict[int, Float[torch.Tensor, "n_dim length_positional_encodings"]]:
         pe = dict()
         for dim in range(t_complex.dim + 1):

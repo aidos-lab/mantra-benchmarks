@@ -334,7 +334,7 @@ simplicial_transforms_3d: Dict[str, List[TransformType]] = {
 
 
 def transforms_lookup(
-        tr_type: TransformType, ds_type: DatasetType
+    tr_type: TransformType, ds_type: DatasetType
 ) -> List[Callable]:
     _transforms_lookup = {
         TransformType.degree_transform: degree_transform,
@@ -348,10 +348,10 @@ def transforms_lookup(
 
     tr = _transforms_lookup[tr_type]
     if (
-            tr_type != TransformType.degree_transform_sc_2d
-            and tr_type != TransformType.random_simplices_features_2d
-            and tr_type != TransformType.degree_transform_sc_3d
-            and tr_type != TransformType.random_simplices_features_3d
+        tr_type != TransformType.degree_transform_sc_2d
+        and tr_type != TransformType.random_simplices_features_2d
+        and tr_type != TransformType.degree_transform_sc_3d
+        and tr_type != TransformType.random_simplices_features_3d
     ):
         tr[0] = TriangulationToFaceTransform()
 

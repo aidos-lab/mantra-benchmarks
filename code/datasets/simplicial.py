@@ -120,15 +120,17 @@ class SimplicialDataModule(LightningDataModule):
 
     def train_dataloader(self):
         return self.dataloader_builder(
-            self.train_ds, batch_size=self.batch_size
+            self.train_ds, batch_size=self.batch_size, num_workers=8
         )
 
     def val_dataloader(self):
-        return self.dataloader_builder(self.val_ds, batch_size=self.batch_size)
+        return self.dataloader_builder(
+            self.val_ds, batch_size=self.batch_size, num_workers=8
+        )
 
     def test_dataloader(self):
         return self.dataloader_builder(
-            self.test_ds, batch_size=self.batch_size
+            self.test_ds, batch_size=self.batch_size, num_workers=8
         )
 
 
