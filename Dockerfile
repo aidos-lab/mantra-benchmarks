@@ -36,7 +36,7 @@ RUN git config --global --add safe.directory /deps/mantra && git config --global
 # set up virtual environment
 RUN python3 -m venv /deps/venv && . /deps/venv/bin/activate && pip install --upgrade pip && pip install poetry 
 RUN . /deps/venv/bin/activate && poetry install 
-RUN . /deps/venv/bin/activate && pip install -e /deps/mantra/ /deps/TopoModelX/
+RUN . /deps/venv/bin/activate && pip install -e /deps/TopoModelX/
 RUN . /deps/venv/bin/activate && pip install  dgl -f https://data.dgl.ai/wheels/torch-2.3/cu121/repo.html
 
 # Set the default user to the new user
