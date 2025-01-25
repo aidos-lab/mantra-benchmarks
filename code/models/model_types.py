@@ -12,6 +12,7 @@ class ModelType(Enum):
     CELL_TRANSF = "celltrans"
     TAG = "tag"
     TransfConv = "transfconv"
+    CELL_MP = "cell_mp"
 
 
 simplicial_models = [
