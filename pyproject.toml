@@ -37,6 +37,7 @@ omegaconf = "2.3.0"
 pydantic-settings = "2.2.1"
 tabulate = "0.9.0"
 jaxtyping = "0.2.34"
+mantra="0.0.5"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.12b0", allow-prereleases = true}
