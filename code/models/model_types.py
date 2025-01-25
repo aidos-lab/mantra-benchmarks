@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class ModelType(Enum):
+    DECT = "dect"
     SAN = "san"
     SCCN = "sccn"
     SCCNN = "sccnn"

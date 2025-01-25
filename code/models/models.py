@@ -13,6 +13,9 @@ from datasets.cell_dataloader import CellDataloader
 from models.GCN import GCN, GCNConfig
 from datasets.transformer_dataloader import TransformerDataloader
 from models.GAT import GAT, GATConfig
+from models.MLP import MLP, MLPConfig
+from models.DECT import DECTMLP, DECTConfig
+from models.TransfConv import TransfConv, TransfConvConfig
 from models.TAG import TAG, TAGConfig
 from models.TransfConv import TransfConv, TransfConvConfig
 from models.simplicial_complexes.san import SAN, SANConfig
@@ -20,8 +23,6 @@ from models.simplicial_complexes.sccn import SCCN, SCCNConfig
 from models.simplicial_complexes.sccnn import SCCNN, SCCNNConfig
 from models.simplicial_complexes.scn import SCN, SCNConfig
 from models.cells.mp.cin0 import CIN0, CellMPConfig, SparseCIN
-from .GCN import GCN, GCNConfig
-from .MLP import MLP, MLPConfig
 from .cells.transformer.CellularTransformer import (
     CellularTransformer,
     CellularTransformerConfig,
@@ -29,6 +30,7 @@ from .cells.transformer.CellularTransformer import (
 from .model_types import ModelType
 
 model_lookup: Dict[ModelType, nn.Module] = {
+    ModelType.DECT: DECTMLP,
     ModelType.GAT: GAT,
     ModelType.GCN: GCN,
     ModelType.MLP: MLP,
@@ -43,6 +45,7 @@ model_lookup: Dict[ModelType, nn.Module] = {
 }
 
 ModelConfig = Union[
+    Annotated[DECTConfig, Tag(ModelType.DECT)],
     Annotated[MLPConfig, Tag(ModelType.MLP)],
     Annotated[GATConfig, Tag(ModelType.GAT)],
     Annotated[GCNConfig, Tag(ModelType.GCN)],
@@ -57,6 +60,7 @@ ModelConfig = Union[
 ]
 
 model_cfg_lookup: Dict[ModelType, ModelConfig] = {
+    ModelType.DECT: DECTConfig,
     ModelType.GAT: GATConfig,
     ModelType.GCN: GCNConfig,
     ModelType.MLP: MLPConfig,
@@ -67,6 +71,11 @@ model_cfg_lookup: Dict[ModelType, ModelConfig] = {
     ModelType.SCN: SCNConfig,
     ModelType.TransfConv: TransfConvConfig,
     ModelType.CELL_MP: CellMPConfig,
+}
+
+dataloader_lookup: Dict[ModelType, Callable] = {
+    ModelType.DECT: DataLoader,
+    ModelType.CELL_MP: DataLoader,
     ModelType.GAT: DataLoader,
     ModelType.GCN: DataLoader,
     ModelType.MLP: DataLoader,
