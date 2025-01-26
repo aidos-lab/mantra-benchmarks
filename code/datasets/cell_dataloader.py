@@ -120,6 +120,12 @@ def data_to_cochain(data: Data, dim: int, max_dim: int):
         data.connectivity[f"boundary_{dim}"].indices() if dim > 0 else None
     )
     y = getattr(data, "y", None)
+
+    if dim < max_dim and x.shape[1] < max_dim:
+        x_padded = torch.zeros((x.shape[0], max_dim))
+        x_padded[:, : x.shape[1]] = x
+        x = x_padded
+
     # TODO: Mapping is not used in their implementation, so I leave it as None for now
     return Cochain(
         dim,
@@ -134,6 +140,14 @@ def data_to_cochain(data: Data, dim: int, max_dim: int):
         lower_orient,
         y,
     )
+
+
+def to_shape_one(tensor: torch.Tensor):
+    # Check if the input is a scalar tensor
+    if tensor.dim() == 0:
+        # Convert it to a tensor with shape [1]
+        tensor = tensor.unsqueeze(0)
+    return tensor
 
 
 def collate_cell_models(batch: List[Data]) -> ComplexBatch:
@@ -154,7 +168,7 @@ def collate_cell_models(batch: List[Data]) -> ComplexBatch:
         for dim in range(max_dim + 1):
             cochain = data_to_cochain(data, dim, max_dim)
             cochains.append(cochain)
-        complex = Complex(*cochains, y=data.y, dimension=max_dim)
+        complex = Complex(*cochains, y=to_shape_one(data.y), dimension=max_dim)
         complexes.append(complex)
 
     cochain_batch = ComplexBatch.from_complex_list(

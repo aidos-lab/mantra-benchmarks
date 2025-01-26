@@ -121,7 +121,7 @@ if degree_transform_only:
 if random_transform_only:
     graph_features = graph_features_random
     simplicial_features_2d = [TransformType.random_simplices_features_2d]
-    simplicial_features_3d = [TransformType.degree_transform_sc_3d]
+    simplicial_features_3d = [TransformType.random_simplices_features_3d]
 
 
 # ###########
@@ -147,15 +147,30 @@ models = list(graph_models) + list(simplicial_models)
 # ###########
 
 # MISC ######
-feature_dim_dict = {
-    TransformType.degree_transform: 1,
-    TransformType.degree_transform_onehot: 10,
-    TransformType.random_node_features: 8,
-    TransformType.degree_transform_sc_2d: [1, 2, 1],
-    TransformType.random_simplices_features_2d: [8, 8, 8],
-    TransformType.degree_transform_sc_3d: [1, 2, 2, 1],
-    TransformType.random_simplices_features_3d: [8, 8, 8, 8],
-}
+
+
+def get_feature_dim(tr_type: TransformType, model_type: ModelType):
+    feature_dim_dict = {
+        TransformType.degree_transform: 1,
+        TransformType.degree_transform_onehot: 10,
+        TransformType.random_node_features: 8,
+        TransformType.degree_transform_sc_2d: [1, 2, 1],
+        TransformType.random_simplices_features_2d: [8, 8, 8],
+        TransformType.degree_transform_sc_3d: [1, 2, 2, 1],
+        TransformType.random_simplices_features_3d: [8, 8, 8, 8],
+    }
+
+    feature_dim_dict_cell_mp = {
+        TransformType.degree_transform_sc_3d: 3,
+        TransformType.random_simplices_features_3d: 8,
+        TransformType.degree_transform_sc_2d: 3,
+        TransformType.random_simplices_features_2d: 8,
+    }
+    if model_type == ModelType.CELL_MP:
+        return feature_dim_dict_cell_mp[tr_type]
+    else:
+        return feature_dim_dict[tr_type]
+
 
 out_channels_dict_mantra2_full = {
     TaskType.ORIENTABILITY: 1,
@@ -268,11 +283,8 @@ for ds_type in dataset_types:
         features = get_feature_types(model, ds_type)
         for feature in features:
             for task in tasks:
-                dim_features = (
-                    feature_dim_dict[feature]
-                    if model != ModelType.CELL_MP
-                    else 8
-                )
+                dim_features = get_feature_dim(feature, model)
+
                 out_channels = get_out_channels_dict(ds_type)[task]
                 model_config = get_model_config(
                     model, out_channels, dim_features

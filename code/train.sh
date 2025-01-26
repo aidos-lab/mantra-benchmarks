@@ -2,7 +2,8 @@
 
 sudo /deps/venv/bin/python ./experiments/train.py \
     --mode "all" \
-    --Configs "/data/configs/" \
-    --wandb "mantra-proj-transformer-3manifolds" \
-    --checkpoints "/data/checkpoints" \
-    --data "/data"
+    --Configs "/data/configs_3manifolds_random_transform" \
+    --wandb "mantra-proj-3manifolds-camera-ready-random-transforms" \
+    --checkpoints "/data/checkpoints/camera-ready-random-transforms" \
+    --data "/data" \
+    --devices 0 2
