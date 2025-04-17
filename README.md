@@ -1,4 +1,20 @@
-# MANTRA: Manifold Triangulations
+# MANTRA: The Manifold Triangulations Assemblage — Benchmarks Repository
+
+![GitHub contributors](https://img.shields.io/github/contributors/aidos-lab/mantra-benchmarks) ![License](https://img.shields.io/github/license/aidos-lab/mantra-benchmarks) 
+
+This is the benchmarks repository accompanying our [ICLR 2025 paper](https://openreview.net/pdf?id=X6y5CC44HM) on manifold triangulations. If you are looking for the dataset itself and the data loader, check out [the data repository](https://github.com/aidos-lab/MANTRA).
+
+Please use the following citation for our work:
+
+```bibtex
+@inproceedings{Ballester25a,
+  title         = {{MANTRA}: {T}he {M}anifold {T}riangulations {A}ssemblage},
+  author        = {Rubén Ballester and Ernst Röell and Daniel Bīn Schmid and Mathieu Alain and Sergio Escalera and Carles Casacuberta and Bastian Rieck},
+  year          = 2025,
+  booktitle     = {International Conference on Learning Representations},
+  url           = {https://openreview.net/forum?id=X6y5CC44HM},
+}
+```
 
 ## Setup
 
