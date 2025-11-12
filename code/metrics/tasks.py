@@ -9,6 +9,7 @@ from datasets.transforms import (
     name_transforms,
     betti_numbers_transforms_2manifold,
     betti_numbers_transforms_3manifold,
+    homeo_comp_transforms_2manifold    
 )
 from .accuracies import (
     compute_betti_numbers_accuracies,
@@ -82,6 +83,15 @@ class TaskType(Enum):
     NAME = "name"
     ORIENTABILITY = "orientability"
     BETTI_NUMBERS = "betti_numbers"
+    HOMEO_COMP = "homeo_comp"
+
+class Manifold2Type(Enum):
+    S_2 = "S^2"
+    T_2 = "T_2"
+    RP_2 = "RP^2"
+
+class Manifold3Type(Enum):
+    S_3 = "S^3"
 
 
 def get_task_lookup(
@@ -100,6 +110,7 @@ class_transforms_lookup_2manifold: Dict[TaskType, List[Callable]] = {
     TaskType.BETTI_NUMBERS: betti_numbers_transforms_2manifold,
     TaskType.ORIENTABILITY: orientability_transforms,
     TaskType.NAME: name_transforms,
+    TaskType.HOMEO_COMP: homeo_comp_transforms_2manifold
 }
 
 class_transforms_lookup_3manifold: Dict[TaskType, List[Callable]] = {

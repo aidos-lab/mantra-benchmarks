@@ -271,6 +271,10 @@ orientability_transforms = [
 name_transforms = [
     NameToClassTransform(),
 ]
+homeo_comp_transforms_2manifold = [
+    SetNumNodesTransform(),
+    SimplicialComplex()
+]
 betti_numbers_transforms_2manifold = [
     BettiToY2(),
 ]
